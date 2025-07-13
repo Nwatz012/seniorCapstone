@@ -1,0 +1,370 @@
+/* 🌿 CSS Variables */
+:root {
+  --green-primary: #689f38;
+  --green-secondary: #7cb342;
+  --green-accent: #e8f5e8;
+  --green-light: #f0f8f0;
+  --green-hover: #558b2f;
+
+  --text-dark: #1f2937;
+  --text-medium: #4b5563;
+  --text-light: #6b7280;
+  --text-muted: #6b7280;
+
+  --gray-light: #f3f4f6;
+  --gray-border: #d1d5db;
+  --gray-bg: #f9fafb;
+
+  --white: #ffffff;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+
+  --border-radius: 0.5rem;
+  --border-radius-lg: 0.75rem;
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 2.5rem;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+}
+
+/* 🌐 Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f5f5;
+  padding: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+/* 📦 Layout Containers */
+.app-container {
+  max-width: 87.5rem;
+  width: 100%;
+  margin: 0 auto;
+  background: var(--white);
+  min-height: 56.25rem;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 21.875rem 1fr;
+  min-height: 50rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* 🌿 Header */
+.main-header,
+.header {
+  background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  color: var(--white);
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  gap: var(--spacing-md);
+}
+
+.app-title,
+.header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+}
+
+.main-nav,
+.header-right {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.main-nav a,
+.profile-link {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+}
+
+.main-nav a:hover,
+.profile-link:hover,
+.profile-link:focus {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+/* 👤 Buttons */
+.header-profile-btn,
+.header-logout-btn,
+.profile-btn,
+.logout-btn,
+.btn {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  background: var(--white);
+  color: var(--green-primary);
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: var(--font-size-sm);
+}
+
+.btn {
+  font-size: 1rem;
+  min-width: 120px;
+  padding: 14px 32px;
+  border-radius: 12px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(124, 179, 66, 0.3);
+}
+
+.btn-secondary {
+  background: var(--gray-bg);
+  color: var(--text-muted);
+  border: 2px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+/* 🧾 Form Section */
+.form-container {
+  padding: 40px;
+}
+
+.tab-navigation {
+  display: flex;
+  margin-bottom: 30px;
+  border-bottom: 2px solid var(--gray-bg);
+  flex-wrap: wrap;
+}
+
+.tab {
+  flex: 1;
+  padding: 15px 20px;
+  text-align: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab.active {
+  color: var(--green-primary);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
+  border-radius: 1px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 40px;
+  align-items: start;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--text-dark);
+  font-size: var(--font-size-sm);
+}
+
+.form-input {
+  padding: 12px 16px;
+  border: 2px solid var(--gray-border);
+  border-radius: 12px;
+  font-size: var(--font-size-base);
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--green-secondary);
+  box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.1);
+}
+
+.form-input.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.form-input.textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* 📸 Photo Upload */
+.photo-section {
+  text-align: center;
+}
+
+.photo-upload {
+  width: 200px;
+  height: 200px;
+  border: 3px dashed var(--green-secondary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  background: var(--green-light);
+  margin: 0 auto 20px;
+  transition: all 0.3s ease;
+}
+
+.photo-upload:hover {
+  border-color: var(--green-primary);
+  background: var(--green-accent);
+  transform: scale(1.02);
+}
+
+.photo-upload svg {
+  width: 48px;
+  height: 48px;
+  color: var(--green-secondary);
+  margin-bottom: 12px;
+}
+
+.photo-upload span {
+  color: var(--green-primary);
+  font-weight: 500;
+}
+
+/* 🛋️ Room Selection */
+.room-selection {
+  background: var(--green-light);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--green-accent);
+}
+
+.room-selection h3 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 15px;
+}
+
+.room-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.checkbox-item:hover {
+  background: rgba(124, 179, 66, 0.05);
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green-secondary);
+}
+
+.checkbox-item label {
+  font-weight: 500;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+/* ➕ Add Room Button */
+.add-room-btn {
+  background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 0;
+} 

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rooms - Home Inventory</title>
+  <meta name="description" content="Manage your home inventory with our comprehensive dashboard. Track items, values, and room-by-room organization.">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Import Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/rooms.css" />
+  <link rel="stylesheet" href="css/dashboard.css" /> <!-- Include dashboard CSS for common styles like header -->
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#689f38',
+            'primary-hover': '#558b2f',
+            secondary: '#f1f5f9',
+            'secondary-hover': '#e2e8f0',
+            accent: '#fef3c7',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-in-left': 'slideInLeft 0.3s ease-in-out',
+            'slide-in-right': 'slideInRight 0.3s ease-in-out'
+          },
+          keyframes: {
+            fadeIn: {
+              from: { opacity: '0' },
+              to: { opacity: '1' }
+            },
+            slideInLeft: {
+              from: { transform: 'translateX(-20px)', opacity: '0' },
+              to: { transform: 'translateX(0)', opacity: '1' }
+            },
+            slideInRight: {
+              from: { transform: 'translateX(20px)', opacity: '0' },
+              to: { transform: 'translateX(0)', opacity: '1' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 font-inter min-h-screen">
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
+    Skip to main content
+  </a>
+
+  <div class="app-container">
+    <!-- Global Header -->
+    <header class="main-header" role="banner">
+      <div class="flex items-center gap-4">
+        <h1 class="app-title">
+          <span role="img" aria-label="House">🏡</span>
+          Home Inventory
+        </h1>
+      </div>
+
+      <nav class="main-nav" role="navigation" aria-label="Main navigation">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html" aria-current="page">Rooms</a>
+        <a href="reports.html">Reports</a>
+        <a href="itemDetails.html">Item Details</a>
+      </nav>
+
+      <div class="header-right">
+
+        <span class="hidden sm:inline text-sm" aria-label="Current user">
+         Welcome, <strong id="current-user-name">John Doe</strong> <!-- Ensure this ID is present -->
+        </span>
+
+
+
+        <button class="header-profile-btn" type="button" aria-label="View profile">
+          Profile
+        </button>
+        <button class="header-logout-btn" type="button" aria-label="Sign out">
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar" role="complementary" aria-label="Home information and room navigation">
+        <!-- Home Information Section -->
+        <section class="sidebar-section">
+          <h2 class="sidebar-title">Home Information</h2>
+          <div class="home-info-card">
+            <div class="info-row">
+              <span class="info-label">Address:</span>
+              <span class="info-value" id="home-address">N/A</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Square Footage:</span>
+              <span class="info-value" id="home-sq-ft">N/A</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Year Built:</span>
+              <span class="info-value" id="home-year-built">N/A</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Roof Type:</span>
+              <span class="info-value" id="home-roof-type">N/A</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Roof Age:</span>
+              <span class="info-value" id="home-roof-age">N/A</span>
+            </div>
+            <button class="edit-btn" id="edit-home-info-btn" type="button" aria-label="Edit home information">
+              Edit Home Info
+            </button>
+          </div>
+        </section>
+
+        <!-- Room Navigation Section (will be dynamically populated) -->
+        <section class="sidebar-section">
+          <h2 class="sidebar-title">Rooms</h2>
+          <nav aria-label="Room navigation">
+            <ul class="room-nav" id="room-list">
+              <!-- Room links will be inserted here by JavaScript -->
+            </ul>
+          </nav>
+          <button class="add-room-btn" id="add-custom-room-btn" type="button" aria-label="Add a new custom room">
+            + Add Custom Room
+          </button>
+        </section>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="content-area" id="main-content" role="main">
+        <!-- Content Header -->
+        <div class="content-header">
+          <h1 class="page-title" id="current-room-title">All Items</h1> <!-- Default title -->
+          <div class="action-buttons">
+            <div class="search-container">
+              <label for="item-search" class="sr-only">Search items</label>
+              <input 
+                type="search" 
+                id="item-search"
+                class="search-bar" 
+                placeholder="Search items..." 
+                aria-label="Search items in current room"
+              />
+            </div>
+            <button class="btn-primary" id="add-item-to-room-btn" type="button" aria-label="Add new item to current room">
+              + Add Item
+            </button>
+          </div>
+        </div>
+
+        <!-- Content Body -->
+        <div class="content-body">
+          <!-- Items Grid (will be dynamically populated) -->
+          <div class="inventory-grid" id="inventory-grid">
+            <!-- Item cards will be inserted here by JavaScript -->
+          </div>
+
+          <!-- Empty State (shown when no items exist for the current room) -->
+          <div class="empty-state" id="empty-state" style="display: none;">
+            <div role="img" aria-label="Empty room illustration" style="font-size: 4rem; margin-bottom: 1rem;">
+              📦
+            </div>
+            <h3 id="empty-state-title">No items in this room yet</h3>
+            <p id="empty-state-text">Start building your inventory by adding your first item to this room. Track valuable items, furniture, electronics, and more.</p>
+            <button class="btn-primary" id="add-first-item-btn" type="button" aria-label="Add your first item to Living Room">
+              + Add Your First Item
+            </button>
+          </div>
+        </div>
+
+        <!-- Room Summary (will be dynamically populated) -->
+        <div class="room-summary" id="room-summary" style="display: none;">
+          <div class="summary-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total Items:</span>
+              <span class="stat-value" id="total-items">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Value:</span>
+              <span class="stat-value" id="total-value">$0.00</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Last Updated:</span>
+              <span class="stat-value" id="last-updated">N/A</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Item Modal (reused from dashboard concepts) -->
+  <div id="addItemModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md animate-fade-in">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4" id="modal-title">Add New Item</h3>
+          <form id="modalAddItemForm">
+              <div class="mb-4">
+                  <label for="modal-item-name" class="block text-gray-700 text-sm font-bold mb-2">Item Name:</label>
+                  <input type="text" id="modal-item-name" placeholder="Enter item name" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="modal-item-category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+                  <select id="modal-item-category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                      <option value="">Select a Category</option>
+                      <option value="electronics">Electronics</option>
+                      <option value="furniture">Furniture</option>
+                      <option value="clothing">Clothing</option>
+                      <option value="appliances">Appliances</option>
+                      <option value="jewelry">Jewelry</option>
+                      <option value="collectibles">Collectibles</option>
+                      <option value="art">Art</option>
+                      <option value="guns">Guns</option>
+                      <option value="coins">Coins</option>
+                      <option value="other">Other</option>
+                  </select>
+              </div>
+              <div id="modal-other-category-input" class="hidden mb-4">
+                  <label for="modal-item-category-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Category:</label>
+                  <input type="text" id="modal-item-category-other" placeholder="Enter custom category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="modal-item-quantity" class="block text-gray-700 text-sm font-bold mb-2">Quantity:</label>
+                  <input type="number" id="modal-item-quantity" value="1" min="1" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="modal-item-room" class="block text-gray-700 text-sm font-bold mb-2">Room:</label>
+                  <select id="modal-item-room" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                      <option value="">Select a Room</option>
+                      <option value="master_bedroom">Master Bedroom</option>
+                      <option value="bedroom_1">Bedroom 1</option>
+                      <option value="bedroom_2">Bedroom 2</option>
+                      <option value="bedroom_3">Bedroom 3</option>
+                      <option value="bathroom">Bathroom</option>
+                      <option value="kitchen">Kitchen</option>
+                      <option value="living_room">Living Room</option>
+                      <option value="dining_room">Dining Room</option>
+                      <option value="office">Office</option>
+                      <option value="garage">Garage</option>
+                      <option value="other">Other</option>
+                  </select>
+              </div>
+              <div id="modal-other-room-input" class="hidden mb-4">
+                  <label for="modal-item-room-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Room:</label>
+                  <input type="text" id="modal-item-room-other" placeholder="Enter custom room" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="modal-item-replacement-cost" class="block text-gray-700 text-sm font-bold mb-2">Replacement Cost:</label>
+                  <input type="number" id="modal-item-replacement-cost" value="0" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="flex justify-end space-x-4">
+                  <button type="button" id="cancelAddItemModal" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg">Cancel</button>
+                  <button type="submit" id="modal-add-item-btn" class="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded-lg">Add Item</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <!-- Edit Home Info Modal -->
+  <div id="editHomeInfoModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md animate-fade-in">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Edit Home Information</h3>
+          <form id="editHomeInfoForm">
+              <input type="hidden" id="home-id-input"> <!-- Hidden input for home_id -->
+              <div class="mb-4">
+                  <label for="edit-home-address" class="block text-gray-700 text-sm font-bold mb-2">Address:</label>
+                  <input type="text" id="edit-home-address" placeholder="e.g., 123 Main St, City, State" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="edit-home-sq-ft" class="block text-gray-700 text-sm font-bold mb-2">Square Footage (sq ft):</label>
+                  <input type="number" id="edit-home-sq-ft" min="0" step="0.01" placeholder="e.g., 1500.50" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="edit-home-year-built" class="block text-gray-700 text-sm font-bold mb-2">Year Built:</label>
+                  <input type="number" id="edit-home-year-built" min="1800" max="2100" placeholder="e.g., 1995" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="edit-home-roof-type" class="block text-gray-700 text-sm font-bold mb-2">Roof Type:</label>
+                  <input type="text" id="edit-home-roof-type" placeholder="e.g., Asphalt Shingle, Tile" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="mb-4">
+                  <label for="edit-home-roof-age" class="block text-gray-700 text-sm font-bold mb-2">Roof Age (years):</label>
+                  <input type="number" id="edit-home-roof-age" min="0" placeholder="e.g., 10" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              </div>
+              <div class="flex justify-end space-x-4">
+                  <button type="button" id="cancelEditHomeInfoModal" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg">Cancel</button>
+                  <button type="submit" id="save-home-info-btn" class="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded-lg">Save Home Info</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/rooms.js"></script>
+</body>
+</html>

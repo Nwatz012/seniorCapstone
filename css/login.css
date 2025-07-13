@@ -1,0 +1,271 @@
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .wireframe-container {
+            width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border: 3px solid #7c3aed;
+            min-height: 900px;
+            position: relative;
+        }
+        
+        .header {
+            background-color: #e5e7eb;
+            padding: 20px 40px;
+            border-bottom: 2px solid #d1d5db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            font-weight: bold;
+            font-size: 24px;
+            color: #1f2937;
+        }
+        
+        .nav-section {
+            font-size: 16px;
+            color: #6b7280;
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 600px 1fr;
+            min-height: 800px;
+        }
+        
+        .left-panel {
+            background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+            padding: 60px 40px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .hero-content h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .hero-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+        }
+        
+        .form-section {
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+        
+        .form-subtitle {
+            color: #6b7280;
+            font-size: 16px;
+        }
+        
+        .form-subtitle a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-message {
+            padding: 16px;
+            margin-bottom: 30px;
+            border-radius: 6px;
+            text-align: center;
+            min-height: 20px;
+            border: 2px dashed #d1d5db;
+            color: #6b7280;
+            font-size: 14px;
+            background: #f9fafb;
+        }
+        
+        .form-group {
+            margin-bottom: 28px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 15px;
+        }
+        
+        .required {
+            color: #ef4444;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #6b7280;
+            padding: 4px;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 6px;
+            min-height: 18px;
+        }
+        
+        .help-text {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: background-color 0.2s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2563eb;
+        }
+        
+        .right-panel {
+            background: #f8fafc;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .testimonial {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #4b5563;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .security-badge {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .security-badge h4 {
+            margin: 0 0 10px 0;
+            color: #059669;
+        }
+        
+        .annotation {
+            position: absolute;
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            max-width: 220px;
+            z-index: 10;
+        }
+        
+        .annotation-1 {
+            top: 200px;
+            left: 20px;
+        }
+        
+        .annotation-2 {
+            bottom: 300px;
+            right: 50px;
+        }
+        
+        .annotation-3 {
+            top: 450px;
+            right: 650px;
+        }

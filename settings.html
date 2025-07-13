@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - Property Inventory</title>
+<head>
+     <link rel="stylesheet" href="css/settings.css" />
+</head>
+   
+
+<body>
+    <header class="header">
+        <h1>PROFILE SETTINGS</h1>
+        <a href="#" class="dashboard-link">← Back to Dashboard</a>
+        
+    </header>
+
+    <div class="container">
+        <h2 class="page-title">Account Settings</h2>
+
+        <div class="settings-grid">
+            <nav class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#profile" class="active">Profile Information</a></li>
+                    <li><a href="#security">Security & Privacy</a></li>
+                    <li><a href="#preferences">Preferences</a></li>
+                    <li><a href="#export">Data Export</a></li>
+                    <li><a href="#account">Account Management</a></li>
+                </ul>
+            </nav>
+
+            <main class="main-content">
+                <!-- Success/Error Banners -->
+                <div class="success-banner" style="display: none;" id="success-banner">
+                    <strong>✅ Changes saved successfully!</strong>
+                    Your profile has been updated.
+                </div>
+
+                <div class="error-banner" style="display: none;" id="error-banner">
+                    <strong>⚠ Please fix the following issues:</strong>
+                    <ul id="error-list"></ul>
+                </div>
+
+                <!-- Profile Information Section -->
+                <section class="section" id="profile-section">
+                    <h3 class="section-title">Profile Information</h3>
+                    
+                    <div class="profile-header">
+                        <div class="profile-avatar">JD</div>
+                        <div class="profile-info">
+                            <h3>John Doe</h3>
+                            <p>Member since January 2025</p>
+                            <p>Last login: Today at 2:30 PM</p>
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">First Name <span class="required">*</span></label>
+                                <input type="text" id="first-name" value="John" required>
+                                <div class="validation-message validation-error" style="display: none;">
+                                    Validation: First name is required and must be at least 2 characters.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name <span class="required">*</span></label>
+                                <input type="text" id="last-name" value="Doe" required>
+                                <div class="validation-message validation-error" style="display: none;">
+                                    Validation: Last name is required and must be at least 2 characters.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" value="john.doe@email.com" required>
+                            <div class="validation-message validation-error" style="display: none;">
+                                Validation: Please enter a valid email address.
+                            </div>
+                            <div class="validation-message validation-warning" style="display: none;">
+                                Validation: Email is already in use. Please choose a different email address.
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="(555) 123-4567">
+                                <div class="validation-message validation-error" style="display: none;">
+                                    Validation: Please enter a valid phone number format.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="timezone">Timezone</label>
+                                <select id="timezone">
+                                    <option value="EST">Eastern Standard Time</option>
+                                    <option value="CST">Central Standard Time</option>
+                                    <option value="MST">Mountain Standard Time</option>
+                                    <option value="PST">Pacific Standard Time</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address" placeholder="Enter your full address for insurance purposes..."></textarea>
+                            <div class="validation-message">
+                                Behavior: Address information helps with insurance claims and location-based reporting.
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                            <button type="button" class="btn btn-outline">Cancel</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Security Section -->
+                <section class="section" id="security-section">
+                    <h3 class="section-title">Security & Privacy</h3>
+
+                    <div class="form-group">
+                        <label for="current-password">Current Password <span class="required">*</span></label>
+                        <input type="password" id="current-password" placeholder="Enter current password">
+                        <div class="validation-message validation-error" style="display: none;">
+                            Validation: Current password is incorrect.
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="new-password">New Password</label>
+                            <input type="password" id="new-password" placeholder="Enter new password">
+                            <div class="validation-message validation-error" style="display: none;">
+                                Validation: Password must be at least 8 characters with uppercase, lowercase, and number.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm New Password</label>
+                            <input type="password" id="confirm-password" placeholder="Confirm new password">
+                            <div class="validation-message validation-error" style="display: none;">
+                                Validation: Passwords do not match.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h4>Two-Factor Authentication</h4>
+                            <p>Add an extra layer of security to your account</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h4>Login Notifications</h4>
+                            <p>Get notified when someone logs into your account</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary">🔒 Update Security</button>
+                        <button type="button" class="btn btn-outline">Reset Password</button>
+                    </div>
+                </section>
+
+                <!-- Preferences Section -->
+                <section class="section" id="preferences-section">
+                    <h3 class="section-title">Application Preferences</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currency">Default Currency</label>
+                            <select id="currency">
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                                <option value="CAD">CAD ($)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date-format">Date Format</label>
+                            <select id="date-format">
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h4>Email Notifications</h4>
+                            <p>Receive updates about your inventory and reports</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h4>Auto-save Items</h4>
+                            <p>Automatically save items as you type</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary">⚙️ Save Preferences</button>
+                    </div>
+                </section>
+
+                <!-- Account Management Section -->
+                <section class="section" id="account-section">
+                    <h3 class="section-title">Account Management</h3>
+
+                    <div class="danger-zone">
+                        <h3>⚠️ Danger Zone</h3>
+                        <p>These actions cannot be undone. Please proceed with caution.</p>
+                        
+                        <div class="button-group">
+                            <button type="button" class="btn btn-outline">📥 Download My Data</button>
+                            <button type="button" class="btn btn-danger">🗑️ Delete Account</button>
+                        </div>
+                        
+                        <div class="validation-message validation-warning" style="display: none;">
+                            Validation: Account deletion requires email confirmation and will permanently remove all data.
+                        </div>
+                    </div>
+
+                    <div class="logout-section">
+                        <h3>Ready to Sign Out?</h3>
+                        <p>You can always log back in anytime to access your inventory.</p>
+                        <button type="button" class="btn btn-secondary">🚪 Logout</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
