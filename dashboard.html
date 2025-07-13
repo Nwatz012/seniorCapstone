@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Personal Property Inventory</title>
   <link rel="stylesheet" href="css/dashboard.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -46,6 +47,47 @@
   </script>
 </head>
 <body class="bg-gray-50 font-inter min-h-screen">
+  <title>Living Room - Home Inventory Dashboard</title>
+  <meta name="description" content="Manage your home inventory with our comprehensive dashboard. Track items, values, and room-by-room organization.">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Import Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/dashboard.css" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+  
+  <style>
+    /* Critical CSS for faster loading */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background-color: #f5f5f5;
+      line-height: 1.6;
+    }
+    
+    .app-container {
+      max-width: 87.5rem;
+      width: 100%;
+      margin: 0 auto;
+      background: white;
+      min-height: 56.25rem;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+
   <!-- Skip to main content for accessibility -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
     Skip to main content
@@ -65,12 +107,20 @@
         <a href="dashboard.html" aria-current="page">Dashboard</a>
         <a href="rooms.html">Rooms</a>
         <a href="reports.html">Reports</a>
+
         <a href="itemDetails.html">Item Details</a>
+
+        <a href="add-item.html">Add Item</a>
+
       </nav>
 
       <div class="header-right">
         <span class="hidden sm:inline text-sm" aria-label="Current user">
+
           Welcome, <strong id="current-user-name">John Doe</strong> <!-- Added ID here -->
+=======
+          Welcome, <strong>John Doe</strong>
+
         </span>
         <button class="header-profile-btn" type="button" aria-label="View profile">
           Profile
@@ -80,6 +130,7 @@
         </button>
       </div>
     </header>
+
 
     <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
 
@@ -169,6 +220,162 @@
           </div>
           <p class="text-gray-500 text-lg font-medium">No items in your inventory yet.</p>
           <p class="text-gray-400 mt-2">Start by adding your first item above!</p>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar" role="complementary" aria-label="Home information and room navigation">
+        <!-- Home Information Section -->
+        <section class="sidebar-section">
+          <h2 class="sidebar-title">Home Information</h2>
+          <div class="home-info-card">
+            <div class="info-row">
+              <span class="info-label">Address:</span>
+              <span class="info-value">123 Main St, City, State</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Square Footage:</span>
+              <span class="info-value">1,200 sq ft</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Year Built:</span>
+              <span class="info-value">2020</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Roof Type:</span>
+              <span class="info-value">Composition</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Roof Age:</span>
+              <span class="info-value">4 years</span>
+            </div>
+            <button class="edit-btn" type="button" aria-label="Edit home information">
+              Edit Home Info
+            </button>
+          </div>
+        </section>
+
+        <!-- Room Navigation Section -->
+        <section class="sidebar-section">
+          <h2 class="sidebar-title">Rooms</h2>
+          <nav aria-label="Room navigation">
+            <ul class="room-nav">
+              <li>
+                <a href="?room=living-room" class="active" aria-current="page">
+                  <span>Living Room</span>
+                  <span class="item-count" aria-label="2 items">2</span>
+                </a>
+              </li>
+              <li>
+                <a href="?room=kitchen">
+                  <span>Kitchen</span>
+                  <span class="item-count" aria-label="0 items">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="?room=bedroom">
+                  <span>Master Bedroom</span>
+                  <span class="item-count" aria-label="0 items">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="?room=bathroom">
+                  <span>Bathroom</span>
+                  <span class="item-count" aria-label="0 items">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="?room=garage">
+                  <span>Garage</span>
+                  <span class="item-count" aria-label="0 items">0</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <button class="add-room-btn" type="button" aria-label="Add a new custom room">
+            + Add Custom Room
+          </button>
+        </section>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="content-area" id="main-content" role="main">
+        <!-- Content Header -->
+        <div class="content-header">
+          <h1 class="page-title">Living Room</h1>
+          <div class="action-buttons">
+            <div class="search-container">
+              <label for="item-search" class="sr-only">Search items</label>
+              <input 
+                type="search" 
+                id="item-search"
+                class="search-bar" 
+                placeholder="Search items..." 
+                aria-label="Search items in Living Room"
+              />
+            </div>
+            <button class="btn-secondary" type="button" aria-label="Generate inventory report">
+              Generate Report
+            </button>
+            <button class="btn-primary" type="button" aria-label="Add new item to Living Room">
+              + Add Item
+            </button>
+          </div>
+        </div>
+
+        <!-- Content Body -->
+        <div class="content-body">
+          <!-- Items Grid (shown when items exist) -->
+          <div class="inventory-grid" id="inventory-grid">
+            <article class="item-card" tabindex="0" role="button" aria-label="Samsung 55 inch Smart TV, valued at $1,200">
+              <div class="item-image" role="img" aria-label="Television icon">
+                <span style="font-size: 3rem;">📺</span>
+              </div>
+              <h3 class="item-name">Samsung 55" Smart TV</h3>
+              <div class="item-value" aria-label="Value: $1,200">$1,200</div>
+              <div class="item-category">Electronics</div>
+            </article>
+
+            <article class="item-card" tabindex="0" role="button" aria-label="Leather Sectional Sofa, valued at $2,800">
+              <div class="item-image" role="img" aria-label="Sofa icon">
+                <span style="font-size: 3rem;">🛋️</span>
+              </div>
+              <h3 class="item-name">Leather Sectional Sofa</h3>
+              <div class="item-value" aria-label="Value: $2,800">$2,800</div>
+              <div class="item-category">Furniture</div>
+            </article>
+          </div>
+
+          <!-- Empty State (hidden when items exist) -->
+          <div class="empty-state" id="empty-state" style="display: none;">
+            <div role="img" aria-label="Empty room illustration" style="font-size: 4rem; margin-bottom: 1rem;">
+              📦
+            </div>
+            <h3>No items in Living Room yet</h3>
+            <p>Start building your inventory by adding your first item to this room. Track valuable items, furniture, electronics, and more.</p>
+            <button class="btn-primary" type="button" aria-label="Add your first item to Living Room">
+              + Add Your First Item
+            </button>
+          </div>
+        </div>
+
+        <!-- Room Summary (visible when items exist) -->
+        <div class="room-summary" id="room-summary">
+          <div class="summary-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total Items:</span>
+              <span class="stat-value" id="total-items">2</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Value:</span>
+              <span class="stat-value" id="total-value">$4,000</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Last Updated:</span>
+              <span class="stat-value" id="last-updated">Today</span>
+            </div>
+          </div>
+
         </div>
       </main>
     </div>
@@ -176,5 +383,89 @@
 
   <!-- Scripts -->
   <script src="js/dashboard.js"></script>
+</body>
+</html>
+  <script>
+    // Basic functionality for demonstration
+    document.addEventListener('DOMContentLoaded', function() {
+      // Search functionality
+      const searchInput = document.getElementById('item-search');
+      const inventoryGrid = document.getElementById('inventory-grid');
+      const emptyState = document.getElementById('empty-state');
+      const roomSummary = document.getElementById('room-summary');
+      
+      // Initialize view based on items
+      const hasItems = inventoryGrid.children.length > 0;
+      
+      if (hasItems) {
+        inventoryGrid.style.display = 'grid';
+        emptyState.style.display = 'none';
+        roomSummary.style.display = 'block';
+      } else {
+        inventoryGrid.style.display = 'none';
+        emptyState.style.display = 'block';
+        roomSummary.style.display = 'none';
+      }
+      
+      // Search functionality
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const items = inventoryGrid.querySelectorAll('.item-card');
+          
+          items.forEach(item => {
+            const itemName = item.querySelector('.item-name').textContent.toLowerCase();
+            const itemCategory = item.querySelector('.item-category').textContent.toLowerCase();
+            
+            if (itemName.includes(searchTerm) || itemCategory.includes(searchTerm)) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      }
+      
+      // Add click handlers for interactive elements
+      document.querySelectorAll('.item-card').forEach(card => {
+        card.addEventListener('click', function() {
+          // Handle item card click
+          console.log('Item card clicked:', this.querySelector('.item-name').textContent);
+        });
+        
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+          }
+        });
+      });
+      
+      // Add handlers for buttons
+      document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
+        button.addEventListener('click', function() {
+          console.log('Button clicked:', this.textContent.trim());
+        });
+      });
+      
+      // Room navigation
+      document.querySelectorAll('.room-nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Remove active class from all links
+          document.querySelectorAll('.room-nav a').forEach(l => l.classList.remove('active'));
+          
+          // Add active class to clicked link
+          this.classList.add('active');
+          
+          // Update page title
+          const roomName = this.querySelector('span').textContent;
+          document.querySelector('.page-title').textContent = roomName;
+          document.title = `${roomName} - Home Inventory Dashboard`;
+        });
+      });
+    });
+  </script>
 </body>
 </html>

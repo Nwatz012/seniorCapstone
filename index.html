@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Personal Property Inventory</title>
+  <link rel="stylesheet" href="css/index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#689f38',
+            'primary-hover': '#558b2f',
+            secondary: '#f1f5f9',
+            'secondary-hover': '#e2e8f0',
+            accent: '#fef3c7',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-in-left': 'slideInLeft 0.3s ease-in-out',
+            'slide-in-right': 'slideInRight 0.3s ease-in-out'
+          },
+          keyframes: {
+            fadeIn: {
+              from: { opacity: '0' },
+              to: { opacity: '1' }
+            },
+            slideInLeft: {
+              from: { transform: 'translateX(-20px)', opacity: '0' },
+              to: { transform: 'translateX(0)', opacity: '1' }
+            },
+            slideInRight: {
+              from: { transform: 'translateX(20px)', opacity: '0' },
+              to: { transform: 'translateX(0)', opacity: '1' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 font-inter min-h-screen">
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ✅ HEADER -->
+    <header class="bg-gradient-to-r from-lime-600 to-lime-700 text-white rounded-lg px-6 py-4 mb-8 flex flex-col md:flex-row items-center justify-between shadow">
+      <div class="text-2xl font-semibold mb-2 md:mb-0">🏡 Inventory App</div>
+
+      <nav class="flex gap-6 text-white font-medium">
+        <a href="dashboard.html" class="hover:underline">Dashboard</a>
+        <a href="addEditPage.html" class="hover:underline">Add Item</a>
+      </nav>
+
+      <div class="flex items-center gap-4 mt-2 md:mt-0">
+        <span class="hidden sm:inline text-sm">Welcome, John Doe</span>
+        <button class="bg-white text-lime-700 font-semibold py-1 px-3 rounded hover:bg-lime-100 transition">Profile</button>
+        <button class="bg-white text-lime-700 font-semibold py-1 px-3 rounded hover:bg-lime-100 transition">Logout</button>
+      </div>
+    </header>
+
+    <!-- Message Box -->
+    <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
+
+    <!-- Add Item Form -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8 animate-fade-in">
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">Add New Item</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <!-- Item Name -->
+        <div class="col-span-1 sm:col-span-2 lg:col-span-1">
+          <label for="item-name" class="block text-gray-700 text-sm font-bold mb-2">Item Name:</label>
+          <input type="text" id="item-name" placeholder="Enter item name"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label for="item-category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+          <select id="item-category"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+            <option value="">Select a Category</option>
+            <option value="electronics">Electronics</option>
+            <option value="furniture">Furniture</option>
+            <option value="clothing">Clothing</option>
+            <option value="appliances">Appliances</option>
+            <option value="jewelry">Jewelry</option>
+            <option value="collectibles">Collectibles</option>
+            <option value="art">Art</option>
+            <option value="guns">Guns</option>
+            <option value="coins">Coins</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Quantity -->
+        <div>
+          <label for="item-quantity" class="block text-gray-700 text-sm font-bold mb-2">Quantity:</label>
+          <input type="number" id="item-quantity" value="1" min="1"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+        </div>
+
+        <!-- Room -->
+        <div>
+          <label for="item-room" class="block text-gray-700 text-sm font-bold mb-2">Room:</label>
+          <select id="item-room"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+            <option value="">Select a Room</option>
+            <option value="master_bedroom">Master Bedroom</option>
+            <option value="bedroom_1">Bedroom 1</option>
+            <option value="bedroom_2">Bedroom 2</option>
+            <option value="bedroom_3">Bedroom 3</option>
+            <option value="bathroom">Bathroom</option>
+            <option value="kitchen">Kitchen</option>
+            <option value="living_room">Living Room</option>
+            <option value="dining_room">Dining Room</option>
+            <option value="office">Office</option>
+            <option value="garage">Garage</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Replacement Cost -->
+        <div>
+          <label for="item-replacement-cost" class="block text-gray-700 text-sm font-bold mb-2">Replacement Cost:</label>
+          <input type="number" id="item-replacement-cost" value="0" min="0" step="0.01"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+        </div>
+
+        <!-- Add Button -->
+        <div class="flex items-end">
+          <button id="add-item"
+            class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 transform hover:scale-105">
+            Add Item
+          </button>
+        </div>
+      </div>
+
+      <!-- Custom Category Input -->
+      <div id="other-category-input" class="hidden mb-4 animate-slide-in-left">
+        <label for="item-category-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Category:</label>
+        <input type="text" id="item-category-other" placeholder="Enter custom category"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+      </div>
+
+      <!-- Custom Room Input -->
+      <div id="other-room-input" class="hidden mb-4 animate-slide-in-right">
+        <label for="item-room-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Room:</label>
+        <input type="text" id="item-room-other" placeholder="Enter custom room"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+      </div>
+    </div>
+
+    <!-- High-Value Items Reminder -->
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 rounded-r-lg">
+      <p class="text-sm font-bold text-yellow-800">High-Value Items Reminder:</p>
+      <p class="text-sm text-yellow-700 mt-1">
+        If you have any high-value specialty items above <strong>$5,000</strong>, please consider speaking with a licensed agent to have those items scheduled for proper coverage. Examples include jewelry, collectibles, and guns.
+      </p>
+    </div>
+
+    <!-- Inventory Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Inventory List</h2>
+        <div id="inventory-summary" class="hidden text-right">
+          <p class="text-sm text-gray-600">Total Items: <span id="total-items-count" class="font-semibold text-gray-800">0</span></p>
+          <p class="text-sm text-gray-600">Total Value: <span id="total-replacement-cost" class="font-semibold text-green-600">$0.00</span></p>
+        </div>
+      </div>
+
+      <div id="room-organized-inventory" class="space-y-4"></div>
+
+      <div id="no-items-message" class="text-center py-12">
+        <div class="text-gray-400 mb-4">
+          <svg class="mx-auto h-16 w-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+        </div>
+        <p class="text-gray-500 text-lg">No items added yet</p>
+        <p class="text-gray-400 text-sm mt-2">Start adding items to build your inventory</p>
+      </div>
+    </div>
+
+    <!-- Coverage Reminder -->
+    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+      <p class="text-sm font-bold text-blue-800">Coverage Reminder:</p>
+      <p class="text-sm text-blue-700 mt-1">
+        This is an estimate based on your calculations. Please compare this with your contents coverage (Coverage C: Personal Property) on your homeowners, renters, or condo policy.
+      </p>
+    </div>
+
+  </div>
+
+  <script src="js/index.js"></script>
+</body>
+</html>

@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { // Keep this outer wrapper from your local HEAD
     // DOM Elements for header functionality
     const messageBox = document.getElementById('message-box');
     const logoutButton = document.querySelector('.header-logout-btn'); 
     const currentUserDisplayName = document.getElementById('current-user-name'); // User name display element
 
-    // Utility function for displaying messages
+    // Utility function for displaying messages (from your local HEAD)
     function showMessage(message, type = 'success') {
         if (!messageBox) {
             console.error('Message box element not found!');
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // Function to fetch and display the logged-in user's name
+    // Function to fetch and display the logged-in user's name (from your local HEAD)
     async function fetchAndDisplayUserName() {
         try {
             const response = await fetch('php/get_user_info.php');
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Logout functionality with confirmation
+    // Logout functionality with confirmation (from your local HEAD)
     logoutButton.addEventListener('click', async () => {
         if (!confirm('Are you sure you want to log out?')) {
             return;
@@ -72,29 +72,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Tab switching logic (from your original HTML)
-    window.switchTab = function(tabId) {
-        // Remove 'active' from all tabs and hide all content
+    // Tab switching logic (Combined and refined from both versions)
+    // The local version seems more robust with CSS class manipulation
+    // We'll keep the name 'switchTab' and integrate the existing logic within the DOMContentLoaded event
+    window.switchTab = function(tabId) { // Keep window.switchTab for global access if needed, or remove window. if only used internally
+        // Remove 'active' from all tabs and hide all content (from local HEAD)
         document.querySelectorAll('.tab').forEach(tab => {
             tab.classList.remove('active', 'text-green-700', 'font-semibold', 'border-b-2', 'border-green-600');
             tab.classList.add('text-gray-600', 'hover:text-green-700');
         });
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.add('hidden');
-            content.classList.remove('active');
+            content.classList.remove('active'); // Ensure consistency
         });
 
-        // Add 'active' to the clicked tab and show its content
+        // Add 'active' to the clicked tab and show its content (from local HEAD, adapted)
         const clickedTab = document.querySelector(`.tab[onclick*="${tabId}"]`);
-        if (clickedTab) {
+        if (clickedTab) { // Added check for clickedTab
             clickedTab.classList.add('active', 'text-green-700', 'font-semibold', 'border-b-2', 'border-green-600');
             clickedTab.classList.remove('text-gray-600', 'hover:text-green-700');
         }
         document.getElementById(tabId + '-content').classList.remove('hidden');
-        document.getElementById(tabId + '-content').classList.add('active');
+        document.getElementById(tabId + '-content').classList.add('active'); // Added active class as well
     };
 
-    // Initial calls on page load
+    // Photo upload preview (from remote version)
+    document.getElementById('photo-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoUpload = document.querySelector('.photo-upload');
+                photoUpload.style.backgroundImage = `url(${e.target.result})`;
+                photoUpload.style.backgroundSize = 'cover';
+                photoUpload.style.backgroundPosition = 'center';
+                photoUpload.innerHTML = '<span style="background: rgba(0,0,0,0.7); color: white; padding: 8px 12px; border-radius: 6px;">Change Photo</span>';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Form validation (from remote version)
+    document.querySelector('.btn-primary').addEventListener('click', function() {
+        const name = document.getElementById('name').value;
+        const category = document.getElementById('category').value;
+        
+        if (!name.trim()) {
+            alert('Please enter an item name');
+            return;
+        }
+        
+        if (!category) {
+            alert('Please select a category');
+            return;
+        }
+        
+        // Simulate save success
+        alert('Item saved successfully!');
+    });
+
+    // Initial calls on page load (from your local HEAD)
     fetchAndDisplayUserName(); // Display user name in header
     // Any other itemDetails specific initialization would go here
 });
