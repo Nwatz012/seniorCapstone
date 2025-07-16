@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Personal Property Inventory</title>
+
+   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/dashboard.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -45,13 +49,16 @@
     }
   </script>
 </head>
+
 <body class="bg-gray-50 font-inter min-h-screen">
+
   <!-- Skip to main content for accessibility -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
     Skip to main content
   </a>
 
   <div class="app-container">
+
     <!-- Global Header -->
     <header class="main-header" role="banner">
       <div class="flex items-center gap-4">
@@ -61,24 +68,31 @@
         </h1>
       </div>
 
+      <!-- Nav Bar -->
       <nav class="main-nav" role="navigation" aria-label="Main navigation">
         <a href="dashboard.html" aria-current="page">Dashboard</a>
-        <a href="rooms.html">Rooms</a>
+        <a href="rooms.html">Inventory</a>
         <a href="reports.html">Reports</a>
         <a href="itemDetails.html">Item Details</a>
       </nav>
 
-      <div class="header-right">
-        <span class="hidden sm:inline text-sm" aria-label="Current user">
-          Welcome, <strong id="current-user-name">John Doe</strong> <!-- Added ID here -->
+      <!-- MODIFIED: Header Right Section with smaller buttons -->
+      <div class="header-right flex flex-col items-end">
+        <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
+          Welcome, <strong id="current-user-name">John Doe</strong>
         </span>
-        <button class="header-profile-btn" type="button" aria-label="View profile">
-          Profile
-        </button>
-        <button class="header-logout-btn" type="button" aria-label="Sign out">
-          Logout
-        </button>
+        <div class="flex space-x-2">
+
+        <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
+            Profile
+        </a>
+        
+          <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
+            Logout
+          </button>
+        </div>
       </div>
+      <!-- END MODIFIED -->
     </header>
 
     <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
@@ -86,95 +100,70 @@
     <!-- Main Content Layout -->
     <div class="main-layout flex-grow p-6 md:p-8 lg:p-10">
       <main class="content-area" id="main-content" role="main">
-        <!-- Add/Edit Item Form -->
-        <section class="add-item-form bg-white p-6 rounded-lg shadow-md mb-8 animate-fade-in">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">Add/Edit Inventory Item</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="item-name" class="block text-gray-700 text-sm font-bold mb-2">Item Name:</label>
-              <input type="text" id="item-name" placeholder="Enter item name" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+        <!-- Dashboard Intro Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md mb-8 animate-fade-in">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Welcome to Your Home Inventory Manager!</h2>
+            <p class="text-gray-700 leading-relaxed">
+                This application helps you keep track of all your valuable possessions within your home.
+                Organize items by room, track quantities, and estimate replacement costs, giving you peace of mind
+                and a clear overview of your belongings. Whether for insurance purposes, personal organization,
+                or simply knowing what you own, this tool is designed to simplify your home management.
+            </p>
+            
+            <!-- High-Value Item Advice with linked 'scheduled' text -->
+            <p class="text-red-600 italic mt-4 text-center">
+                **Important Insurance Advice:** Items valued over $3,000 (e.g., jewelry, furs, coins, collectibles, firearms)
+                may need to be <a href="YOUR_LINK_TO_SCHEDULED_PROPERTY_EXPLANATION" target="_blank" rel="noopener noreferrer" class="font-bold underline hover:text-red-800">scheduled</a> with your insurer.
+                We highly recommend contacting your insurance provider to ask about scheduling these items and be ready to provide an **appraisal**.
+            </p>
+
+            <!-- Disclosure Statement in its own styled box -->
+            <div class="bg-gray-50 border border-gray-200 p-4 mt-6 rounded-lg text-sm text-gray-700 text-center shadow-inner">
+                <p>
+                    <strong class="font-semibold">Disclosure:</strong> This is a tool to assist you with staying organized for when life happens and you need to file a claim.
+                    This is not a guarantee to your payout, but a way to stay organized. Please note that a LICENSED adjuster and your insurer would have final say in claims.
+                </p>
             </div>
-            <div>
-              <label for="item-category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
-              <select id="item-category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                <option value="">Select a Category</option>
-                <option value="electronics">Electronics</option>
-                <option value="furniture">Furniture</option>
-                <option value="clothing">Clothing</option>
-                <option value="appliances">Appliances</option>
-                <option value="jewelry">Jewelry</option>
-                <option value="collectibles">Collectibles</option>
-                <option value="art">Art</option>
-                <option value="guns">Guns</option>
-                <option value="coins">Coins</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div id="other-category-input" class="hidden">
-              <label for="item-category-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Category:</label>
-              <input type="text" id="item-category-other" placeholder="Enter custom category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-            </div>
-            <div>
-              <label for="item-quantity" class="block text-gray-700 text-sm font-bold mb-2">Quantity:</label>
-              <input type="number" id="item-quantity" value="1" min="1" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-            </div>
-            <div>
-              <label for="item-room" class="block text-gray-700 text-sm font-bold mb-2">Room:</label>
-              <select id="item-room" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                <option value="">Select a Room</option>
-                <option value="master_bedroom">Master Bedroom</option>
-                <option value="bedroom_1">Bedroom 1</option>
-                <option value="bedroom_2">Bedroom 2</option>
-                <option value="bedroom_3">Bedroom 3</option>
-                <option value="bathroom">Bathroom</option>
-                <option value="kitchen">Kitchen</option>
-                <option value="living_room">Living Room</option>
-                <option value="dining_room">Dining Room</option>
-                <option value="office">Office</option>
-                <option value="garage">Garage</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div id="other-room-input" class="hidden">
-              <label for="item-room-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Room:</label>
-              <input type="text" id="item-room-other" placeholder="Enter custom room" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-            </div>
-            <div>
-              <label for="item-replacement-cost" class="block text-gray-700 text-sm font-bold mb-2">Replacement Cost ($):</label>
-              <input type="number" id="item-replacement-cost" value="0" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-            </div>
-          </div>
-          <div class="flex justify-end mt-6">
-            <button id="add-item" class="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Item</button>
-          </div>
+
         </section>
 
-        <!-- Inventory Summary -->
-        <div id="inventory-summary" class="bg-white p-6 rounded-lg shadow-md mb-8 animate-fade-in">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">Inventory Summary</h2>
-          <div class="flex flex-wrap justify-between items-center gap-4">
-            <p class="text-sm text-gray-600">Total Items: <span id="total-items-count" class="font-semibold text-gray-800">0</span></p>
-            <p class="text-sm text-gray-600">Total Value: <span id="total-replacement-cost" class="font-semibold text-green-600">$0.00</span></p>
-          </div>
-        </div>
+        <!-- How to Use This App Section -->
+        <section class="bg-white p-6 rounded-lg shadow-md animate-fade-in">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">How to Use This App</h2>
+            <div class="space-y-4 text-gray-700">
+                <p class="font-semibold">1. Manage Your Rooms and Items:</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Navigate to the "Rooms" page (or similar link in your navigation).</li>
+                    <li>There, you can add new items to specific rooms, or create new rooms if needed.</li>
+                    <li>Each item can have a name, category, quantity, associated room, and an estimated replacement cost.</li>
+                    <li>You can also edit or delete existing items from this section.</li>
+                </ul>
 
-        <div id="room-organized-inventory" class="space-y-4"></div>
+                <p class="font-semibold">2. View Your Inventory:</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>The "Rooms" page provides a detailed breakdown of all your items, organized by the rooms they belong to.</li>
+                    <li>You'll see a summary of total items and their collective estimated value.</li>
+                </ul>
 
-        <div id="no-items-message" class="text-center py-12">
-          <div class="text-gray-400 mb-4">
-            <svg class="mx-auto h-16 w-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-            </svg>
-          </div>
-          <p class="text-gray-500 text-lg font-medium">No items in your inventory yet.</p>
-          <p class="text-gray-400 mt-2">Start by adding your first item above!</p>
-        </div>
+                <p class="font-semibold">3. Dashboard Overview (This Page):</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>This dashboard provides a quick welcome and guidance on how to use the main features of the application.</li>
+                    <li>Your name (if logged in) is displayed in the header, and you can easily log out from here.</li>
+                </ul>
+
+                <!-- Call to action with styled Inventory link -->
+                <p class="text-lg font-semibold text-gray-800 mt-6 text-center">
+                    Click on the <a href="rooms.html" class="underline text-blue-600 hover:text-blue-800">Inventory</a> link to start adding your items!
+                </p>
+            </div>
+        </section>
+        <!-- End How to Use This App Section -->
       </main>
     </div>
   </div>
 
   <!-- Scripts -->
+  <script src="js/utils.js"></script> <!-- Ensure utils.js is loaded BEFORE dashboard.js -->
   <script src="js/dashboard.js"></script>
 </body>
 </html>

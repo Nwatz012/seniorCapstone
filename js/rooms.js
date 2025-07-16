@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUserDisplayName = document.getElementById('current-user-name'); // User name display element (assuming it's in rooms.html header)
 
     // Home Info Display Elements
-    const homeAddressDisplay = document.getElementById('home-address');
+    const homeAddressDisplay = document.getElementById('home-address'); // This will now display concatenated address
     const homeSqFtDisplay = document.getElementById('home-sq-ft');
     const homeYearBuiltDisplay = document.getElementById('home-year-built');
     const homeRoofTypeDisplay = document.getElementById('home-roof-type');
-    const homeRoofAgeDisplay = document.getElementById('home-roof-age');
+    const homeRoofAgeDisplay = document = document.getElementById('home-roof-age');
     const editHomeInfoBtn = document.getElementById('edit-home-info-btn');
 
     // Add/Edit Item Modal Elements
@@ -45,9 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const editHomeInfoModal = document.getElementById('editHomeInfoModal');
     const editHomeInfoForm = document.getElementById('editHomeInfoForm');
     const homeIdInput = document.getElementById('home-id-input'); // Hidden input
-    const editHomeAddressInput = document.getElementById('edit-home-address');
+    const editHomeAddressStreetInput = document.getElementById('edit-home-address-street'); // New street address input
+    const editHomeCityInput = document.getElementById('edit-home-city'); // New city input
+    const editHomeStateSelect = document.getElementById('edit-home-state'); // New state select
+    const editHomeZipCodeInput = document.getElementById('edit-home-zipcode'); // New zip code input
     const editHomeSqFtInput = document.getElementById('edit-home-sq-ft');
-    const editHomeYearBuiltInput = document.getElementById('edit-home-year-built');
+    const editHomeYearBuiltInput = document = document.getElementById('edit-home-year-built');
     const editHomeRoofTypeInput = document.getElementById('edit-home-roof-type');
     const editHomeRoofAgeInput = document.getElementById('edit-home-roof-age');
     const saveHomeInfoBtn = document.getElementById('save-home-info-btn');
@@ -55,33 +58,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // State variables
-    let currentRoom = 'All Items'; // Default view
+    let currentRoom = ''; // Initialize as empty, will be set to first room or 'All Items'
     let allItems = []; // Stores all items fetched, for filtering
     let editingItemId = null; // For item edit functionality in modal
     let currentHomeInfo = null; // Stores fetched home info
 
-    // Utility Functions
-    function showMessage(message, type = 'success') {
-        if (!messageBox) {
-            console.error('Message box element not found!');
-            return;
-        }
-        messageBox.textContent = message;
-        messageBox.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300'; // Reset classes
-        
-        if (type === 'success') {
-            messageBox.classList.add('bg-green-500', 'text-white');
-        } else if (type === 'error') {
-            messageBox.classList.add('bg-red-500', 'text-white');
-        } else {
-            messageBox.classList.add('bg-gray-700', 'text-white'); // Default
-        }
-        
-        messageBox.classList.remove('hidden');
+    // Mapping for display names of rooms
+    const roomDisplayNames = {
+        'master_bedroom': 'Master Bedroom',
+        'bedroom_1': 'Bedroom 1',
+        'bedroom_2': 'Bedroom 2',
+        'bedroom_3': 'Bedroom 3',
+        'bathroom': 'Bathroom',
+        'kitchen': 'Kitchen',
+        'living_room': 'Living Room',
+        'dining_room': 'Dining Room',
+        'office': 'Office',
+        'garage': 'Garage',
+        'other': 'Other' // 'Other' will be handled dynamically if a custom name is entered
+    };
 
-        setTimeout(() => {
-            messageBox.classList.add('hidden');
-        }, 3000);
+    /**
+     * Converts a room value (e.g., 'bedroom_1') to its display name (e.g., 'Bedroom 1').
+     * If the room value is not found in the predefined map, it returns the value itself.
+     * @param {string} roomValue - The internal room value.
+     * @returns {string} The display name of the room.
+     */
+    function getDisplayRoomName(roomValue) {
+        return roomDisplayNames[roomValue] || roomValue;
     }
 
     // Function to clear the add/edit item modal form
@@ -149,13 +153,17 @@ document.addEventListener('DOMContentLoaded', () => {
             modalItemReplacementCostInput.value = parseFloat(item.value).toFixed(2);
         } else {
             // If adding a new item from a specific room, pre-select that room
-            if (currentRoom !== 'All Items') {
-                modalItemRoomSelect.value = currentRoom;
-                // If currentRoom is a custom room not in default options, handle 'other'
-                if (!Array.from(modalItemRoomSelect.options).some(option => option.value === currentRoom)) {
-                    modalItemRoomSelect.value = 'other';
+            if (currentRoom !== 'All Items' && currentRoom !== '') { // Ensure currentRoom is set and not empty
+                // Check if currentRoom is a predefined value or a custom one
+                const roomValueForSelect = Object.keys(roomDisplayNames).find(key => roomDisplayNames[key] === currentRoom) || 'other';
+                modalItemRoomSelect.value = roomValueForSelect;
+
+                if (roomValueForSelect === 'other') {
                     modalOtherRoomInputDiv.classList.remove('hidden');
                     modalItemRoomOtherInput.value = currentRoom;
+                } else {
+                    modalOtherRoomInputDiv.classList.add('hidden');
+                    modalItemRoomOtherInput.value = '';
                 }
             }
         }
@@ -204,11 +212,11 @@ document.addEventListener('DOMContentLoaded', () => {
             value: itemReplacementCost,
         };
 
-        let endpoint = 'php/add_item.php';
+        let endpoint = 'php/api/add_item.php';
         let method = 'POST';
 
         if (editingItemId) {
-            endpoint = 'php/update_item.php';
+            endpoint = 'php/api/update_item.php';
             itemData.item_id = editingItemId;
         }
 
@@ -226,8 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok && result.success) {
                 showMessage(result.message, 'success');
                 closeAddItemModal();
-                fetchAndDisplayRoomsSummary(); // Refresh room list
-                fetchAndDisplayItemsForRoom(currentRoom); // Refresh current room's items
+                // After adding/updating, re-fetch all items and then re-render
+                await fetchAllItems(); // Ensure allItems is updated
+                fetchAndDisplayRoomsSummary(); // This will now use the updated allItems
+                // fetchAndDisplayItemsForRoom(currentRoom); // This call is redundant if fetchAndDisplayRoomsSummary handles it
             } else {
                 showMessage(result.message || 'An error occurred while saving item.', 'error');
             }
@@ -239,12 +249,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to handle deleting an item
     async function handleDeleteItem(itemId) {
-        if (!confirm('Are you sure you want to delete this item?')) {
+        console.log('Attempting to delete item with ID:', itemId);
+        const confirmed = await showConfirmationModal('Are you sure you want to delete this item?', 'Confirm Deletion');
+
+        if (!confirmed) {
+            console.log('Deletion cancelled by user.');
             return;
         }
 
         try {
-            const response = await fetch('php/delete_item.php', {
+            console.log('Sending delete request for item ID:', itemId);
+            const response = await fetch('php/api/delete_item.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,18 +267,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ item_id: itemId }),
             });
 
+            console.log('Received response from delete_item.php. Status:', response.status, response.statusText);
             const result = await response.json();
+            console.log('Parsed response result:', result);
 
             if (response.ok && result.success) {
                 showMessage(result.message, 'success');
-                fetchAndDisplayRoomsSummary(); // Refresh room list
-                fetchAndDisplayItemsForRoom(currentRoom); // Refresh current room's items
+                console.log('Item deleted successfully. Refreshing UI...');
+                // MODIFICATION: Ensure allItems is updated BEFORE re-rendering anything
+                await fetchAllItems(); // Re-fetch all items to get the latest state
+                fetchAndDisplayRoomsSummary(); // This will now use the updated allItems
+                // fetchAndDisplayItemsForRoom(currentRoom); // This call is now redundant if fetchAndDisplayRoomsSummary handles it
             } else {
                 showMessage(result.message || 'An error occurred while deleting item.', 'error');
+                console.error('Deletion failed. Server message:', result.message);
             }
         } catch (error) {
-            console.error('Error deleting item:', error);
-            showMessage('Network error or server unreachable during item deletion.', 'error');
+            console.error('Network error or server unreachable during item deletion:', error);
+            showMessage('Network error. Could not delete item.', 'error');
         }
     }
 
@@ -286,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const listItem = document.createElement('li');
             listItem.innerHTML = `
                 <a href="#" data-room-name="${room.room}" class="${currentRoom === room.room ? 'active' : ''}">
-                    <span>${room.room}</span>
+                    <span>${getDisplayRoomName(room.room)}</span>
                     <span class="item-count">${room.item_count}</span>
                 </a>
             `;
@@ -304,7 +325,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('.room-nav a').forEach(l => l.classList.remove('active'));
                     // Add active class to clicked link
                     event.currentTarget.classList.add('active');
-                    fetchAndDisplayItemsForRoom(currentRoom);
+                    // MODIFICATION: Re-fetch all items to ensure consistency before rendering
+                    fetchAllItems().then(() => {
+                        fetchAndDisplayItemsForRoom(currentRoom);
+                    });
                 }
             });
         });
@@ -315,16 +339,17 @@ document.addEventListener('DOMContentLoaded', () => {
         inventoryGrid.innerHTML = ''; // Clear existing items
 
         // Update main title
-        currentRoomTitle.textContent = roomName === 'All Items' ? 'All Items' : roomName;
-        document.title = `${roomName === 'All Items' ? 'All Items' : roomName} - Home Inventory`;
+        currentRoomTitle.textContent = getDisplayRoomName(roomName) === 'All Items' ? 'All Items' : getDisplayRoomName(roomName);
+        document.title = `${getDisplayRoomName(roomName) === 'All Items' ? 'All Items' : getDisplayRoomName(roomName)} - Home Inventory`;
 
         if (itemsToDisplay.length === 0) {
             inventoryGrid.style.display = 'none';
             emptyState.style.display = 'block';
             roomSummary.style.display = 'none';
-            emptyStateTitle.textContent = `No items in ${roomName === 'All Items' ? 'your inventory' : roomName} yet`;
-            emptyStateText.textContent = `Start building your inventory by adding your first item to ${roomName === 'All Items' ? 'any room' : roomName}.`;
-            addFirstItemBtn.textContent = `+ Add Your First Item`; // Update button text
+            emptyStateTitle.textContent = `No items in ${getDisplayRoomName(roomName) === 'All Items' ? 'your inventory' : getDisplayRoomName(roomName)} yet`;
+            emptyStateText.textContent = `Start building your inventory by adding your first item to ${getDisplayRoomName(roomName) === 'All Items' ? 'any room' : getDisplayRoomName(roomName)}.`;
+            // Updated this line to use getDisplayRoomName for consistent display
+            addFirstItemBtn.textContent = `+ Add Your First Item to ${getDisplayRoomName(roomName) === 'All Items' ? 'any room' : getDisplayRoomName(roomName)}`;
         } else {
             inventoryGrid.style.display = 'grid';
             emptyState.style.display = 'none';
@@ -345,26 +370,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const itemCard = document.createElement('article');
-                itemCard.className = 'item-card group relative'; // Added group for hover effects
+                // Using custom class 'item-card' from rooms.css, removing inline Tailwind
+                itemCard.className = 'item-card group relative'; 
                 itemCard.setAttribute('tabindex', '0');
                 itemCard.setAttribute('role', 'button');
                 itemCard.setAttribute('aria-label', `${item.item_name}, Quantity: ${item.quantity}, valued at $${parseFloat(item.value).toFixed(2)}`);
 
                 itemCard.innerHTML = `
-                    <div class="item-image flex items-center justify-center p-4" role="img" aria-label="${item.category_name} icon">
+                    <div class="item-image" role="img" aria-label="${item.category_name} icon">
                         ${item.photo_url ? `<img src="${item.photo_url}" alt="${item.item_name}" class="max-w-full max-h-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/100x100/e0e0e0/000000?text=No+Image';"/>` : `<span style="font-size: 3rem;">📦</span>`}
                     </div>
                     <div class="p-4 flex-grow">
-                        <h3 class="item-name text-lg font-semibold text-gray-800 truncate">${item.item_name}</h3>
-                        <p class="text-sm text-gray-600">Category: ${item.category_name}</p>
+                        <h3 class="item-name">${item.item_name}</h3>
+                        <p class="item-category">Category: ${item.category_name}</p>
                         <p class="text-sm text-gray-600">Quantity: ${item.quantity}</p>
-                        <p class="text-sm text-gray-600">Room: ${item.room}</p>
-                        <div class="item-value text-lg font-bold text-green-600 mt-2" aria-label="Value: $${parseFloat(item.value).toFixed(2)}">$${parseFloat(item.value).toFixed(2)}</div>
+                        <p class="text-sm text-gray-600">Room: ${getDisplayRoomName(item.room)}</p>
+                        <div class="item-value" aria-label="Value: $${parseFloat(item.value).toFixed(2)}">$${parseFloat(item.value).toFixed(2)}</div>
                     </div>
                     <!-- Overlay for Edit/Delete buttons -->
-                    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-                        <button class="edit-item-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg text-sm w-3/4" data-item-id="${item.item_id}">Edit</button>
-                        <button class="delete-item-btn bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg text-sm w-3/4" data-item-id="${item.item_id}">Delete</button>
+                    <div class="item-card-overlay">
+                        <button class="edit-item-btn btn-primary-small" data-item-id="${item.item_id}">Edit</button>
+                        <button class="delete-item-btn btn-secondary-small" data-item-id="${item.item_id}">Delete</button>
                     </div>
                 `;
                 inventoryGrid.appendChild(itemCard);
@@ -399,13 +425,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch all items (used for "All Items" view and for edit lookup)
     async function fetchAllItems() {
         try {
-            const response = await fetch('php/get_items.php'); // Use the general get_items.php
+            const response = await fetch('php/api/get_items.php'); // Use the general get_items.php
             const result = await response.json();
             if (response.ok && result.success) {
                 allItems = result.items; // Store all items globally
+                console.log('fetchAllItems: allItems updated.', allItems.length, 'items.');
             } else {
                 showMessage(result.message || 'Failed to load all items.', 'error');
                 allItems = [];
+                console.error('fetchAllItems: Failed to load items:', result.message);
             }
         } catch (error) {
             console.error('Network error fetching all items:', error);
@@ -416,20 +444,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to fetch and display room summaries
     async function fetchAndDisplayRoomsSummary() {
-        await fetchAllItems(); // Ensure all items are fetched first for "All Items" count
+        // MODIFICATION: Ensure allItems is fetched/updated BEFORE rendering room list
+        await fetchAllItems(); // This ensures allItems is fresh
+
         try {
-            const response = await fetch('php/get_rooms_summary.php');
+            const response = await fetch('php/api/get_rooms_summary.php');
             const result = await response.json();
 
             if (response.ok && result.success) {
-                renderRoomsList(result.rooms);
-                // If no specific room selected, default to 'All Items'
-                if (currentRoom === 'All Items') {
-                    renderItemsGrid(allItems, 'All Items');
-                } else {
-                    // Re-render items for the current room in case it was changed/deleted
-                    fetchAndDisplayItemsForRoom(currentRoom);
+                const rooms = result.rooms;
+                renderRoomsList(rooms);
+
+                // Determine the initial room to display
+                if (currentRoom === '') { // Only set initial room if not already set by a previous action
+                    if (rooms.length > 0) {
+                        currentRoom = rooms[0].room; // Select the first room by default
+                    } else {
+                        currentRoom = 'All Items'; // Fallback if no rooms exist
+                    }
                 }
+                
+                // Ensure the correct room link is active
+                document.querySelectorAll('.room-nav a').forEach(link => {
+                    if (link.dataset.roomName === currentRoom) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+
+                fetchAndDisplayItemsForRoom(currentRoom); // Load items for the determined initial room
+
             } else {
                 showMessage(result.message || 'Failed to load room summaries.', 'error');
                 renderRoomsList([]); // Render empty list if failed
@@ -448,33 +493,26 @@ document.addEventListener('DOMContentLoaded', () => {
         let itemsToRender = [];
         if (roomName === 'All Items') {
             itemsToRender = allItems; // Use the globally stored allItems
-            renderItemsGrid(itemsToRender, 'All Items');
-            return;
+        } else {
+            // MODIFICATION: Filter from the already fetched allItems, instead of a new API call
+            itemsToRender = allItems.filter(item => item.room === roomName);
         }
-
-        try {
-            const response = await fetch(`php/get_items_by_room.php?room=${encodeURIComponent(roomName)}`);
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-                itemsToRender = result.items;
-                renderItemsGrid(itemsToRender, result.room_name);
-            } else {
-                showMessage(result.message || `Failed to load items for ${roomName}.`, 'error');
-                renderItemsGrid([], roomName); // Show empty state for the specific room
-            }
-        } catch (error) {
-            console.error(`Network error fetching items for room ${roomName}:`, error);
-            showMessage('Network error. Could not load items for room.', 'error');
-            renderItemsGrid([], roomName);
-        }
+        renderItemsGrid(itemsToRender, roomName);
     }
 
     // --- Home Info Functions ---
     // Function to display home info in the sidebar
     function displayHomeInfo(homeInfo) {
         if (homeInfo) {
-            homeAddressDisplay.textContent = homeInfo.address || 'N/A';
+            // Concatenate address components for display
+            const fullAddress = [
+                homeInfo.street_address,
+                homeInfo.city,
+                homeInfo.state,
+                homeInfo.zip_code
+            ].filter(Boolean).join(', '); // Filter out null/empty values and join with comma
+            homeAddressDisplay.textContent = fullAddress || 'N/A';
+
             homeSqFtDisplay.textContent = homeInfo.square_footage ? `${parseFloat(homeInfo.square_footage).toFixed(2)} sq ft` : 'N/A';
             homeYearBuiltDisplay.textContent = homeInfo.year_built || 'N/A';
             homeRoofTypeDisplay.textContent = homeInfo.roof_type || 'N/A';
@@ -493,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch and display home info
     async function fetchAndDisplayHomeInfo() {
         try {
-            const response = await fetch('php/get_home_info.php');
+            const response = await fetch('php/api/get_home_info.php');
             const result = await response.json();
 
             if (response.ok && result.success) {
@@ -514,7 +552,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Populate form if currentHomeInfo exists
         if (currentHomeInfo) {
             homeIdInput.value = currentHomeInfo.home_id || '';
-            editHomeAddressInput.value = currentHomeInfo.address || '';
+            editHomeAddressStreetInput.value = currentHomeInfo.street_address || ''; // Populate new street address
+            editHomeCityInput.value = currentHomeInfo.city || ''; // Populate new city
+            editHomeStateSelect.value = currentHomeInfo.state || ''; // Populate new state
+            editHomeZipCodeInput.value = currentHomeInfo.zip_code || ''; // Populate new zip code
             editHomeSqFtInput.value = currentHomeInfo.square_footage || '';
             editHomeYearBuiltInput.value = currentHomeInfo.year_built || '';
             editHomeRoofTypeInput.value = currentHomeInfo.roof_type || '';
@@ -522,7 +563,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Clear form for new entry
             homeIdInput.value = '';
-            editHomeAddressInput.value = '';
+            editHomeAddressStreetInput.value = '';
+            editHomeCityInput.value = '';
+            editHomeStateSelect.value = '';
+            editHomeZipCodeInput.value = '';
             editHomeSqFtInput.value = '';
             editHomeYearBuiltInput.value = '';
             editHomeRoofTypeInput.value = '';
@@ -541,21 +585,29 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleSaveHomeInfo() {
         const homeData = {
             home_id: homeIdInput.value || null, // Send null if it's a new entry
-            address: editHomeAddressInput.value.trim(),
+            street_address: editHomeAddressStreetInput.value.trim(), // New field
+            city: editHomeCityInput.value.trim(), // New field
+            state: editHomeStateSelect.value, // New field
+            zip_code: parseInt(editHomeZipCodeInput.value) || null, // New field
             square_footage: parseFloat(editHomeSqFtInput.value) || null,
             year_built: parseInt(editHomeYearBuiltInput.value) || null,
             roof_type: editHomeRoofTypeInput.value.trim(),
             roof_age: parseInt(editHomeRoofAgeInput.value) || null,
         };
 
-        // Basic validation
-        if (homeData.address === '') {
-            showMessage('Address is required.', 'error');
+        // Basic validation for new address fields
+        if (!homeData.street_address || !homeData.city || !homeData.state || !homeData.zip_code) {
+            showMessage('Street Address, City, State, and Zip Code are required.', 'error');
+            return;
+        }
+        if (isNaN(homeData.zip_code) || homeData.zip_code.toString().length !== 5) {
+            showMessage('Please enter a valid 5-digit Zip Code.', 'error');
             return;
         }
 
+
         try {
-            const response = await fetch('php/update_home_info.php', {
+            const response = await fetch('php/api/update_home_info.php', {
                 method: 'POST', // Always POST for this endpoint as it handles both insert/update
                 headers: {
                     'Content-Type': 'application/json',
@@ -581,7 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch and display the logged-in user's name
     async function fetchAndDisplayUserName() {
         try {
-            const response = await fetch('php/get_user_info.php');
+            const response = await fetch('php/api/get_user_info.php');
             const result = await response.json();
 
             if (response.ok && result.success && result.user_info) {
@@ -635,34 +687,37 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
         const filteredItems = allItems.filter(item => {
+            // Filter by the stored room name, not the display name
             const matchesRoom = currentRoom === 'All Items' || item.room.toLowerCase() === currentRoom.toLowerCase();
             const matchesSearch = item.item_name.toLowerCase().includes(searchTerm) ||
-                                  item.category_name.toLowerCase().includes(searchTerm) ||
-                                  item.room.toLowerCase().includes(searchTerm);
+                                     item.category_name.toLowerCase().includes(searchTerm) ||
+                                     // Also search by the display name for better UX
+                                     getDisplayRoomName(item.room).toLowerCase().includes(searchTerm);
             return matchesRoom && matchesSearch;
         });
         renderItemsGrid(filteredItems, currentRoom); // Re-render with filtered items
     });
 
-    logoutButton.addEventListener('click', async () => {
-        // Confirmation dialog before logging out
-        if (!confirm('Are you sure you want to log out?')) {
-            return; // Stop if user cancels
-        }
+logoutButton.addEventListener('click', async () => {
+    const confirmed = await showConfirmationModal('Are you sure you want to log out?', 'Confirm Logout'); 
 
-        try {
-            const response = await fetch('php/logout.php', { method: 'POST' });
-            const result = await response.json();
-            if (result.success) {
-                window.location.href = 'login_register.html';
-            } else {
-                showMessage(result.message || 'Logout failed.', 'error');
-            }
-        } catch (error) {
-            console.error('Logout error:', error);
-            showMessage('Network error during logout.', 'error');
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const response = await fetch('php/auth/logout.php', { method: 'POST' });
+        const result = await response.json();
+        if (result.success) {
+            window.location.href = 'login_register.html';
+        } else {
+            showMessage(result.message || 'Logout failed.', 'error');
         }
-    });
+    } catch (error) {
+        console.error('Logout error:', error);
+        showMessage('Network error during logout.', 'error');
+    }
+});
 
     // Event Listeners for Home Info Modal
     editHomeInfoBtn.addEventListener('click', openEditHomeInfoModal);

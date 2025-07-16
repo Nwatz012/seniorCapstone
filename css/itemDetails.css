@@ -368,3 +368,12 @@ body {
   padding: 12px 24px;
   border-radius: 0;
 } 
+
+
+        #message-box {
+        background-color: #e6f4ea; /* light minty green */
+        border: 2px solid #4ade80; /* mint green border */
+        color: #166534; /* dark green text */
+        /* ...other styles */
+        }
+

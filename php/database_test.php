@@ -2,7 +2,7 @@
 // Save this as php/database_test.php
 // Access via http://localhost/property_inventory/php/database_test.php
 
-require_once 'property_inventory.php';
+require_once '../config/property_inventory.php'; 
 
 echo "<h2>Database Connection Test</h2>";
 

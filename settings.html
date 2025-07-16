@@ -3,255 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Settings - Property Inventory</title>
-<head>
-     <link rel="stylesheet" href="css/settings.css" />
+    <title>Settings - Home Inventory App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/custom-styles.css">
+    <link rel="stylesheet" href="css/settings.css">     
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#689f38',
+                        'primary-hover': '#558b2f',
+                        secondary: '#f1f5f9',
+                        'secondary-hover': '#e2e8f0',
+                        accent: '#fef3c7',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in-left': 'slideInLeft 0.3s ease-in-out',
+                        'slide-in-right': 'slideInRight 0.3s ease-in-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            from: { opacity: '0' },
+                            to: { opacity: '1' }
+                        },
+                        slideInLeft: {
+                            from: { transform: 'translateX(-20px)', opacity: '0' },
+                            to: { transform: 'translateX(0)', opacity: '1' }
+                        },
+                        slideInRight: {
+                            from: { transform: 'translateX(20px)', opacity: '0' },
+                            to: { transform: 'translateX(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-   
+<body class="bg-gray-50 font-inter min-h-screen">
 
-<body>
-    <header class="header">
-        <h1>PROFILE SETTINGS</h1>
-        <a href="#" class="dashboard-link">← Back to Dashboard</a>
-        
-    </header>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
+        Skip to main content
+    </a>
 
-    <div class="container">
-        <h2 class="page-title">Account Settings</h2>
+    <div class="app-container">
 
-        <div class="settings-grid">
-            <nav class="sidebar">
-                <ul class="sidebar-menu">
-                    <li><a href="#profile" class="active">Profile Information</a></li>
-                    <li><a href="#security">Security & Privacy</a></li>
-                    <li><a href="#preferences">Preferences</a></li>
-                    <li><a href="#export">Data Export</a></li>
-                    <li><a href="#account">Account Management</a></li>
-                </ul>
+        <header class="main-header" role="banner">
+            <div class="flex items-center gap-4">
+                <h1 class="app-title">
+                    <span role="img" aria-label="House">🏡</span>
+                    Home Inventory
+                </h1>
+            </div>
+
+            <nav class="main-nav" role="navigation" aria-label="Main navigation">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="rooms.html">Inventory</a>
+                <a href="reports.html">Reports</a>
+                <a href="settings.html" aria-current="page">Settings</a>
             </nav>
 
-            <main class="main-content">
-                <!-- Success/Error Banners -->
-                <div class="success-banner" style="display: none;" id="success-banner">
-                    <strong>✅ Changes saved successfully!</strong>
-                    Your profile has been updated.
+            <div class="header-right flex flex-col items-end">
+                <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
+                    Welcome, <strong id="current-user-name">John Doe</strong>
+                </span>
+                <div class="flex space-x-2">
+                    <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
+                        Profile
+                    </a>
+                    <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
+                        Logout
+                    </button>
                 </div>
+            </div>
+            </header>
 
-                <div class="error-banner" style="display: none;" id="error-banner">
-                    <strong>⚠ Please fix the following issues:</strong>
-                    <ul id="error-list"></ul>
+        <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
+
+        <div class="main-layout flex-grow p-6 md:p-8 lg:p-10">
+            <main class="content-area" id="main-content" role="main">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Account Settings</h1>
+
+                <div class="settings-grid flex flex-col md:flex-row gap-6">
+                    <nav class="sidebar bg-white p-4 rounded-lg shadow-md md:w-1/4">
+                        <ul class="sidebar-menu space-y-2">
+                            <li><a href="#profile-section" class="block p-2 rounded-md hover:bg-gray-100 active:bg-blue-100 active:text-blue-700">Profile Information</a></li>
+                            <li><a href="#home-section" class="block p-2 rounded-md hover:bg-gray-100">Home Details</a></li>
+                            <li><a href="#security-section" class="block p-2 rounded-md hover:bg-gray-100">Security & Privacy</a></li>
+                            <li><a href="#preferences-section" class="block p-2 rounded-md hover:bg-gray-100">Preferences</a></li>
+                            <li><a href="#account-section" class="block p-2 rounded-md hover:bg-gray-100">Account Management</a></li>
+                        </ul>
+                    </nav>
+
+                    <div class="main-content flex-1 bg-white p-6 rounded-lg shadow-md">
+                        
+                        <section class="section" id="profile-section">
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-4 pb-2 border-b">Profile Information</h2>
+                            
+                            <div class="profile-header flex items-center mb-6">
+                                <div class="profile-avatar bg-blue-500 text-white flex items-center justify-center w-16 h-16 rounded-full text-xl font-bold mr-4">JD</div>
+                                <div class="profile-info">
+                                    <h3 class="text-xl font-semibold" id="profileFullName">John Doe</h3>
+                                    <p class="text-gray-600 text-sm">Member since <span id="memberSince">January 2025</span></p>
+                                    <p class="text-gray-600 text-sm">Last login: <span id="lastLogin">Today at 2:30 PM</span></p>
+                                </div>
+                            </div>
+
+                            <form id="profileSettingsForm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="form-group">
+                                        <label for="first-name" class="block text-gray-700 text-sm font-bold mb-2">First Name <span class="text-red-500">*</span></label>
+                                        <input type="text" id="first-name" name="first_name" required>
+                                        <div class="validation-message text-red-500 text-xs italic mt-1 hidden">Validation: First name is required.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last-name" class="block text-gray-700 text-sm font-bold mb-2">Last Name <span class="text-red-500">*</span></label>
+                                        <input type="text" id="last-name" name="last_name" required>
+                                        <div class="validation-message text-red-500 text-xs italic mt-1 hidden">Validation: Last name is required.</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email Address <span class="text-red-500">*</span></label>
+                                    <input type="email" id="email" name="email" required>
+                                    <div class="validation-message text-red-500 text-xs italic mt-1 hidden">Validation: Please enter a valid email address.</div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="form-group">
+                                        <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
+                                        <input type="tel" id="phone" name="phone" placeholder="(XXX) XXX-XXXX">
+                                        <div class="validation-message text-gray-600 text-xs italic mt-1">Optional.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="timezone" class="block text-gray-700 text-sm font-bold mb-2">Timezone</label>
+                                        <select id="timezone" name="timezone">
+                                            <option value="America/New_York">Eastern Standard Time</option>
+                                            <option value="America/Chicago">Central Standard Time</option>
+                                            <option value="America/Denver">Mountain Standard Time</option>
+                                            <option value="America/Los_Angeles">Pacific Standard Time</option>
+                                            </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-end space-x-2 mt-6">
+                                    <button type="button" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">💾 Save Profile Changes</button>
+                                </div>
+                            </form>
+                        </section>
+
+                        <hr class="my-8 border-gray-300">
+
+                        <section class="section" id="home-section">
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-4 pb-2 border-b">Your Home Details</h2>
+                            <form id="homeSettingsForm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="form-group">
+                                        <label for="street-address" class="block text-gray-700 text-sm font-bold mb-2">Street Address</label>
+                                        <input type="text" id="street-address" name="street_address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City</label>
+                                        <input type="text" id="city" name="city">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                    <div class="form-group">
+                                        <label for="state" class="block text-gray-700 text-sm font-bold mb-2">State</label>
+                                        <input type="text" id="state" name="state" maxlength="2">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zip-code" class="block text-gray-700 text-sm font-bold mb-2">Zip Code</label>
+                                        <input type="text" id="zip-code" name="zip_code" maxlength="10">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="square-footage" class="block text-gray-700 text-sm font-bold mb-2">Square Footage (sq ft)</label>
+                                        <input type="number" id="square-footage" name="square_footage">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="form-group">
+                                        <label for="year-built" class="block text-gray-700 text-sm font-bold mb-2">Year Built</label>
+                                        <input type="number" id="year-built" name="year_built" min="1800" max="2100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="roof-type" class="block text-gray-700 text-sm font-bold mb-2">Roof Type</label>
+                                        <input type="text" id="roof-type" name="roof_type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="roof-age" class="block text-gray-700 text-sm font-bold mb-2">Roof Age (years)</label>
+                                    <input type="number" id="roof-age" name="roof_age">
+                                    <div class="validation-message text-gray-600 text-xs italic mt-1">Approximate age of the roof.</div>
+                                </div>
+
+                                <div class="flex justify-end space-x-2 mt-6">
+                                    <button type="button" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">💾 Save Home Details</button>
+                                </div>
+                            </form>
+                        </section>
+
+                        <hr class="my-8 border-gray-300">
+
+                        <section class="section" id="security-section">
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-4 pb-2 border-b">Security & Privacy</h2>
+                            <form id="securitySettingsForm">
+                                <div class="form-group mb-4">
+                                    <label for="current-password" class="block text-gray-700 text-sm font-bold mb-2">Current Password <span class="text-red-500">*</span></label>
+                                    <input type="password" id="current-password" name="current_password" placeholder="Enter current password">
+                                    <div class="validation-message text-red-500 text-xs italic mt-1 hidden">Validation: Current password is incorrect.</div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="form-group">
+                                        <label for="new-password" class="block text-gray-700 text-sm font-bold mb-2">New Password</label>
+                                        <input type="password" id="new-password" name="new_password" placeholder="Enter new password">
+                                        <div class="validation-message text-red-500 text-xs italic mt-1 hidden">Validation: Password must be at least 8 characters with uppercase, lowercase, and number.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-password" class="block text-gray-700 text-sm font-bold mb-2">Confirm New Password</label>
+                                        <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm new password">
+                                        <div class="validation-message text-red-500 text-xs italic mt-1 hidden">Validation: Passwords do not match.</div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gray-50 p-4 rounded-md mb-4">
+                                    <div class="security-item flex justify-between items-center py-2 border-b last:border-b-0">
+                                        <div class="security-info">
+                                            <h4 class="text-lg font-medium text-gray-800">Two-Factor Authentication</h4>
+                                            <p class="text-gray-600 text-sm">Add an extra layer of security to your account</p>
+                                        </div>
+                                        <label class="toggle-switch relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" value="" class="sr-only peer">
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <div class="security-item flex justify-between items-center py-2">
+                                        <div class="security-info">
+                                            <h4 class="text-lg font-medium text-gray-800">Login Notifications</h4>
+                                            <p class="text-gray-600 text-sm">Get notified when someone logs into your account</p>
+                                        </div>
+                                        <label class="toggle-switch relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" value="" class="sr-only peer" checked>
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end space-x-2 mt-6">
+                                    <button type="button" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">🔒 Update Security</button>
+                                </div>
+                            </form>
+                        </section>
+
+                        <hr class="my-8 border-gray-300">
+
+                        <section class="section" id="preferences-section">
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-4 pb-2 border-b">Application Preferences</h2>
+                            <form id="preferencesSettingsForm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div class="form-group">
+                                        <label for="currency" class="block text-gray-700 text-sm font-bold mb-2">Default Currency</label>
+                                        <select id="currency" name="currency">
+                                            <option value="USD">USD ($)</option>
+                                            <option value="EUR">EUR (€)</option>
+                                            <option value="GBP">GBP (£)</option>
+                                            <option value="CAD">CAD ($)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date-format" class="block text-gray-700 text-sm font-bold mb-2">Date Format</label>
+                                        <select id="date-format" name="date_format">
+                                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gray-50 p-4 rounded-md mb-4">
+                                    <div class="security-item flex justify-between items-center py-2 border-b last:border-b-0">
+                                        <div class="security-info">
+                                            <h4 class="text-lg font-medium text-gray-800">Email Notifications</h4>
+                                            <p class="text-gray-600 text-sm">Receive updates about your inventory and reports</p>
+                                        </div>
+                                        <label class="toggle-switch relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" value="" class="sr-only peer" checked>
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <div class="security-item flex justify-between items-center py-2">
+                                        <div class="security-info">
+                                            <h4 class="text-lg font-medium text-gray-800">Auto-save Items</h4>
+                                            <p class="text-gray-600 text-sm">Automatically save items as you type</p>
+                                        </div>
+                                        <label class="toggle-switch relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" value="" class="sr-only peer" checked>
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end space-x-2 mt-6">
+                                    <button type="button" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">⚙️ Save Preferences</button>
+                                </div>
+                            </form>
+                        </section>
+
+                        <hr class="my-8 border-gray-300">
+
+                        <section class="section" id="account-section">
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-4 pb-2 border-b">Account Management</h2>
+
+                            <div class="bg-red-50 border border-red-200 text-red-800 p-4 rounded-md mb-6 danger-zone">
+                                <h3 class="text-xl font-semibold mb-2">⚠️ Danger Zone</h3>
+                                <p class="text-sm">These actions cannot be undone. Please proceed with caution.</p>
+                                
+                                <div class="flex space-x-2 mt-4">
+                                    <button type="button" class="btn-secondary">📥 Download My Data</button>
+                                    <button type="button" class="btn-danger">🗑️ Delete Account</button>
+                                </div>
+                                
+                                <p class="text-red-600 text-xs italic mt-2 hidden">
+                                    Validation: Account deletion requires email confirmation and will permanently remove all data.
+                                </p>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-md logout-section">
+                                <h3 class="text-xl font-semibold mb-2">Ready to Sign Out?</h3>
+                                <p class="text-gray-600 text-sm">You can always log back in anytime to access your inventory.</p>
+                                <button type="button" id="logoutBtnBottom" class="btn-secondary mt-4">🚪 Logout</button>
+                            </div>
+                        </section>
+                    </div>
                 </div>
-
-                <!-- Profile Information Section -->
-                <section class="section" id="profile-section">
-                    <h3 class="section-title">Profile Information</h3>
-                    
-                    <div class="profile-header">
-                        <div class="profile-avatar">JD</div>
-                        <div class="profile-info">
-                            <h3>John Doe</h3>
-                            <p>Member since January 2025</p>
-                            <p>Last login: Today at 2:30 PM</p>
-                        </div>
-                    </div>
-
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="first-name">First Name <span class="required">*</span></label>
-                                <input type="text" id="first-name" value="John" required>
-                                <div class="validation-message validation-error" style="display: none;">
-                                    Validation: First name is required and must be at least 2 characters.
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="last-name">Last Name <span class="required">*</span></label>
-                                <input type="text" id="last-name" value="Doe" required>
-                                <div class="validation-message validation-error" style="display: none;">
-                                    Validation: Last name is required and must be at least 2 characters.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email Address <span class="required">*</span></label>
-                            <input type="email" id="email" value="john.doe@email.com" required>
-                            <div class="validation-message validation-error" style="display: none;">
-                                Validation: Please enter a valid email address.
-                            </div>
-                            <div class="validation-message validation-warning" style="display: none;">
-                                Validation: Email is already in use. Please choose a different email address.
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" placeholder="(555) 123-4567">
-                                <div class="validation-message validation-error" style="display: none;">
-                                    Validation: Please enter a valid phone number format.
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="timezone">Timezone</label>
-                                <select id="timezone">
-                                    <option value="EST">Eastern Standard Time</option>
-                                    <option value="CST">Central Standard Time</option>
-                                    <option value="MST">Mountain Standard Time</option>
-                                    <option value="PST">Pacific Standard Time</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            <textarea id="address" placeholder="Enter your full address for insurance purposes..."></textarea>
-                            <div class="validation-message">
-                                Behavior: Address information helps with insurance claims and location-based reporting.
-                            </div>
-                        </div>
-
-                        <div class="button-group">
-                            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
-                            <button type="button" class="btn btn-outline">Cancel</button>
-                        </div>
-                    </form>
-                </section>
-
-                <!-- Security Section -->
-                <section class="section" id="security-section">
-                    <h3 class="section-title">Security & Privacy</h3>
-
-                    <div class="form-group">
-                        <label for="current-password">Current Password <span class="required">*</span></label>
-                        <input type="password" id="current-password" placeholder="Enter current password">
-                        <div class="validation-message validation-error" style="display: none;">
-                            Validation: Current password is incorrect.
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="new-password">New Password</label>
-                            <input type="password" id="new-password" placeholder="Enter new password">
-                            <div class="validation-message validation-error" style="display: none;">
-                                Validation: Password must be at least 8 characters with uppercase, lowercase, and number.
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm-password">Confirm New Password</label>
-                            <input type="password" id="confirm-password" placeholder="Confirm new password">
-                            <div class="validation-message validation-error" style="display: none;">
-                                Validation: Passwords do not match.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="security-item">
-                        <div class="security-info">
-                            <h4>Two-Factor Authentication</h4>
-                            <p>Add an extra layer of security to your account</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="security-item">
-                        <div class="security-info">
-                            <h4>Login Notifications</h4>
-                            <p>Get notified when someone logs into your account</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="btn btn-primary">🔒 Update Security</button>
-                        <button type="button" class="btn btn-outline">Reset Password</button>
-                    </div>
-                </section>
-
-                <!-- Preferences Section -->
-                <section class="section" id="preferences-section">
-                    <h3 class="section-title">Application Preferences</h3>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="currency">Default Currency</label>
-                            <select id="currency">
-                                <option value="USD">USD ($)</option>
-                                <option value="EUR">EUR (€)</option>
-                                <option value="GBP">GBP (£)</option>
-                                <option value="CAD">CAD ($)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="date-format">Date Format</label>
-                            <select id="date-format">
-                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="security-item">
-                        <div class="security-info">
-                            <h4>Email Notifications</h4>
-                            <p>Receive updates about your inventory and reports</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="security-item">
-                        <div class="security-info">
-                            <h4>Auto-save Items</h4>
-                            <p>Automatically save items as you type</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="btn btn-primary">⚙️ Save Preferences</button>
-                    </div>
-                </section>
-
-                <!-- Account Management Section -->
-                <section class="section" id="account-section">
-                    <h3 class="section-title">Account Management</h3>
-
-                    <div class="danger-zone">
-                        <h3>⚠️ Danger Zone</h3>
-                        <p>These actions cannot be undone. Please proceed with caution.</p>
-                        
-                        <div class="button-group">
-                            <button type="button" class="btn btn-outline">📥 Download My Data</button>
-                            <button type="button" class="btn btn-danger">🗑️ Delete Account</button>
-                        </div>
-                        
-                        <div class="validation-message validation-warning" style="display: none;">
-                            Validation: Account deletion requires email confirmation and will permanently remove all data.
-                        </div>
-                    </div>
-
-                    <div class="logout-section">
-                        <h3>Ready to Sign Out?</h3>
-                        <p>You can always log back in anytime to access your inventory.</p>
-                        <button type="button" class="btn btn-secondary">🚪 Logout</button>
-                    </div>
-                </section>
             </main>
         </div>
     </div>
+
+    <script src="js/utils.js" defer></script>
+    <script src="js/dashboard.js" defer></script> <script src="js/settings.js" defer></script>
 </body>
 </html>

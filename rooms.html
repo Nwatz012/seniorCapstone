@@ -13,11 +13,10 @@
   <!-- Import Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/rooms.css" />
-  <link rel="stylesheet" href="css/dashboard.css" /> <!-- Include dashboard CSS for common styles like header -->
-
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind config remains here as it's part of the Tailwind setup -->
   <script>
     tailwind.config = {
       theme: {
@@ -55,6 +54,11 @@
       }
     }
   </script>
+  
+  <!-- Link CSS files: custom-styles.css then rooms.css -->
+  <link rel="stylesheet" href="css/custom-styles.css" /> 
+  <link rel="stylesheet" href="css/rooms.css" /> 
+
 </head>
 
 <body class="bg-gray-50 font-inter min-h-screen">
@@ -64,7 +68,7 @@
   </a>
 
   <div class="app-container">
-    <!-- Global Header -->
+<!-- Global Header (This is the section to update) -->
     <header class="main-header" role="banner">
       <div class="flex items-center gap-4">
         <h1 class="app-title">
@@ -73,31 +77,33 @@
         </h1>
       </div>
 
+      <!-- Nav Bar (Keep your existing nav links for rooms.html here, e.g., 'Inventory' active) -->
       <nav class="main-nav" role="navigation" aria-label="Main navigation">
         <a href="dashboard.html">Dashboard</a>
-        <a href="rooms.html" aria-current="page">Rooms</a>
+        <a href="rooms.html" aria-current="page">Inventory</a> <!-- Assuming Inventory is active on this page -->
         <a href="reports.html">Reports</a>
         <a href="itemDetails.html">Item Details</a>
       </nav>
 
-      <div class="header-right">
-
-        <span class="hidden sm:inline text-sm" aria-label="Current user">
-         Welcome, <strong id="current-user-name">John Doe</strong> <!-- Ensure this ID is present -->
+      <!-- MODIFIED: Header Right Section with smaller, stacked buttons -->
+      <div class="header-right flex flex-col items-end"> <!-- Added flex-col and items-end -->
+        <span class="hidden sm:inline text-sm mb-1" aria-label="Current user"> <!-- Added mb-1 for spacing -->
+          Welcome, <strong id="current-user-name">John Doe</strong> <!-- User ID here -->
         </span>
-
-
-
-        <button class="header-profile-btn" type="button" aria-label="View profile">
-          Profile
-        </button>
-        <button class="header-logout-btn" type="button" aria-label="Sign out">
-          Logout
-        </button>
+        <div class="flex space-x-2"> <!-- New div to contain buttons and maintain spacing -->
+        <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
+            Profile
+        </a>
+          <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
+            Logout
+          </button>
+        </div>
       </div>
+      <!-- END MODIFIED -->
     </header>
 
-    <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
+    <!-- Message box now relies on custom-styles.css for most styling -->
+    <div id="message-box" class="hidden"></div>
 
     <!-- Main Layout -->
     <div class="main-layout">
@@ -106,6 +112,7 @@
         <!-- Home Information Section -->
         <section class="sidebar-section">
           <h2 class="sidebar-title">Home Information</h2>
+
           <div class="home-info-card">
             <div class="info-row">
               <span class="info-label">Address:</span>
@@ -127,6 +134,11 @@
               <span class="info-label">Roof Age:</span>
               <span class="info-value" id="home-roof-age">N/A</span>
             </div>
+
+
+
+
+            
             <button class="edit-btn" id="edit-home-info-btn" type="button" aria-label="Edit home information">
               Edit Home Info
             </button>
@@ -169,27 +181,7 @@
           </div>
         </div>
 
-        <!-- Content Body -->
-        <div class="content-body">
-          <!-- Items Grid (will be dynamically populated) -->
-          <div class="inventory-grid" id="inventory-grid">
-            <!-- Item cards will be inserted here by JavaScript -->
-          </div>
-
-          <!-- Empty State (shown when no items exist for the current room) -->
-          <div class="empty-state" id="empty-state" style="display: none;">
-            <div role="img" aria-label="Empty room illustration" style="font-size: 4rem; margin-bottom: 1rem;">
-              📦
-            </div>
-            <h3 id="empty-state-title">No items in this room yet</h3>
-            <p id="empty-state-text">Start building your inventory by adding your first item to this room. Track valuable items, furniture, electronics, and more.</p>
-            <button class="btn-primary" id="add-first-item-btn" type="button" aria-label="Add your first item to Living Room">
-              + Add Your First Item
-            </button>
-          </div>
-        </div>
-
-        <!-- Room Summary (will be dynamically populated) -->
+        <!-- Room Summary (moved to top of content-area) -->
         <div class="room-summary" id="room-summary" style="display: none;">
           <div class="summary-stats">
             <div class="stat-item">
@@ -206,111 +198,198 @@
             </div>
           </div>
         </div>
+
+        <!-- Content Body -->
+        <div class="content-body">
+          <!-- Items Grid (will be dynamically populated) -->
+          <div class="inventory-grid" id="inventory-grid">
+            <!-- Item cards will be inserted here by JavaScript -->
+          </div>
+
+          <!-- Empty State (shown when no items exist for the current room) -->
+          <div class="empty-state" id="empty-state" style="display: none;">
+            <div role="img" aria-label="Empty room illustration" class="empty-state-icon">
+              📦
+            </div>
+            <h3 id="empty-state-title">No items in this room yet</h3>
+            <p id="empty-state-text">Start building your inventory by adding your first item to this room. Track valuable items, furniture, electronics, and more.</p>
+            <button class="btn-primary" id="add-first-item-btn" type="button" aria-label="Add your first item to Living Room">
+              + Add Your First Item
+            </button>
+          </div>
+        </div>
       </main>
     </div>
   </div>
 
   <!-- Add Item Modal (reused from dashboard concepts) -->
-  <div id="addItemModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
-      <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md animate-fade-in">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4" id="modal-title">Add New Item</h3>
-          <form id="modalAddItemForm">
-              <div class="mb-4">
-                  <label for="modal-item-name" class="block text-gray-700 text-sm font-bold mb-2">Item Name:</label>
-                  <input type="text" id="modal-item-name" placeholder="Enter item name" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="modal-item-category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
-                  <select id="modal-item-category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                      <option value="">Select a Category</option>
-                      <option value="electronics">Electronics</option>
-                      <option value="furniture">Furniture</option>
-                      <option value="clothing">Clothing</option>
-                      <option value="appliances">Appliances</option>
-                      <option value="jewelry">Jewelry</option>
-                      <option value="collectibles">Collectibles</option>
-                      <option value="art">Art</option>
-                      <option value="guns">Guns</option>
-                      <option value="coins">Coins</option>
-                      <option value="other">Other</option>
-                  </select>
-              </div>
-              <div id="modal-other-category-input" class="hidden mb-4">
-                  <label for="modal-item-category-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Category:</label>
-                  <input type="text" id="modal-item-category-other" placeholder="Enter custom category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="modal-item-quantity" class="block text-gray-700 text-sm font-bold mb-2">Quantity:</label>
-                  <input type="number" id="modal-item-quantity" value="1" min="1" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="modal-item-room" class="block text-gray-700 text-sm font-bold mb-2">Room:</label>
-                  <select id="modal-item-room" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                      <option value="">Select a Room</option>
-                      <option value="master_bedroom">Master Bedroom</option>
-                      <option value="bedroom_1">Bedroom 1</option>
-                      <option value="bedroom_2">Bedroom 2</option>
-                      <option value="bedroom_3">Bedroom 3</option>
-                      <option value="bathroom">Bathroom</option>
-                      <option value="kitchen">Kitchen</option>
-                      <option value="living_room">Living Room</option>
-                      <option value="dining_room">Dining Room</option>
-                      <option value="office">Office</option>
-                      <option value="garage">Garage</option>
-                      <option value="other">Other</option>
-                  </select>
-              </div>
-              <div id="modal-other-room-input" class="hidden mb-4">
-                  <label for="modal-item-room-other" class="block text-gray-700 text-sm font-bold mb-2">Custom Room:</label>
-                  <input type="text" id="modal-item-room-other" placeholder="Enter custom room" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="modal-item-replacement-cost" class="block text-gray-700 text-sm font-bold mb-2">Replacement Cost:</label>
-                  <input type="number" id="modal-item-replacement-cost" value="0" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="flex justify-end space-x-4">
-                  <button type="button" id="cancelAddItemModal" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg">Cancel</button>
-                  <button type="submit" id="modal-add-item-btn" class="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded-lg">Add Item</button>
-              </div>
-          </form>
-      </div>
+  <!-- Removed most Tailwind utility classes, relying on custom-styles.css and new modal-specific classes -->
+  <div id="addItemModal" class="modal-overlay hidden">
+    <div class="modal-content animate-fade-in">
+      <h3 class="modal-title" id="modal-title">Add New Item</h3>
+      <form id="modalAddItemForm">
+        <div class="form-group">
+          <label for="modal-item-name">Item Name:</label>
+          <input type="text" id="modal-item-name" placeholder="Enter item name">
+        </div>
+        <div class="form-group">
+          <label for="modal-item-category">Category:</label>
+          <select id="modal-item-category">
+            <option value="">Select a Category</option>
+            <option value="electronics">Electronics</option>
+            <option value="furniture">Furniture</option>
+            <option value="clothing">Clothing</option>
+            <option value="appliances">Appliances</option>
+            <option value="jewelry">Jewelry</option>
+            <option value="collectibles">Collect-ibles</option>
+            <option value="art">Art</option>
+            <option value="guns">Guns</option>
+            <option value="coins">Coins</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div id="modal-other-category-input" class="form-group hidden">
+          <label for="modal-item-category-other">Custom Category:</label>
+          <input type="text" id="modal-item-category-other" placeholder="Enter custom category">
+        </div>
+        <div class="form-group">
+          <label for="modal-item-quantity">Quantity:</label>
+          <input type="number" id="modal-item-quantity" value="1" min="1">
+        </div>
+        <div class="form-group">
+          <label for="modal-item-room">Room:</label>
+          <select id="modal-item-room">
+            <option value="">Select a Room</option>
+            <option value="master_bedroom">Master Bedroom</option>
+            <option value="bedroom_1">Bedroom 1</option>
+            <option value="bedroom_2">Bedroom 2</option>
+            <option value="bedroom_3">Bedroom 3</option>
+            <option value="bathroom">Bathroom</option>
+            <option value="kitchen">Kitchen</option>
+            <option value="living_room">Living Room</option>
+            <option value="dining_room">Dining Room</option>
+            <option value="office">Office</option>
+            <option value="garage">Garage</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div id="modal-other-room-input" class="form-group hidden">
+          <label for="modal-item-room-other">Custom Room:</label>
+          <input type="text" id="modal-item-room-other" placeholder="Enter custom room">
+        </div>
+        <div class="form-group">
+          <label for="modal-item-replacement-cost">Replacement Cost:</label>
+          <input type="number" id="modal-item-replacement-cost" value="0" min="0" step="0.01">
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button type="button" id="cancelAddItemModal" class="btn-secondary">Cancel</button>
+          <button type="submit" id="modal-add-item-btn" class="btn-primary">Add Item</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Edit Home Info Modal -->
-  <div id="editHomeInfoModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
-      <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md animate-fade-in">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">Edit Home Information</h3>
-          <form id="editHomeInfoForm">
-              <input type="hidden" id="home-id-input"> <!-- Hidden input for home_id -->
-              <div class="mb-4">
-                  <label for="edit-home-address" class="block text-gray-700 text-sm font-bold mb-2">Address:</label>
-                  <input type="text" id="edit-home-address" placeholder="e.g., 123 Main St, City, State" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="edit-home-sq-ft" class="block text-gray-700 text-sm font-bold mb-2">Square Footage (sq ft):</label>
-                  <input type="number" id="edit-home-sq-ft" min="0" step="0.01" placeholder="e.g., 1500.50" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="edit-home-year-built" class="block text-gray-700 text-sm font-bold mb-2">Year Built:</label>
-                  <input type="number" id="edit-home-year-built" min="1800" max="2100" placeholder="e.g., 1995" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="edit-home-roof-type" class="block text-gray-700 text-sm font-bold mb-2">Roof Type:</label>
-                  <input type="text" id="edit-home-roof-type" placeholder="e.g., Asphalt Shingle, Tile" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="mb-4">
-                  <label for="edit-home-roof-age" class="block text-gray-700 text-sm font-bold mb-2">Roof Age (years):</label>
-                  <input type="number" id="edit-home-roof-age" min="0" placeholder="e.g., 10" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-              </div>
-              <div class="flex justify-end space-x-4">
-                  <button type="button" id="cancelEditHomeInfoModal" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg">Cancel</button>
-                  <button type="submit" id="save-home-info-btn" class="bg-primary hover:bg-primary-hover text-white font-bold py-2 px-4 rounded-lg">Save Home Info</button>
-              </div>
-          </form>
-      </div>
+  <!-- Removed most Tailwind utility classes, relying on custom-styles.css and new modal-specific classes -->
+  <div id="editHomeInfoModal" class="modal-overlay hidden">
+    <div class="modal-content animate-fade-in">
+      <h3 class="modal-title">Edit Home Information</h3>
+      <form id="editHomeInfoForm">
+        <input type="hidden" id="home-id-input"> <!-- Hidden input for home_id -->
+        <div class="form-group">
+          <label for="edit-home-address-street">Street Address:</label>
+          <input type="text" id="edit-home-address-street" placeholder="e.g., 123 Main St">
+        </div>
+        <div class="form-group">
+          <label for="edit-home-city">City:</label>
+          <input type="text" id="edit-home-city" placeholder="e.g., Anytown">
+        </div>
+        <div class="form-group">
+          <label for="edit-home-state">State:</label>
+          <select id="edit-home-state">
+            <option value="">Select State</option>
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-home-zipcode">Zip Code:</label>
+          <input type="number" id="edit-home-zipcode" min="0" max="99999" placeholder="e.g., 12345">
+        </div>
+        <div class="form-group">
+          <label for="edit-home-sq-ft">Square Footage (sq ft):</label>
+          <input type="number" id="edit-home-sq-ft" min="0" step="0.01" placeholder="e.g., 1500.50">
+        </div>
+        <div class="form-group">
+          <label for="edit-home-year-built">Year Built:</label>
+          <input type="number" id="edit-home-year-built" min="1800" max="2100" placeholder="e.g., 1995">
+        </div>
+        <div class="form-group">
+          <label for="edit-home-roof-type">Roof Type:</label>
+          <input type="text" id="edit-home-roof-type" placeholder="e.g., Asphalt Shingle, Tile">
+        </div>
+        <div class="form-group">
+          <label for="edit-home-roof-age">Roof Age (years):</label>
+          <input type="number" id="edit-home-roof-age" min="0" placeholder="e.g., 10">
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button type="button" id="cancelEditHomeInfoModal" class="btn-secondary">Cancel</button>
+          <button type="submit" id="save-home-info-btn" class="btn-primary">Save Home Info</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Scripts -->
+  <script src="js/utils.js"></script>
   <script src="js/rooms.js"></script>
 </body>
 </html>

@@ -1,0 +1,661 @@
+/* css/custom-styles.css */
+
+/* --- Custom CSS Variables (Design Tokens) --- */
+:root {
+    --green-primary: #689f38;
+    --green-secondary: #7cb342;
+    --green-accent: #e8f5e8;
+    --green-hover: #558b2f;
+    --text-dark: #1f2937;
+    --text-medium: #4b5563;
+    --text-light: #6b7280;
+    --gray-light: #f3f4f6;
+    --gray-border: #d1d5db;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --border-radius: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 2.5rem;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+}
+
+/* Base font size adjustment for overall scaling */
+html {
+    font-size: 93.75%; /* 15px if browser default is 16px. Adjusts all rem units. */
+    height: 100%; /* Ensure HTML takes full viewport height */
+}
+
+/* --- Global Body and App Container Styles --- */
+body {
+    margin: 0;
+    padding: var(--spacing-lg); /* Custom padding for the body */
+    line-height: 1.6;
+    display: flex; /* To center the app-container */
+    justify-content: center; /* To center the app-container */
+    align-items: flex-start; /* Keeps content at the top */
+    height: 100%; /* IMPORTANT: Ensure body takes full viewport height */
+    overflow: hidden; /* IMPORTANT: Prevent body from scrolling */
+}
+
+.app-container {
+    max-width: 75rem; /* Reduced from 87.5rem (1400px to 1200px) */
+    width: 100%;
+    margin: 0 auto; /* Ensures it's centered */
+    background: var(--white);
+    height: 100%; /* IMPORTANT: Make app-container take 100% of body's height */
+    position: relative;
+    box-shadow: var(--shadow-sm); /* Custom shadow */
+    border-radius: var(--border-radius-lg); /* Custom border-radius */
+    overflow-y: auto; /* IMPORTANT: This makes the app-container itself scrollable */
+    overflow-x: hidden; /* Prevent horizontal scroll on app-container */
+    display: flex; /* Flex container for header and main content */
+    flex-direction: column; /* Stack children vertically */
+    /* flex-grow: 1; removed as height: 100% makes it fill the space */
+}
+
+/* --- Global Header Styles (shared across pages) --- */
+.main-header {
+    display: flex;
+    justify-content: space-between; /* Distribute space between title and nav/actions */
+    align-items: center;
+    background: linear-gradient(135deg, var(--green-secondary), var(--green-primary)); /* Custom gradient */
+    color: var(--white);
+    padding: var(--spacing-lg) var(--spacing-2xl); /* Custom padding */
+    flex-wrap: wrap; /* Allow items to wrap if space is constrained */
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; /* Only top corners rounded */
+    gap: var(--spacing-md); /* Gap between direct children of the header */
+    
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick to the top of the app-container's scrollable area */
+    z-index: 100; /* Ensure it stays above scrolling content */
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.app-title {
+    font-size: var(--font-size-2xl); /* Custom font size */
+    font-weight: 600;
+    margin: 0;
+    display: flex; /* To align emoji and text */
+    align-items: center; /* To align emoji and text */
+    gap: var(--spacing-xs); /* Space between emoji and text */
+    flex-shrink: 0; /* Prevent title from shrinking too much */
+}
+
+.header-nav-actions { /* New wrapper for nav and header-right */
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg); /* Gap between nav and header-right */
+    flex-grow: 1; /* Allow this wrapper to grow and push to the right */
+    justify-content: flex-end; /* Push content to the right within this wrapper */
+    flex-wrap: wrap; /* Allow nav and header-right to wrap if needed */
+}
+
+.main-nav {
+    display: flex;
+    gap: var(--spacing-lg); /* Custom gap for nav links */
+    align-items: center;
+    flex-shrink: 1; /* Allow navigation to shrink */
+    flex-wrap: wrap; /* Allow nav links to wrap if space is tight */
+    justify-content: flex-end; /* Align nav links to the right */
+}
+
+.main-nav a {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+}
+
+.main-nav a:hover,
+.main-nav a:focus {
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.1);
+    outline: none; /* Remove default outline */
+}
+
+.main-nav a.active,
+.main-nav a[aria-current="page"] {
+    font-weight: 700;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-right {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    flex-shrink: 0; /* Prevent action buttons from shrinking too much */
+}
+
+.header-profile-btn,
+.header-logout-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border: none;
+    background: var(--white);
+    color: var(--green-primary);
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: var(--font-size-sm);
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.header-profile-btn:hover,
+.header-logout-btn:hover,
+.header-profile-btn:focus,
+.header-logout-btn:focus {
+    background: var(--green-accent);
+    transform: scale(1.05); /* Custom hover effect */
+    outline: 2px solid var(--white); /* Custom outline */
+    outline-offset: 2px; /* Custom outline offset */
+}
+
+/* --- Responsive Adjustments for Header (Custom Breakpoints/Layouts) --- */
+@media (max-width: 1024px) { /* Tablet breakpoint for header padding */
+    .main-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column; /* Stack header items vertically */
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        padding: var(--spacing-lg);
+    }
+
+    .header-nav-actions {
+        width: 100%; /* Make wrapper take full width */
+        justify-content: space-between; /* Distribute nav and actions */
+        flex-wrap: wrap; /* Allow nav and actions to wrap if needed */
+        margin-top: var(--spacing-md); /* Space between title and nav/actions */
+    }
+
+    .main-nav {
+        width: auto; /* Allow nav to size naturally */
+        justify-content: flex-start; /* Align nav links to the start */
+        flex-grow: 1; /* Allow nav to grow if space available */
+    }
+
+    .header-right {
+        margin-top: 0;
+        flex-grow: 1; /* Allow action buttons to grow if space available */
+        justify-content: flex-end; /* Align action buttons to the end */
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        padding: var(--spacing-md);
+    }
+    
+    .app-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .header-nav-actions {
+        flex-direction: column; /* Stack nav and actions vertically */
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .main-nav,
+    .header-right {
+        width: 100%; /* Make nav and actions take full width */
+        justify-content: center; /* Center content within them */
+    }
+    
+    .main-nav a {
+        padding: var(--spacing-xs); /* Smaller padding for links on small screens */
+    }
+}
+
+/* --- Global Message Box Styles --- */
+#message-box {
+    /* Changed default background and text to be neutral */
+    background-color: var(--white); 
+    color: var(--text-dark); /* Darker text for better contrast on white background */
+    border: 1px solid var(--gray-border); /* Subtle border */
+    
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    position: fixed;
+    top: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Specific message box colors (using custom variables where applicable) */
+#message-box.success {
+    background-color: #e6f4ea; /* light minty green */
+    border: 2px solid #4ade80; /* mint green border */
+    color: #166534; /* dark green text */
+}
+
+#message-box.error {
+    background-color: #dc3545; /* A strong red */
+    color: white;
+    border: 2px solid #dc3545; /* Matching border for error */
+}
+
+/* --- Global Form Element Styles (if applicable across forms) --- */
+/* These are common input/label styles that can be applied globally */
+label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select { /* Added select to this group */
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    color: var(--text-dark);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box; /* Explicitly ensure consistent box model */
+    height: 2.75rem; /* Set a consistent height for all these elements */
+}
+
+textarea { /* Textarea needs different height handling */
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    color: var(--text-dark);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    height: auto; /* Allow textarea to grow */
+    min-height: 5rem; /* Set a reasonable minimum height for textareas */
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--green-primary);
+    box-shadow: 0 0 0 3px rgba(104, 159, 56, 0.2); /* Custom focus ring */
+}
+
+/* Global button styles (e.g., for .btn-primary) */
+.btn-primary {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--green-primary); /* Using primary green from variables */
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: var(--green-hover); /* Using hover green from variables */
+    outline: 2px solid var(--green-accent);
+    outline-offset: 2px;
+}
+
+.btn-secondary {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--white);
+    color: var(--text-medium);
+    border: 2px solid var(--gray-border);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    border-color: var(--green-secondary);
+    color: var(--green-primary);
+    outline: none;
+}
+
+/* Small button variants for item cards */
+.btn-primary-small {
+    padding: 0.25rem 0.5rem; /* Smaller padding */
+    background: var(--green-primary);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: var(--font-size-xs); /* Smaller font size */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-primary-small:hover,
+.btn-primary-small:focus {
+    background: var(--green-hover);
+    outline: 2px solid var(--green-accent);
+    outline-offset: 2px;
+}
+
+.btn-secondary-small {
+    padding: 0.25rem 0.5rem; /* Smaller padding */
+    background: var(--white);
+    color: var(--text-medium);
+    border: 1px solid var(--gray-border); /* Slightly thinner border */
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: var(--font-size-xs); /* Smaller font size */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-secondary-small:hover,
+.btn-secondary-small:focus {
+    border-color: var(--green-secondary);
+    color: var(--green-primary);
+    outline: none;
+}
+
+/* --- Modal Styles (New/Updated) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Ensure it's above other content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.modal-overlay:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: var(--spacing-2xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 30rem; /* Adjust as needed */
+    width: 90%; /* Responsive width */
+    transform: translateY(-20px); /* Initial state for slide-in effect */
+    transition: transform 0.3s ease;
+    max-height: 80vh; /* Set maximum height to 80% of viewport height */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+}
+
+.modal-overlay:not(.hidden) .modal-content {
+    transform: translateY(0); /* Final state for slide-in effect */
+}
+
+.modal-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+/* Form group within modals */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    margin-bottom: var(--spacing-xs);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    margin-top: var(--spacing-xs); /* Space between label and input */
+}
+
+/* Flex container for modal buttons */
+.modal-content .flex.justify-end.space-x-4 {
+    margin-top: var(--spacing-xl); /* Space above buttons */
+}
+
+/* --- Shared Section/Card/Grid Styles (Moved from rooms.css) --- */
+
+/* General Section Styling (e.g., for home info, room list, or inventory sections) */
+.sidebar-section { /* Renamed from .sidebar-section to be more generic if used outside sidebar */
+    margin-bottom: var(--spacing-2xl);
+}
+
+.sidebar-title { /* Generic title style for sections */
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--green-secondary);
+    padding-bottom: var(--spacing-xs);
+}
+
+/* Home Info Card (generic card structure) */
+.home-info-card {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid var(--gray-light);
+    flex-wrap: wrap; /* Added in previous turn */
+    align-items: flex-start; /* Added in previous turn */
+    gap: 0.5rem; /* Added in previous turn */
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.info-label {
+    font-weight: 500;
+    color: var(--text-medium);
+    flex-basis: 30%; /* Added in previous turn */
+    flex-shrink: 0; /* Added in previous turn */
+}
+
+.info-label::after { /* NEW: Add a space after the label content */
+    content: "\00a0"; /* Non-breaking space */
+}
+
+.info-value {
+    color: var(--text-dark);
+    font-weight: 400;
+    flex-basis: calc(70% - 0.5rem); /* Added in previous turn */
+    flex-grow: 1; /* Added in previous turn */
+    text-align: right; /* Added in previous turn */
+}
+
+.edit-btn { /* General edit button style */
+    background: var(--green-secondary);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-xs);
+    margin-top: var(--spacing-sm);
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover,
+.edit-btn:focus {
+    background: var(--green-hover);
+    outline: 2px solid var(--green-accent);
+    outline-offset: 2px;
+}
+
+/* Inventory Grid (for displaying items in a grid layout) */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+@supports (container-type: inline-size) {
+    .inventory-grid {
+        grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
+    }
+}
+
+@media (min-width: 1600px) {
+    .inventory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
+}
+
+/* Item Card (generic card for individual items) */
+.item-card {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.item-card:hover,
+.item-card:focus-within {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.item-image {
+    width: 100%;
+    height: 7.5rem;
+    background: var(--gray-light);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.item-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-base);
+}
+
+.item-value {
+    color: #059669;
+    font-weight: 600;
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-xs);
+}
+
+.item-category {
+    color: var(--text-light);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.03125rem;
+    font-weight: 500;
+}
+
+/* Empty State (generic empty state styling) */
+.empty-state {
+    text-align: center;
+    padding: 5rem var(--spacing-2xl);
+    color: var(--text-light);
+}
+
+.empty-state h3 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-md);
+    color: var(--text-medium);
+    font-weight: 600;
+}
+
+.empty-state p {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-lg);
+    max-width: 30rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --gray-border: #000000;
+        --text-light: #000000;
+    }
+
+    /* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}}

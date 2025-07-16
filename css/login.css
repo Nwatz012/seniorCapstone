@@ -1,271 +1,289 @@
+/* css/login.css */
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        .wireframe-container {
-            width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border: 3px solid #7c3aed;
-            min-height: 900px;
-            position: relative;
-        }
-        
-        .header {
-            background-color: #e5e7eb;
-            padding: 20px 40px;
-            border-bottom: 2px solid #d1d5db;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo-section {
-            font-weight: bold;
-            font-size: 24px;
-            color: #1f2937;
-        }
-        
-        .nav-section {
-            font-size: 16px;
-            color: #6b7280;
-        }
-        
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 600px 1fr;
-            min-height: 800px;
-        }
-        
-        .left-panel {
-            background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
-            padding: 60px 40px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .hero-content h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-        
-        .hero-content p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .feature-list li {
-            margin-bottom: 15px;
-            padding-left: 25px;
-            position: relative;
-        }
-        
-        .feature-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #4ade80;
-            font-weight: bold;
-        }
-        
-        .form-section {
-            padding: 80px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: white;
-        }
-        
-        .form-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .form-title {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #1f2937;
-        }
-        
-        .form-subtitle {
-            color: #6b7280;
-            font-size: 16px;
-        }
-        
-        .form-subtitle a {
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .form-message {
-            padding: 16px;
-            margin-bottom: 30px;
-            border-radius: 6px;
-            text-align: center;
-            min-height: 20px;
-            border: 2px dashed #d1d5db;
-            color: #6b7280;
-            font-size: 14px;
-            background: #f9fafb;
-        }
-        
-        .form-group {
-            margin-bottom: 28px;
-        }
-        
-        .form-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #374151;
-            font-size: 15px;
-        }
-        
-        .required {
-            color: #ef4444;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-        
-        .password-container {
-            position: relative;
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: #6b7280;
-            padding: 4px;
-        }
-        
-        .error-message {
-            color: #ef4444;
-            font-size: 13px;
-            margin-top: 6px;
-            min-height: 18px;
-        }
-        
-        .help-text {
-            color: #6b7280;
-            font-size: 13px;
-            margin-top: 6px;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: background-color 0.2s;
-        }
-        
-        .submit-btn:hover {
-            background-color: #2563eb;
-        }
-        
-        .right-panel {
-            background: #f8fafc;
-            padding: 60px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .testimonial {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 15px;
-            color: #4b5563;
-        }
-        
-        .testimonial-author {
-            font-weight: 600;
-            color: #1f2937;
-        }
-        
-        .security-badge {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-        
-        .security-badge h4 {
-            margin: 0 0 10px 0;
-            color: #059669;
-        }
-        
-        .annotation {
-            position: absolute;
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            max-width: 220px;
-            z-index: 10;
-        }
-        
-        .annotation-1 {
-            top: 200px;
-            left: 20px;
-        }
-        
-        .annotation-2 {
-            bottom: 300px;
-            right: 50px;
-        }
-        
-        .annotation-3 {
-            top: 450px;
-            right: 650px;
-        }
+/* --- Main layout for Login/Register page --- */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr 600px 1fr; /* Custom 3-column layout */
+    min-height: calc(100vh - 100px); /* Adjust height based on header, if header height is around 100px */
+    flex: 1; /* Allows it to grow and fill available space */
+}
+
+/* --- Left Panel - Marketing Content --- */
+.left-panel {
+    background: linear-gradient(135deg, var(--green-secondary) 0%, var(--green-primary) 100%); /* Using custom variables */
+    padding: var(--spacing-2xl) var(--spacing-xl); /* Using custom variables */
+    color: var(--white); /* Using custom variable */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-content h2 {
+    font-size: var(--font-size-3xl); /* Using custom variable */
+    margin-bottom: var(--spacing-xl); /* Using custom variable */
+    font-weight: 300;
+}
+
+.hero-content p {
+    font-size: var(--font-size-lg); /* Using custom variable */
+    line-height: 1.6;
+    margin-bottom: var(--spacing-2xl); /* Using custom variable */
+    opacity: 0.9;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    margin-bottom: var(--spacing-md); /* Using custom variable */
+    padding-left: var(--spacing-2xl); /* Using custom variable */
+    position: relative;
+}
+
+.feature-list li::before {
+    content: "✓"; /* Custom bullet point */
+    position: absolute;
+    left: 0;
+    color: #4ade80; /* Specific green for checkmark, consider adding to root vars if used often */
+    font-weight: bold;
+}
+
+/* --- Form Section (Center Panel) --- */
+.form-section {
+    padding: 80px 60px; /* Custom padding, consider using var(--spacing-3xl) and var(--spacing-2xl) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--white); /* Using custom variable */
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl); /* Using custom variable */
+}
+
+/* Tab navigation for Login/Register forms */
+.tab-navigation {
+    display: flex;
+    border-bottom: 2px solid var(--gray-border); /* Using custom variable */
+    margin-bottom: var(--spacing-xl); /* Using custom variable */
+    justify-content: center;
+}
+
+.tab {
+    padding: var(--spacing-md) var(--spacing-xl); /* Using custom variables */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-base); /* Using custom variable */
+    font-weight: 500;
+    color: var(--text-light); /* Using custom variable */
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    color: var(--green-secondary); /* Using custom variable */
+}
+
+.tab.active {
+    color: var(--green-secondary); /* Using custom variable */
+    border-bottom-color: var(--green-secondary); /* Using custom variable */
+    font-weight: 600;
+}
+
+.form-title {
+    font-size: var(--font-size-3xl); /* Using custom variable */
+    font-weight: 600;
+    margin-bottom: var(--spacing-md); /* Using custom variable */
+    color: var(--text-dark); /* Using custom variable */
+}
+
+.form-subtitle {
+    color: var(--text-light); /* Using custom variable */
+    font-size: var(--font-size-base); /* Using custom variable */
+}
+
+.form-subtitle a {
+    color: #3b82f6; /* Hardcoded blue, consider adding to root vars if used often */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form-subtitle a:hover {
+    text-decoration: underline;
+}
+
+/* Form message for feedback */
+.form-message {
+    padding: var(--spacing-md); /* Using custom variable */
+    margin-bottom: var(--spacing-2xl); /* Using custom variable */
+    border-radius: var(--border-radius); /* Using custom variable */
+    text-align: center;
+    min-height: 20px;
+    border: 2px dashed var(--gray-border); /* Using custom variable */
+    color: var(--text-light); /* Using custom variable */
+    font-size: var(--font-size-sm); /* Using custom variable */
+    background: var(--gray-light); /* Using custom variable */
+    display: none; /* Hidden by default, shown by JS */
+}
+
+/* Form content visibility */
+.form-content {
+    display: block;
+}
+
+.form-content.hidden {
+    display: none;
+}
+
+/* Form group spacing */
+.form-group {
+    margin-bottom: 28px; /* Consider using var(--spacing-2xl) if 28px is a common spacing */
+}
+
+/* Required field indicator */
+.required {
+    color: #ef4444; /* Red for required fields, consider adding to root vars */
+}
+
+/* Password toggle button within input */
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: var(--spacing-md); /* Using custom variable */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-base); /* Using custom variable */
+    padding: 4px; /* Consider using var(--spacing-xs) */
+    color: var(--text-light); /* Using custom variable */
+}
+
+.password-toggle:hover {
+    color: var(--text-medium); /* Using custom variable */
+}
+
+/* Error and help text */
+.error-message {
+    color: #ef4444; /* Red error message, consider adding to root vars */
+    font-size: 13px; /* Consider using var(--font-size-xs) or define a 13px var */
+    margin-top: var(--spacing-xs); /* Using custom variable */
+    min-height: 18px;
+}
+
+.help-text {
+    color: var(--text-light); /* Using custom variable */
+    font-size: 13px; /* Consider using var(--font-size-xs) or define a 13px var */
+    margin-top: var(--spacing-xs); /* Using custom variable */
+}
+
+.link-text {
+    text-align: right;
+    margin-top: var(--spacing-xs); /* Using custom variable */
+    margin-bottom: 0;
+}
+
+.link-text a {
+    color: #3b82f6; /* Blue link color, consider adding to root vars */
+    text-decoration: none;
+    font-size: 14px; /* Consider using var(--font-size-sm) or define a 14px var */
+}
+
+.link-text a:hover {
+    text-decoration: underline;
+}
+
+/* Submit button */
+.submit-btn {
+    width: 100%;
+    padding: 18px; /* Consider using var(--spacing-lg) or define a 18px var */
+    background-color: #3b82f6; /* Blue background, consider adding to root vars */
+    color: var(--white); /* Using custom variable */
+    border: none;
+    border-radius: var(--border-radius); /* Using custom variable */
+    font-size: var(--font-size-base); /* Using custom variable */
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: var(--spacing-md); /* Using custom variable */
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #2563eb; /* Darker blue on hover, consider adding to root vars */
+}
+
+/* --- Right Panel - Trust Signals --- */
+.right-panel {
+    background: var(--secondary); /* Using custom variable (assuming secondary is #f8fafc) */
+    padding: var(--spacing-2xl) var(--spacing-xl); /* Using custom variables */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.security-badge {
+    text-align: center;
+    padding: 30px; /* Consider using var(--spacing-2xl) */
+    background: var(--white); /* Using custom variable */
+    border-radius: 8px; /* Consider using var(--border-radius) or define an 8px var */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Consider using var(--shadow-sm) or define a new shadow var */
+    margin-bottom: var(--spacing-2xl); /* Using custom variable */
+}
+
+.security-badge:last-child {
+    margin-bottom: 0;
+}
+
+.security-badge h4 {
+    margin: 0 0 var(--spacing-md) 0; /* Using custom variable */
+    color: #059669; /* Green heading, consider adding to root vars */
+    font-size: var(--font-size-lg); /* Using custom variable */
+}
+
+.security-badge p {
+    margin: 0;
+    color: var(--text-light); /* Using custom variable */
+    font-size: var(--font-size-sm); /* Using custom variable */
+    line-height: 1.5;
+}
+
+/* --- Responsive design for Login/Register page --- */
+@media (max-width: 1200px) {
+    .main-layout {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+        grid-template-rows: auto auto auto;
+    }
+    
+    .left-panel,
+    .right-panel {
+        padding: var(--spacing-2xl); /* Using custom variable */
+    }
+    
+    .form-section {
+        padding: var(--spacing-2xl); /* Using custom variable */
+    }
+}
+
+@media (max-width: 768px) {
+    .left-panel,
+    .right-panel,
+    .form-section {
+        padding: var(--spacing-xl) var(--spacing-lg); /* Using custom variables */
+    }
+    
+    .hero-content h2 {
+        font-size: var(--font-size-2xl); /* Using custom variable */
+    }
+    
+    .form-title {
+        font-size: var(--font-size-2xl); /* Using custom variable */
+    }
+}

@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginData = { email, password };
 
         try {
-            const response = await fetch('php/login.php', {
+            const response = await fetch('php/auth/login.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(loginData)
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('php/register.php', {
+            const response = await fetch('php/auth/register.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
