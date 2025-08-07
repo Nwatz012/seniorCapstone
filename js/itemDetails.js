@@ -1,3 +1,6 @@
+import { showConfirmationModal } from './utils.js';
+import { showMessage } from './utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements for header functionality (keep these)
     const messageBox = document.getElementById('message-box');

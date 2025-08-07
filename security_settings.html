@@ -1,178 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security Settings - Home Inventory App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Settings - Home Inventory App</title>
 
-  <!-- Tailwind CSS setup with custom theme -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            inter: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            primary: '#689f38',
-            'primary-hover': '#558b2f',
-            secondary: '#f1f5f9',
-            'secondary-hover': '#e2e8f0',
-            accent: '#fef3c7',
-          },
-          animation: {
-            'fade-in': 'fadeIn 0.5s ease-in-out',
-            'slide-in-left': 'slideInLeft 0.3s ease-in-out',
-            'slide-in-right': 'slideInRight 0.3s ease-in-out'
-          },
-          keyframes: {
-            fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
-            slideInLeft: { from: { transform: 'translateX(-20px)', opacity: '0' }, to: { transform: 'translateX(0)', opacity: '1' } },
-            slideInRight: { from: { transform: 'translateX(20px)', opacity: '0' }, to: { transform: 'translateX(0)', opacity: '1' } }
-          }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#689f38',
+                        'primary-hover': '#558b2f',
+                        secondary: '#f1f5f9',
+                        'secondary-hover': '#e2e8f0',
+                        accent: '#fef3c7',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in-left': 'slideInLeft 0.3s ease-in-out',
+                        'slide-in-right': 'slideInRight 0.3s ease-in-out'
+                    },
+                    keyframes: {
+                        fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
+                        slideInLeft: { from: { transform: 'translateX(-20px)', opacity: '0' }, to: { transform: 'translateX(0)', opacity: '1' } },
+                        slideInRight: { from: { transform: 'translateX(20px)', opacity: '0' }, to: { transform: 'translateX(0)', opacity: '1' } }
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
-
-  <!-- Fonts and Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="css/custom-styles.css" />
-  <link rel="stylesheet" href="css/settings.css" />
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/custom-styles.css">
+    <link rel="stylesheet" href="css/settings.css">
 </head>
-
 <body class="bg-gray-50 font-inter min-h-screen flex flex-col">
 
-  <!-- Accessibility: Skip to main content link -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
-    Skip to main content
-  </a>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
+        Skip to main content
+    </a>
 
-  <div class="app-container flex flex-col min-h-screen pt-6">
+    <div class="app-container flex flex-col min-h-screen pt-6">
 
-    <!-- Header with branding and navigation -->
-    <header class="main-header" role="banner">
-      <div class="flex items-center gap-4">
-        <h1 class="app-title">
-          <span role="img" aria-label="House">🏡</span>
-          Home Inventory
-        </h1>
-      </div>
+        <header class="main-header" role="banner">
+            <div class="flex items-center gap-4">
+                <h1 class="app-title">
+                    <span role="img" aria-label="House">🏡</span>
+                    Home Inventory
+                </h1>
+            </div>
 
-      <!-- Top Navigation -->
-      <nav class="main-nav" role="navigation" aria-label="Main navigation">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="rooms.html">Inventory</a>
-        <a href="reports.html">Reports</a>
-        <a href="itemDetails.html" aria-current="page">Item Details</a>
-      </nav>
+            <nav class="main-nav" role="navigation" aria-label="Main navigation">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="rooms.html">Inventory</a>
+                <a href="reports.html">Reports</a>
+                <a href="itemDetails.html" aria-current="page">Item Details</a>
+            </nav>
 
-      <!-- User Info and Actions -->
-      <div class="header-right flex flex-col items-end">
-        <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
-          Welcome, <strong id="current-user-name">John Doe</strong>
-        </span>
-        <div class="flex space-x-2">
-          <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">Profile</a>
-          <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">Logout</button>
+            <div class="header-right flex flex-col items-end">
+                <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
+                    Welcome, <strong id="current-user-name">John Doe</strong>
+                </span>
+                <div class="flex space-x-2">
+                    <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
+                        Profile
+                    </a>
+                    <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
+
+        <div class="main-layout flex-grow p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-6">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar bg-white p-4 rounded-lg shadow-md md:w-1/4" role="navigation" aria-label="Settings navigation">
+                <ul class="sidebar-menu space-y-2">
+                    <li><a href="settings.html" class="block p-2 rounded-md hover:bg-gray-100">Profile Information</a></li>
+                    <li><a href="security_settings.html" class="block p-2 rounded-md hover:bg-gray-100">Security & Privacy</a></li>
+                    <li><a href="account_management.html" class="block p-2 rounded-md hover:bg-gray-100">Account Management</a></li>
+                </ul>
+            </nav>
+
+            <main class="content-area flex-1" id="main-content" role="main">
+                <!-- NEW INNER WRAPPER DIV -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Security & Privacy</h1>
+
+                    <form id="securitySettingsForm">
+                        <div class="form-group mb-4">
+                            <label for="current-password" class="block text-gray-700 text-sm font-bold mb-2">Current Password <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <input type="password" id="current-password" name="current_password" placeholder="Enter current password" class="pr-10">
+                                <button type="button" id="toggleCurrentPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 focus:outline-none">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="validation-message text-red-500 text-xs italic mt-1 hidden"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="form-group">
+                                <label for="new-password" class="block text-gray-700 text-sm font-bold mb-2">New Password</label>
+                                <div class="relative">
+                                    <input type="password" id="new-password" name="new_password" placeholder="Enter new password" class="pr-10">
+                                    <button type="button" id="toggleNewPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 focus:outline-none">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <!-- INSERT PASSWORD REQUIREMENTS HERE -->
+                                <div id="password-requirements" class="text-xs text-gray-600 mt-2 p-2 bg-gray-50 rounded hidden">
+                                    <p class="font-semibold mb-1">Password must contain:</p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li id="req-length">At least 8 characters</li>
+                                        <li id="req-uppercase">At least one uppercase letter</li>
+                                        <li id="req-lowercase">At least one lowercase letter</li>
+                                        <li id="req-number">At least one number</li>
+                                        <li id="req-special">At least one special character (!@$%)</li>
+                                    </ul>
+                                </div>
+                                <div class="validation-message text-red-500 text-xs italic mt-1 hidden"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password" class="block text-gray-700 text-sm font-bold mb-2">Confirm New Password</label>
+                                <div class="relative">
+                                    <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm new password" class="pr-10">
+                                    <button type="button" id="toggleConfirmPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 focus:outline-none">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="validation-message text-red-500 text-xs italic mt-1 hidden"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end space-x-2 mt-6">
+                            <button type="button" class="btn-secondary cancel-button">Cancel</button>
+                            <button type="submit" class="btn-primary">🔒 Update Security</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
         </div>
-      </div>
-    </header>
-
-    <!-- Message Box for Alerts -->
-    <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
-
-    <!-- Main Layout: Sidebar + Main Content -->
-    <div class="main-layout flex-grow p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-6">
-
-      <!-- Sidebar Navigation -->
-      <nav class="sidebar bg-white p-4 rounded-lg shadow-md md:w-1/4" role="navigation" aria-label="Settings navigation">
-        <ul class="sidebar-menu space-y-2">
-          <li><a href="settings.html" class="block p-2 rounded-md hover:bg-gray-100">Profile Information</a></li>
-          <li><a href="security_settings.html" class="block p-2 rounded-md hover:bg-gray-100">Security & Privacy</a></li>
-          <li><a href="account_management.html" class="block p-2 rounded-md hover:bg-gray-100">Account Management</a></li>
-        </ul>
-      </nav>
-
-      <!-- Main Content Area -->
-      <main class="content-area flex-1" id="main-content" role="main">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h1 class="text-3xl font-bold text-gray-800 mb-6">Security & Privacy</h1>
-
-          <!-- Security Settings Form -->
-          <form id="securitySettingsForm">
-
-            <!-- Current Password Field -->
-            <div class="form-group mb-4">
-              <label for="current-password" class="block text-gray-700 text-sm font-bold mb-2">
-                Current Password <span class="text-red-500">*</span>
-              </label>
-              <div class="relative">
-                <input type="password" id="current-password" name="current_password" placeholder="Enter current password" class="pr-10" />
-                <button type="button" id="toggleCurrentPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-              <div class="validation-message text-red-500 text-xs italic mt-1 hidden"></div>
-            </div>
-
-            <!-- New Password + Confirm -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-
-              <!-- New Password Field -->
-              <div class="form-group">
-                <label for="new-password" class="block text-gray-700 text-sm font-bold mb-2">New Password</label>
-                <div class="relative">
-                  <input type="password" id="new-password" name="new_password" placeholder="Enter new password" class="pr-10" />
-                  <button type="button" id="toggleNewPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
-
-                <!-- Password Requirements List -->
-                <div id="password-requirements" class="text-xs text-gray-600 mt-2 p-2 bg-gray-50 rounded hidden">
-                  <p class="font-semibold mb-1">Password must contain:</p>
-                  <ul class="list-disc list-inside space-y-1">
-                    <li id="req-length">At least 8 characters</li>
-                    <li id="req-uppercase">At least one uppercase letter</li>
-                    <li id="req-lowercase">At least one lowercase letter</li>
-                    <li id="req-number">At least one number</li>
-                    <li id="req-special">At least one special character (!@$%)</li>
-                  </ul>
-                </div>
-
-                <div class="validation-message text-red-500 text-xs italic mt-1 hidden"></div>
-              </div>
-
-              <!-- Confirm Password Field -->
-              <div class="form-group">
-                <label for="confirm-password" class="block text-gray-700 text-sm font-bold mb-2">Confirm New Password</label>
-                <div class="relative">
-                  <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm new password" class="pr-10" />
-                  <button type="button" id="toggleConfirmPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
-                <div class="validation-message text-red-500 text-xs italic mt-1 hidden"></div>
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex justify-end space-x-2 mt-6">
-              <button type="button" class="btn-secondary cancel-button">Cancel</button>
-              <button type="submit" class="btn-primary">🔒 Update Security</button>
-            </div>
-          </form>
-        </div>
-      </main>
     </div>
-  </div>
 
-  <!-- JS Scripts -->
-  <script src="js/utils.js" defer></script>
-  <script src="js/security_settings.js" defer></script>
-      <script src="js/auth.js" type="module" defer></script>
+    <script src="js/utils.js" defer></script>
+    <script src="js/security_settings.js" defer></script> 
 </body>
 </html>

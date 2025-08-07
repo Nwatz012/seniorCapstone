@@ -142,3 +142,23 @@ export function showMessage(message, type = 'success') {
         messageBox.classList.add('hidden');
     }, 3000);
 }
+
+/**
+ * Highlights the active navigation link based on current URL.
+ * Adds `active-nav-link` and `aria-current="page"` to the active link.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('.sidebar-menu a');
+    const currentPage = window.location.pathname.split('/').pop();
+
+    navLinks.forEach(link => {
+        const linkPath = link.getAttribute('href');
+        if (linkPath === currentPage) {
+            link.classList.add('active-nav-link');
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.classList.remove('active-nav-link');
+            link.removeAttribute('aria-current');
+        }
+    });
+});

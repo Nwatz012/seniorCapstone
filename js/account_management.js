@@ -1,29 +1,10 @@
-// js/account_management.js
+
+
+import { showMessage } from './utils.js';
+import { showConfirmationModal } from './utils.js';
 
 // Utility function for displaying messages (reused from other pages)
-function showMessage(message, type = 'success') {
-    const msgBox = document.getElementById('message-box');
-    if (!msgBox) {
-        console.error('Message box element not found!');
-        return;
-    }
-    msgBox.textContent = message;
-    msgBox.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300';
-    
-    if (type === 'success') {
-        msgBox.classList.add('bg-green-500', 'text-white');
-    } else if (type === 'error') {
-        msgBox.classList.add('bg-red-500', 'text-white');
-    } else {
-        msgBox.classList.add('bg-gray-700', 'text-white');
-    }
-    
-    msgBox.classList.remove('hidden');
 
-    setTimeout(() => {
-        msgBox.classList.add('hidden');
-    }, 3000);
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Correctly get all DOM elements that exist on this page
