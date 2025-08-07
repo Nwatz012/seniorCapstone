@@ -62,8 +62,8 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com'; 
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'homeinventoryapp.nw@gmail.com'; // Your SMTP username (your full email address) ** COME BACK ONCE YOU CREATE THE ONLINE WEB HOST AND MAILER**
-    $mail->Password   = 'Z3r0w@tz'; // Your Gmail App Password
+    $mail->Username   = ''; // Your SMTP username (your full email address) ** COME BACK ONCE YOU CREATE THE ONLINE WEB HOST AND MAILER**
+    $mail->Password   = ''; // Your Gmail App Password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 
