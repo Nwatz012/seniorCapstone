@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Personal Property Inventory</title>
 
-   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -48,27 +44,30 @@
       }
     }
   </script>
+
+  <!-- Fonts & Custom Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 
 <body class="bg-gray-50 font-inter min-h-screen">
 
-  <!-- Skip to main content for accessibility -->
+  <!-- Accessibility: Skip to main content link -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
     Skip to main content
   </a>
 
   <div class="app-container">
 
-    <!-- Global Header -->
+    <!-- App Header -->
     <header class="main-header" role="banner">
       <div class="flex items-center gap-4">
         <h1 class="app-title">
-          <span role="img" aria-label="House">🏡</span>
-          Home Inventory
+          <span role="img" aria-label="House">🏡</span> Home Inventory
         </h1>
       </div>
 
-      <!-- Nav Bar -->
+      <!-- Top Navigation -->
       <nav class="main-nav" role="navigation" aria-label="Main navigation">
         <a href="dashboard.html" aria-current="page">Dashboard</a>
         <a href="rooms.html">Inventory</a>
@@ -76,94 +75,102 @@
         <a href="itemDetails.html">Item Details</a>
       </nav>
 
-      <!-- MODIFIED: Header Right Section with smaller buttons -->
+      <!-- User Account & Logout -->
       <div class="header-right flex flex-col items-end">
         <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
-          Welcome, <strong id="current-user-name">John Doe</strong>
+          Welcome, <strong id="current-user-name">Guest</strong>
         </span>
         <div class="flex space-x-2">
-
-        <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
-            Profile
-        </a>
-        
-          <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
-            Logout
-          </button>
+          <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">Profile</a>
+          <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">Logout</button>
         </div>
       </div>
-      <!-- END MODIFIED -->
     </header>
 
+    <!-- Toast / Flash Message -->
     <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
 
-    <!-- Main Content Layout -->
+    <!-- Main Content Area -->
     <div class="main-layout flex-grow p-6 md:p-8 lg:p-10">
       <main class="content-area" id="main-content" role="main">
-        <!-- Dashboard Intro Section -->
+
+        <!-- Welcome & Overview Section -->
         <section class="bg-white p-6 rounded-lg shadow-md mb-8 animate-fade-in">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Welcome to Your Home Inventory Manager!</h2>
-            <p class="text-gray-700 leading-relaxed">
-                This application helps you keep track of all your valuable possessions within your home.
-                Organize items by room, track quantities, and estimate replacement costs, giving you peace of mind
-                and a clear overview of your belongings. Whether for insurance purposes, personal organization,
-                or simply knowing what you own, this tool is designed to simplify your home management.
-            </p>
-            
-            <!-- High-Value Item Advice with linked 'scheduled' text -->
-            <p class="text-red-600 italic mt-4 text-center">
-                **Important Insurance Advice:** Items valued over $3,000 (e.g., jewelry, furs, coins, collectibles, firearms)
-                may need to be <a href="YOUR_LINK_TO_SCHEDULED_PROPERTY_EXPLANATION" target="_blank" rel="noopener noreferrer" class="font-bold underline hover:text-red-800">scheduled</a> with your insurer.
-                We highly recommend contacting your insurance provider to ask about scheduling these items and be ready to provide an **appraisal**.
-            </p>
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Welcome to Your Home Inventory Manager!</h2>
+          <p class="text-gray-700 leading-relaxed">
+            This application helps you keep track of all your valuable possessions within your home.
+            Organize items by room, track quantities, and estimate replacement costs, giving you peace of mind
+            and a clear overview of your belongings.
+            Whether for insurance purposes, personal organization, or just knowing what you own, this tool simplifies it all.
+          </p>
 
-            <!-- Disclosure Statement in its own styled box -->
-            <div class="bg-gray-50 border border-gray-200 p-4 mt-6 rounded-lg text-sm text-gray-700 text-center shadow-inner">
-                <p>
-                    <strong class="font-semibold">Disclosure:</strong> This is a tool to assist you with staying organized for when life happens and you need to file a claim.
-                    This is not a guarantee to your payout, but a way to stay organized. Please note that a LICENSED adjuster and your insurer would have final say in claims.
-                </p>
-            </div>
+          <!-- Insurance Info Notice -->
+          <p class="text-red-600 italic mt-4 text-center">
+            **Important Insurance Information:**<br>
+            Specialty items valued over $3,000 (e.g., jewelry, furs, coins, collectibles, firearms)
+            may need to be scheduled with your insurer.
+            We recommend contacting your insurance provider and having an <strong>appraisal</strong> ready.
+            <br>
+            Learn more by clicking 
+            <a href="https://www.investopedia.com/terms/s/scheduled-personal-property.asp" target="_blank" rel="noopener noreferrer" class="font-bold underline hover:text-red-800">here</a>.
+          </p>
 
+          <!-- Disclosure Statement -->
+          <div class="bg-gray-50 border border-gray-200 p-4 mt-6 rounded-lg text-sm text-gray-700 text-center shadow-inner">
+            <p>
+              <strong class="font-semibold">Disclosure:</strong> This tool is meant to help you stay organized and ready to file a claim.
+              It does <b>not</b> guarantee payout. Only a licensed adjuster and your insurer can determine coverage and reimbursement.
+            </p>
+          </div>
         </section>
 
-        <!-- How to Use This App Section -->
+        <!-- How-To Section -->
         <section class="bg-white p-6 rounded-lg shadow-md animate-fade-in">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">How to Use This App</h2>
-            <div class="space-y-4 text-gray-700">
-                <p class="font-semibold">1. Manage Your Rooms and Items:</p>
-                <ul class="list-disc list-inside ml-4">
-                    <li>Navigate to the "Rooms" page (or similar link in your navigation).</li>
-                    <li>There, you can add new items to specific rooms, or create new rooms if needed.</li>
-                    <li>Each item can have a name, category, quantity, associated room, and an estimated replacement cost.</li>
-                    <li>You can also edit or delete existing items from this section.</li>
-                </ul>
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">How to Use This App</h2>
+          <div class="space-y-4 text-gray-700">
 
-                <p class="font-semibold">2. View Your Inventory:</p>
-                <ul class="list-disc list-inside ml-4">
-                    <li>The "Rooms" page provides a detailed breakdown of all your items, organized by the rooms they belong to.</li>
-                    <li>You'll see a summary of total items and their collective estimated value.</li>
-                </ul>
+            <p class="font-semibold">1. Dashboard:</p>
+            <ul class="list-disc list-inside ml-4">
+              <li>This is your landing page and "How To" guide.</li>
+              <li>Use the top navigation bar to move between sections.</li>
+            </ul>
 
-                <p class="font-semibold">3. Dashboard Overview (This Page):</p>
-                <ul class="list-disc list-inside ml-4">
-                    <li>This dashboard provides a quick welcome and guidance on how to use the main features of the application.</li>
-                    <li>Your name (if logged in) is displayed in the header, and you can easily log out from here.</li>
-                </ul>
+            <p class="font-semibold">2. Inventory:</p>
+            <ul class="list-disc list-inside ml-4">
+              <li>Navigate to the "Inventory" page to manage items.</li>
+              <li>Add new items by room, including name, category, quantity, and estimated cost.</li>
+              <li>Use the “other” option to add new rooms as needed.</li>
+              <li>Edit or delete items anytime.</li>
+              <li>Left sidebar includes home info (e.g., square footage, year built).</li>
+              <li>Select a room to view its items quickly.</li>
+            </ul>
 
-                <!-- Call to action with styled Inventory link -->
-                <p class="text-lg font-semibold text-gray-800 mt-6 text-center">
-                    Click on the <a href="rooms.html" class="underline text-blue-600 hover:text-blue-800">Inventory</a> link to start adding your items!
-                </p>
-            </div>
+            <p class="font-semibold">3. Reports:</p>
+            <ul class="list-disc list-inside ml-4">
+              <li>Export a PDF report of all items and home information.</li>
+              <li>Includes total value per room and overall summary.</li>
+            </ul>
+
+            <p class="font-semibold">4. Item Details:</p>
+            <ul class="list-disc list-inside ml-4">
+              <li>Upload photos, receipts, and proof of ownership for any item.</li>
+              <li>Select item from dropdown, then scroll to upload area.</li>
+              <li>To edit basic info (name, cost, etc.), go back to the Inventory page.</li>
+            </ul>
+
+            <!-- Start Link -->
+            <p class="text-lg font-semibold text-gray-800 mt-6 text-center">
+              Click the <a href="rooms.html" class="underline text-red-600 hover:text-red-800 font-bold">Inventory</a> link to begin adding your items!
+            </p>
+          </div>
         </section>
-        <!-- End How to Use This App Section -->
       </main>
     </div>
   </div>
 
   <!-- Scripts -->
-  <script src="js/utils.js"></script> <!-- Ensure utils.js is loaded BEFORE dashboard.js -->
+  <script src="js/utils.js"></script>
   <script src="js/dashboard.js"></script>
+  <script src="js/auth.js" type="module" defer></script>
 </body>
 </html>

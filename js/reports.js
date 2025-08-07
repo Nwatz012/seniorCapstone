@@ -1,33 +1,55 @@
 // public/js/reports.js
 
+import { showMessage } from './utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements specific to reports page
     const downloadPdfReportBtn = document.getElementById('downloadPdfReportBtn');
 
-    // Make sure showMessage is available (it should be if dashboard.js or utils.js is loaded first)
-    if (typeof showMessage === 'undefined') {
-        console.error("showMessage function not found. Please ensure utils.js or dashboard.js is loaded before reports.js.");
-        // Define a fallback for showMessage if it's crucial and not guaranteed by other scripts
-        window.showMessage = function(message, type = 'info') {
-            console.log(`Message (${type}): ${message}`);
-            alert(message); // Fallback to alert if message box not present
-        };
-    }
-
     // PDF Download Button Listener
     if (downloadPdfReportBtn) {
-        downloadPdfReportBtn.addEventListener('click', () => {
-            // Show a temporary message to the user
+        downloadPdfReportBtn.addEventListener('click', async (event) => {
+            event.preventDefault(); // Prevent the default link behavior if it's an <a> tag
+
             showMessage('Generating PDF report...', 'info');
 
-            // Open the PDF generation script in a new tab/window
-            // The server will respond with the PDF file for download or display
-            window.open('php/api/generate_inventory_pdf.php', '_blank');
+            try {
+                // Step 1: Request the server to generate the PDF and save it.
+                // The server will return a JSON object with the file path.
+                const response = await fetch('php/api/generate_inventory_pdf.php', {
+                    method: 'POST', // Use POST to request the file generation
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ action: 'generate' }), // Send a small payload
+                });
 
-            // Provide feedback after a short delay
-            setTimeout(() => {
-                showMessage('PDF generation complete. Check your downloads or new tab.', 'success');
-            }, 2000);
+                if (!response.ok) {
+                    throw new Error('Server response was not successful.');
+                }
+
+                const result = await response.json();
+
+                if (result.success && result.filePath) {
+                    // Step 2: Use the returned file path to trigger the download.
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = result.filePath;
+                    a.download = 'home-inventory-report.pdf'; // Suggested filename
+                    document.body.appendChild(a);
+                    a.click();
+                    
+                    document.body.removeChild(a);
+
+                    showMessage('PDF generation complete. Your download should begin shortly.', 'success');
+                } else {
+                    showMessage(result.message || 'Error generating PDF. Please try again.', 'error');
+                }
+
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                showMessage('Error generating PDF report. Please try again.', 'error');
+            }
         });
     }
 

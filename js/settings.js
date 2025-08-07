@@ -1,423 +1,211 @@
-// public/js/settings.js
+// settings.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Main page elements
-    const editProfileBtn = document.getElementById('editProfileBtn');
-    const profileFullNameDisplay = document.getElementById('profileFullName');
-    const profileEmailDisplay = document.getElementById('profileEmail');
-    const memberSinceDisplay = document.getElementById('memberSince');
-    const lastLoginDisplay = document.getElementById('lastLogin');
+/**
+ * Display a status message to the user.
+ * @param {string} message - The message to show.
+ * @param {'success' | 'error' | 'info'} type - Type of message.
+ */
+function showMessage(message, type = 'success') {
+    const messageBox = document.getElementById('message-box');
+    if (!messageBox) return;
 
-    // Home Details display elements
-    const homeAddressDisplay = document.getElementById('homeAddress');
-    const homeSizeDisplay = document.getElementById('homeSize');
-    const homeYearBuiltDisplay = document.getElementById('homeYearBuilt');
-    const homeRoofTypeDisplay = document.getElementById('homeRoofType');
+    messageBox.textContent = message;
+    messageBox.className = ''; // Reset all classes
+    messageBox.classList.add('animate-fade-in', 'px-4', 'py-2', 'rounded', 'text-sm');
 
-    const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
-    const logoutBtnBottom = document.getElementById('logoutBtnBottom');
-
-    // Modal elements
-    const profileEditModal = document.getElementById('profileEditModal');
-    const profileEditForm = document.getElementById('profileEditForm');
-    const cancelProfileEditBtn = document.getElementById('cancelProfileEditBtn');
-
-    // Modal form inputs
-    const modalFirstName = document.getElementById('modal-first-name');
-    const modalLastName = document.getElementById('modal-last-name');
-    const modalEmail = document.getElementById('modal-email');
-    const modalPhone = document.getElementById('modal-phone');
-    const modalTimezone = document.getElementById('modal-timezone');
-
-    // Security Form elements
-    const securitySettingsForm = document.getElementById('securitySettingsForm');
-    const currentPasswordInput = document.getElementById('current-password');
-    const newPasswordInput = document.getElementById('new-password');
-    const confirmPasswordInput = document.getElementById('confirm-password');
-
-    // Password Toggle Buttons
-    const toggleCurrentPasswordBtn = document.getElementById('toggleCurrentPassword');
-    const toggleNewPasswordBtn = document.getElementById('toggleNewPassword');
-    const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
-
-    // --- Utility functions (from utils.js, assumed to be loaded) ---
-    // Make sure showMessageBox function is defined in public/js/utils.js
-
-    function showValidationMessage(inputElement, message, isError = true) {
-        const validationDiv = inputElement.nextElementSibling;
-        if (validationDiv && validationDiv.classList.contains('validation-message')) {
-            validationDiv.textContent = message;
-            if (isError) {
-                validationDiv.classList.add('text-red-500');
-                validationDiv.classList.remove('text-gray-600');
-            } else {
-                validationDiv.classList.remove('text-red-500');
-                validationDiv.classList.add('text-gray-600');
-            }
-            validationDiv.classList.remove('hidden');
-        }
-    }
-
-    function hideValidationMessage(inputElement) {
-        const validationDiv = inputElement.nextElementSibling;
-        if (validationDiv && validationDiv.classList.contains('validation-message')) {
-            validationDiv.classList.add('hidden');
-            validationDiv.textContent = '';
-        }
-    }
-
-    function clearAllValidationMessages(formElement) {
-        formElement.querySelectorAll('.validation-message').forEach(msg => {
-            msg.classList.add('hidden');
-            msg.textContent = '';
-        });
-    }
-
-    function validateProfileEditForm() {
-        let isValid = true;
-        // ... (existing validation logic for profile form)
-        if (modalFirstName.value.trim() === '') {
-            showValidationMessage(modalFirstName, 'First name is required.');
-            isValid = false;
-        } else {
-            hideValidationMessage(modalFirstName);
-        }
-
-        if (modalLastName.value.trim() === '') {
-            showValidationMessage(modalLastName, 'Last name is required.');
-            isValid = false;
-        } else {
-            hideValidationMessage(modalLastName);
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (modalEmail.value.trim() === '' || !emailRegex.test(modalEmail.value.trim())) {
-            showValidationMessage(modalEmail, 'Please enter a valid email address.');
-            isValid = false;
-        } else {
-            hideValidationMessage(modalEmail);
-        }
-        return isValid;
-    }
-
-    // Basic client-side validation for security form
-    function validateSecurityForm() {
-        let isValid = true;
-
-        // Only validate password change if new password fields are filled
-        if (newPasswordInput.value.trim() !== '' || confirmPasswordInput.value.trim() !== '') {
-            if (currentPasswordInput.value.trim() === '') {
-                showValidationMessage(currentPasswordInput, 'Current password is required to change password.');
-                isValid = false;
-            } else {
-                hideValidationMessage(currentPasswordInput);
-            }
-
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/; // Min 8 chars, 1 uppercase, 1 lowercase, 1 number
-            if (!passwordRegex.test(newPasswordInput.value.trim())) {
-                showValidationMessage(newPasswordInput, 'Password must be at least 8 characters with uppercase, lowercase, and number.');
-                isValid = false;
-            } else {
-                hideValidationMessage(newPasswordInput);
-            }
-
-            if (newPasswordInput.value !== confirmPasswordInput.value) {
-                showValidationMessage(confirmPasswordInput, 'Passwords do not match.');
-                isValid = false;
-            } else {
-                hideValidationMessage(confirmPasswordInput);
-            }
-        } else {
-            // Clear validation messages if new password fields are empty
-            hideValidationMessage(currentPasswordInput);
-            hideValidationMessage(newPasswordInput);
-            hideValidationMessage(confirmPasswordInput);
-        }
-        return isValid;
-    }
-
-
-    // --- Modal Functions ---
-
-    function openProfileEditModal() {
-        clearAllValidationMessages(profileEditForm); // Clear any old messages
-        profileEditModal.classList.remove('hidden');
-        profileEditModal.classList.add('flex'); // Use flex to center
-        populateProfileEditForm(); // Load current data into modal
-    }
-
-    function closeProfileEditModal() {
-        profileEditModal.classList.add('hidden');
-        profileEditModal.classList.remove('flex');
-    }
-
-
-    // --- Data Loading ---
-
-    async function loadSettingsData() {
-        try {
-            const response = await fetch('settings.php?action=get_data');
-            const data = await response.json();
-
-            if (data.success) {
-                const userData = data.user_data;
-                const homeData = data.home_data;
-
-                // Populate Profile Information section (main page)
-                profileFullNameDisplay.textContent = `${userData.first_name || ''} ${userData.last_name || ''}`;
-                profileEmailDisplay.textContent = userData.email || 'N/A';
-                memberSinceDisplay.textContent = userData.member_since || 'N/A';
-                lastLoginDisplay.textContent = userData.last_login || 'N/A';
-
-                // Populate Home Details section (main page)
-                homeAddressDisplay.textContent = homeData.address || 'N/A';
-                homeSizeDisplay.textContent = homeData.square_footage ? `${homeData.square_footage} sq. ft.` : 'N/A';
-                homeYearBuiltDisplay.textContent = homeData.year_built || 'N/A';
-                homeRoofTypeDisplay.textContent = homeData.roof_type || 'N/A';
-
-                // Populate Security settings toggles (only if security form is implemented fully)
-                // For now, these are direct fetches as the form is simplified
-                const twoFactorAuthCheckbox = document.getElementById('two-factor-auth');
-                if (twoFactorAuthCheckbox) {
-                    twoFactorAuthCheckbox.checked = userData.two_factor_auth === 1;
-                }
-                const loginNotificationsCheckbox = document.getElementById('login-notifications');
-                if (loginNotificationsCheckbox) {
-                    loginNotificationsCheckbox.checked = userData.login_notifications === 1;
-                }
-
-            } else {
-                showMessageBox(data.message || 'Failed to load settings data.', 'error');
-            }
-        } catch (error) {
-            console.error('Error loading settings data:', error);
-            showMessageBox('An error occurred while loading settings. Please try again.', 'error');
-        }
-    }
-
-    async function populateProfileEditForm() {
-        try {
-            const response = await fetch('settings.php?action=get_data');
-            const data = await response.json();
-
-            if (data.success) {
-                const userData = data.user_data;
-                modalFirstName.value = userData.first_name || '';
-                modalLastName.value = userData.last_name || '';
-                modalEmail.value = userData.email || '';
-                modalPhone.value = userData.phone || '';
-                modalTimezone.value = userData.timezone || 'America/New_York';
-            } else {
-                showMessageBox(data.message || 'Failed to load profile data for editing.', 'error');
-                closeProfileEditModal();
-            }
-        } catch (error) {
-            console.error('Error populating profile edit form:', error);
-            showMessageBox('An error occurred loading profile data.', 'error');
-            closeProfileEditModal();
-        }
-    }
-
-
-    // --- Form Submissions ---
-
-    async function handleProfileEditSubmit(event) {
-        event.preventDefault();
-
-        if (!validateProfileEditForm()) {
-            showMessageBox('Please correct the errors in the form.', 'error');
-            return;
-        }
-
-        const formData = new FormData(profileEditForm);
-        formData.append('action', 'update_data');
-        formData.append('form_id', 'profileSettingsForm');
-
-        try {
-            const response = await fetch('settings.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-
-            if (result.success) {
-                showMessageBox(result.message, 'success');
-                closeProfileEditModal();
-                loadSettingsData();
-            } else {
-                if (result.errors) {
-                    for (const field in result.errors) {
-                        const inputElement = profileEditForm.querySelector(`[name="${field}"]`);
-                        if (inputElement) {
-                            showValidationMessage(inputElement, result.errors[field], true);
-                        }
-                    }
-                    showMessageBox(result.message || 'Please correct the highlighted errors.', 'error');
-                } else {
-                    showMessageBox(result.message || 'An unexpected error occurred.', 'error');
-                }
-            }
-        } catch (error) {
-            console.error('Error submitting profile edit form:', error);
-            showMessageBox('An error occurred while saving changes. Please try again.', 'error');
-        }
-    }
-
-    async function handleSecuritySettingsSubmit(event) {
-        event.preventDefault();
-
-        if (!validateSecurityForm()) {
-            showMessageBox('Please correct the errors in the form.', 'error');
-            return;
-        }
-
-        const formData = new FormData(securitySettingsForm);
-        formData.append('action', 'update_data');
-        formData.append('form_id', 'securitySettingsForm');
-
-        try {
-            const response = await fetch('settings.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-
-            if (result.success) {
-                showMessageBox(result.message, 'success');
-                // Clear password fields after successful update
-                currentPasswordInput.value = '';
-                newPasswordInput.value = '';
-                confirmPasswordInput.value = '';
-                clearAllValidationMessages(securitySettingsForm);
-                loadSettingsData(); // Re-load to ensure toggles are updated if backend changes them
-            } else {
-                if (result.errors) {
-                    for (const field in result.errors) {
-                        const inputElement = securitySettingsForm.querySelector(`[name="${field}"]`);
-                        if (inputElement) {
-                            showValidationMessage(inputElement, result.errors[field], true);
-                        }
-                    }
-                    showMessageBox(result.message || 'Please correct the highlighted errors.', 'error');
-                } else {
-                    showMessageBox(result.message || 'An unexpected error occurred.', 'error');
-                }
-            }
-        } catch (error) {
-            console.error('Error submitting security form:', error);
-            showMessageBox('An error occurred while saving security settings. Please try again.', 'error');
-        }
-    }
-
-
-    // --- Password Toggle Functionality ---
-
-    function setupPasswordToggle(inputElement, toggleButton) {
-        toggleButton.addEventListener('click', () => {
-            const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
-            inputElement.setAttribute('type', type);
-            // Toggle eye icon
-            toggleButton.querySelector('i').classList.toggle('fa-eye');
-            toggleButton.querySelector('i').classList.toggle('fa-eye-slash');
-        });
-    }
-
-    setupPasswordToggle(currentPasswordInput, toggleCurrentPasswordBtn);
-    setupPasswordToggle(newPasswordInput, toggleNewPasswordBtn);
-    setupPasswordToggle(confirmPasswordInput, toggleConfirmPasswordBtn);
-
-
-    // --- Sidebar Navigation Scroll & Active State ---
-
-    const sections = document.querySelectorAll('.section'); // All sections to observe
-
-    const observerOptions = {
-        root: null, // relative to the viewport
-        rootMargin: '0px',
-        threshold: 0.5 // Trigger when 50% of the section is visible
+    // Apply color classes based on message type
+    const classes = {
+        success: ['bg-green-100', 'text-green-800'],
+        error: ['bg-red-100', 'text-red-800'],
+        info: ['bg-blue-100', 'text-blue-800']
     };
 
-    const sectionObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const currentSectionId = entry.target.id;
-                sidebarLinks.forEach(link => {
-                    link.classList.remove('active', 'bg-blue-100', 'text-blue-700');
-                    link.removeAttribute('aria-current');
-                    if (link.getAttribute('href') === `#${currentSectionId}`) {
-                        link.classList.add('active', 'bg-blue-100', 'text-blue-700');
-                        link.setAttribute('aria-current', 'page');
-                    }
-                });
-            }
-        });
-    }, observerOptions);
+    messageBox.classList.add(...(classes[type] || classes.info));
 
-    // Observe each section
-    sections.forEach(section => {
-        sectionObserver.observe(section);
-    });
+    // Show and auto-hide message
+    messageBox.classList.remove('hidden');
+    setTimeout(() => {
+        messageBox.classList.add('hidden');
+        messageBox.classList.remove('animate-fade-in');
+    }, 5000);
+}
 
-    // Sidebar click listener (still needed for immediate smooth scroll)
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default anchor link behavior
+/**
+ * Validates profile form fields and shows inline messages.
+ * @returns {boolean} - True if form is valid, otherwise false.
+ */
+function validateForm() {
+    let isValid = true;
+    const form = document.getElementById('profileSettingsForm');
+    const firstName = form.querySelector('#first-name');
+    const lastName = form.querySelector('#last-name');
+    const email = form.querySelector('#email');
+    const phone = form.querySelector('#phone');
 
-            // Smooth scroll to the target section
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            // Immediately set active class on click for responsiveness,
-            // IntersectionObserver will correct if scroll goes elsewhere.
-            sidebarLinks.forEach(item => item.classList.remove('active', 'bg-blue-100', 'text-blue-700'));
-            this.classList.add('active', 'bg-blue-100', 'text-blue-700');
-            this.setAttribute('aria-current', 'page');
-        });
-    });
-
-
-    // --- Other Event Listeners ---
-
-    // Open profile edit modal
-    editProfileBtn.addEventListener('click', openProfileEditModal);
-
-    // Close profile edit modal
-    cancelProfileEditBtn.addEventListener('click', closeProfileEditModal);
-    profileEditModal.addEventListener('click', (e) => {
-        if (e.target === profileEditModal) { // Close only if clicking on overlay, not content
-            closeProfileEditModal();
+    const showError = (input, msg) => {
+        const errorElem = input.nextElementSibling;
+        if (errorElem && errorElem.classList.contains('validation-message')) {
+            errorElem.textContent = msg;
+            errorElem.classList.remove('hidden');
         }
-    });
+        input.classList.add('border-red-500');
+    };
 
-    // Submit profile edit form
-    profileEditForm.addEventListener('submit', handleProfileEditSubmit);
+    const clearError = (input) => {
+        const errorElem = input.nextElementSibling;
+        if (errorElem && errorElem.classList.contains('validation-message')) {
+            errorElem.textContent = '';
+            errorElem.classList.add('hidden');
+        }
+        input.classList.remove('border-red-500');
+    };
 
-    // Submit security settings form
-    securitySettingsForm.addEventListener('submit', handleSecuritySettingsSubmit);
+    // Validation rules
+    if (!firstName.value.trim()) {
+        showError(firstName, 'First Name is required.');
+        isValid = false;
+    } else clearError(firstName);
 
-    // Add event listeners for "Cancel" buttons in forms
-    document.querySelectorAll('.cancel-button').forEach(button => {
-        button.addEventListener('click', (event) => {
-            if (event.target.closest('form')) {
-                event.target.closest('form').reset(); // Reset the form
-                clearAllValidationMessages(event.target.closest('form')); // Clear validation messages
-            }
-        });
-    });
+    if (!lastName.value.trim()) {
+        showError(lastName, 'Last Name is required.');
+        isValid = false;
+    } else clearError(lastName);
 
+    if (!email.value.trim()) {
+        showError(email, 'Email Address is required.');
+        isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        showError(email, 'Please enter a valid email address.');
+        isValid = false;
+    } else clearError(email);
 
-    // Handle Logout button
-    if (logoutBtnBottom) {
-        logoutBtnBottom.addEventListener('click', async () => {
-            showMessageBox('Logging out...', 'info');
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
-            window.location.href = 'index.html'; // Redirect to login/home page
-        });
+    const digitsOnly = phone.value.replace(/\D/g, '');
+    if (digitsOnly.length > 0 && digitsOnly.length !== 10) {
+        showError(phone, 'Please enter a valid 10-digit phone number.');
+        isValid = false;
+    } else clearError(phone);
+
+    return isValid;
+}
+
+/**
+ * Fetch the current user data from the backend and populate the form.
+ */
+async function fetchUserData() {
+    try {
+        const res = await fetch('php/api/settings.php?action=fetchUserData');
+        const result = await res.json();
+
+        if (!result.success) {
+            return showMessage('Failed to load user data: ' + (result.message || 'Unknown error'), 'error');
+        }
+
+        const { first_name, last_name, email, phone_number, timezone, member_since, last_login } = result.data;
+
+        document.getElementById('first-name').value = first_name || '';
+        document.getElementById('last-name').value = last_name || '';
+        document.getElementById('email').value = email || '';
+        document.getElementById('phone').value = phone_number || '';
+        document.getElementById('timezone').value = timezone || 'America/New_York';
+
+        document.getElementById('profileFullName').textContent = `${first_name} ${last_name}`;
+        document.getElementById('memberSince').textContent = member_since;
+        document.getElementById('lastLogin').textContent = last_login;
+        document.getElementById('current-user-name').textContent = `${first_name} ${last_name}`;
+
+        const initials = `${first_name?.[0] ?? ''}${last_name?.[0] ?? ''}`.toUpperCase();
+        document.querySelector('.profile-avatar').textContent = initials;
+
+    } catch (err) {
+        console.error('Error fetching user data:', err);
+        showMessage('An error occurred while loading user data.', 'error');
+    }
+}
+
+/**
+ * Handles the form submit event to update profile.
+ */
+async function handleFormSubmit(event) {
+    event.preventDefault();
+
+    if (!validateForm()) {
+        return showMessage('Please correct the errors in the form.', 'error');
     }
 
-    // Initial data load when the page loads
-    loadSettingsData();
+    const form = event.target;
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    try {
+        const res = await fetch('php/api/settings.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (result.success) {
+            showMessage(result.message, 'success');
+            fetchUserData(); // Refresh view
+        } else {
+            showMessage(result.message || 'Profile update failed.', 'error');
+        }
+    } catch (err) {
+        console.error('Error updating profile:', err);
+        showMessage('An error occurred while updating your profile.', 'error');
+    }
+}
+
+/**
+ * Formats the phone number input dynamically as the user types.
+ */
+function attachPhoneInputMask() {
+    const phone = document.getElementById('phone');
+    if (!phone) return;
+
+    phone.addEventListener('input', (e) => {
+        const digits = e.target.value.replace(/\D/g, '');
+        let formatted = '';
+
+        if (digits.length > 0) formatted += '(' + digits.substring(0, 3);
+        if (digits.length >= 4) formatted += ') ' + digits.substring(3, 6);
+        if (digits.length >= 7) formatted += ' ' + digits.substring(6, 10);
+
+        e.target.value = formatted;
+    });
+}
+
+/**
+ * Cancels edits and reverts form to original data.
+ */
+function attachCancelButtonListener() {
+    const cancelButton = document.querySelector('.cancel-button');
+    if (!cancelButton) return;
+
+    cancelButton.addEventListener('click', () => {
+        fetchUserData();
+        showMessage('Changes cancelled.', 'info');
+    });
+}
+
+/**
+ * Adds live validation feedback as user types.
+ */
+function attachLiveValidationListeners() {
+    const inputs = document.querySelectorAll('#profileSettingsForm input, #profileSettingsForm select');
+    inputs.forEach(input => {
+        input.addEventListener('input', validateForm);
+    });
+}
+
+// Initialize settings logic on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+    fetchUserData();
+    attachPhoneInputMask();
+    attachCancelButtonListener();
+    attachLiveValidationListeners();
+
+    const form = document.getElementById('profileSettingsForm');
+    if (form) {
+        form.addEventListener('submit', handleFormSubmit);
+    }
 });

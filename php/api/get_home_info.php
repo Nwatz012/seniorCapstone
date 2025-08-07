@@ -1,41 +1,54 @@
 <?php
 // php/get_home_info.php
+// API endpoint to retrieve home information for the authenticated user
 
 session_start();
 header('Content-Type: application/json');
 
-require_once '../config/property_inventory.php'; // Assuming this file establishes $pdo connection
+require_once '../config/property_inventory.php';
 
+// Authentication check
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'User not logged in.']);
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'Authentication required.']);
     exit();
 }
 
-$userId = $_SESSION['user_id'];
-$homeInfo = null;
+$userId = (int) $_SESSION['user_id'];
 
 try {
-    // Fetch home information for the logged-in user, now with detailed address fields
-    $stmt = $pdo->prepare("SELECT home_id, street_address, city, state, zip_code, square_footage, year_built, roof_type, roof_age, last_updated 
-                           FROM home_info 
-                           WHERE user_id = :user_id LIMIT 1"); // LIMIT 1 as a user should only have one home info record
-    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-    $stmt->execute();
-    
+    // Each user should have only one home info record
+    $stmt = $pdo->prepare(
+        "SELECT home_id, street_address, city, state, zip_code, 
+                square_footage, year_built, roof_type, roof_age, last_updated 
+         FROM home_info 
+         WHERE user_id = :user_id 
+         LIMIT 1"
+    );
+    $stmt->execute([':user_id' => $userId]);
     $homeInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($homeInfo) {
+        // Format timestamp for consistency
+        if ($homeInfo['last_updated']) {
+            $homeInfo['last_updated'] = date('Y-m-d H:i:s', strtotime($homeInfo['last_updated']));
+        }
         echo json_encode(['success' => true, 'home_info' => $homeInfo]);
     } else {
-        // If no home info found, return success with null data
-        echo json_encode(['success' => true, 'home_info' => null, 'message' => 'No home information found for this user.']);
+        // Return success with null when no home info exists (valid state)
+        echo json_encode([
+            'success' => true, 
+            'home_info' => null, 
+            'message' => 'No home information found.'
+        ]);
     }
 
 } catch (PDOException $e) {
-    error_log("Get Home Info Database Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Failed to retrieve home information. Database error: ' . $e->getMessage()]);
+    error_log("Database error in get_home_info.php: " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database error occurred.']);
 } catch (Exception $e) {
-    error_log("Get Home Info General Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
+    error_log("Unexpected error in get_home_info.php: " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'An unexpected error occurred.']);
 }
-?>

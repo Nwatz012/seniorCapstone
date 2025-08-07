@@ -22,6 +22,8 @@
     margin-bottom: var(--spacing-2xl);
 }
 
+
+
 /* --- Room Navigation (rely on parent sidebar for scrolling) --- */
 .room-nav {
     list-style: none;

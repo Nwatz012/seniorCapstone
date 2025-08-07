@@ -644,6 +644,83 @@ textarea:focus {
     border: 0;
 }
 
+
+/* In custom-styles.css */
+
+/* In custom-styles.css */
+
+/* Keep the existing .info-row rules as they are for standard rows */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; /* Keep this for standard rows */
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid var(--gray-light);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.info-label {
+    font-weight: 500;
+    color: var(--text-medium);
+    flex-basis: 35%; /* Keep for standard rows */
+    flex-shrink: 0;
+    margin-bottom: 0;
+}
+
+.info-row .info-value {
+    text-align: right; /* Keep for standard rows */
+    flex-basis: calc(65% - var(--spacing-md)); /* Keep for standard rows */
+    flex-grow: 1;
+    line-height: 1.4;
+}
+
+/* --- NEW STYLE: For rows where label is on one line and value is below --- */
+.info-row.info-row-stacked { /* New class to apply to the HTML element */
+    flex-direction: column; /* Stack children vertically */
+    align-items: flex-start; /* Align content to the left (top for column direction) */
+    gap: var(--spacing-xs); /* Smaller gap between label and value when stacked */
+}
+
+.info-row.info-row-stacked .info-label {
+    width: 100%; /* Make label take full width */
+    flex-basis: auto; /* Override previous flex-basis */
+    margin-bottom: 0; /* No margin needed if next item is directly below */
+}
+
+.info-row.info-row-stacked .info-value {
+    width: 100%; /* Make value take full width */
+    text-align: left; /* Align value to the left, below the label */
+    flex-basis: auto; /* Override previous flex-basis */
+    /* You might want some indentation for the value */
+    padding-left: var(--spacing-md); /* Indent the value */
+}
+
+/* Continue with other existing styles like .edit-btn */
+.edit-btn {
+    background: var(--green-secondary);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-xs);
+    margin-top: var(--spacing-xl); /* Adjusted margin for separation */
+    transition: all 0.3s ease;
+}
+
+
+
+
+
+
+
 /* High contrast mode support */
 @media (prefers-contrast: high) {
     :root {

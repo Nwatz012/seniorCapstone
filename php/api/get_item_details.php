@@ -1,61 +1,60 @@
 <?php
 // php/get_item_details.php
+// API endpoint to retrieve detailed information for a specific inventory item
 
-// Start a session to access user_id
 session_start();
-
-// Set content type to JSON
 header('Content-Type: application/json');
 
-// Include the database connection file
+// Database connection - path relative from php/ to property_inventory/config/
 require_once '../config/property_inventory.php'; 
 
-// Check if a user is logged in
+// Authentication check
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'User not logged in.']);
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'Authentication required.']);
     exit();
 }
 
-$userId = $_SESSION['user_id'];
-$itemId = $_GET['item_id'] ?? null; // Get item_id from GET request
+// Input validation
+$userId = (int) $_SESSION['user_id'];
+$itemId = filter_input(INPUT_GET, 'item_id', FILTER_VALIDATE_INT);
 
-// Validate item_id
-if (!isset($itemId) || !is_numeric($itemId)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid item ID provided.']);
+if (!$itemId) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Valid item ID required.']);
     exit();
 }
-
-$item = null;
 
 try {
-    // Prepare SQL to fetch a single item's details for the logged-in user
-    // Include created_at and updated_at for display on item details page
-    $stmt = $pdo->prepare("SELECT i.item_id, i.item_name, i.quantity, i.room, i.replacement_cost AS value, 
-                                 i.category_id, c.name AS category_name, 
-                                 i.created_at, i.updated_at 
-                           FROM items i
-                           JOIN categories c ON i.category_id = c.category_id
-                           WHERE i.item_id = :item_id AND i.user_id = :user_id");
-    $stmt->bindParam(':item_id', $itemId, PDO::PARAM_INT);
-    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-    $stmt->execute();
-    
-    // Fetch the single matching item
+    // Fetch item details with category information
+    $stmt = $pdo->prepare(
+        "SELECT i.item_id, i.item_name, i.quantity, i.room, 
+                i.replacement_cost AS value, i.category_id, c.name AS category_name, 
+                i.created_at, i.updated_at 
+         FROM items i
+         JOIN categories c ON i.category_id = c.category_id
+         WHERE i.item_id = :item_id AND i.user_id = :user_id"
+    );
+    $stmt->execute([':item_id' => $itemId, ':user_id' => $userId]);
     $item = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($item) {
+        // Format timestamps for better client consumption
+        $item['created_at'] = date('Y-m-d H:i:s', strtotime($item['created_at']));
+        $item['updated_at'] = date('Y-m-d H:i:s', strtotime($item['updated_at']));
+        
         echo json_encode(['success' => true, 'item' => $item]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Item not found or does not belong to the current user.']);
+        http_response_code(404);
+        echo json_encode(['success' => false, 'message' => 'Item not found or access denied.']);
     }
 
 } catch (PDOException $e) {
-    // Log database errors
-    error_log("Get Item Details Database Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Failed to retrieve item details. Database error: ' . $e->getMessage()]);
+    error_log("Database error in get_item_details.php: " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database error occurred.']);
 } catch (Exception $e) {
-    // Log any other unexpected errors
-    error_log("Get Item Details General Error: " . $e->getMessage());
+    error_log("Unexpected error in get_item_details.php: " . $e->getMessage());
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'An unexpected error occurred.']);
 }
-?>

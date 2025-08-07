@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Basic HTML5 setup -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rooms - Home Inventory</title>
   <meta name="description" content="Manage your home inventory with our comprehensive dashboard. Track items, values, and room-by-room organization.">
   
-  <!-- Preconnect for performance -->
+  <!-- Performance optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
-  <!-- Import Google Fonts -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Tailwind config remains here as it's part of the Tailwind setup -->
+  <!-- Tailwind Configuration -->
   <script>
     tailwind.config = {
       theme: {
@@ -55,21 +56,22 @@
     }
   </script>
   
-  <!-- Link CSS files: custom-styles.css then rooms.css -->
+  <!-- Custom Stylesheets -->
   <link rel="stylesheet" href="css/custom-styles.css" /> 
   <link rel="stylesheet" href="css/rooms.css" /> 
 
 </head>
 
 <body class="bg-gray-50 font-inter min-h-screen">
-  <!-- Skip to main content for accessibility -->
+  <!-- Accessibility: Skip to main content -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
     Skip to main content
   </a>
 
   <div class="app-container">
-<!-- Global Header (This is the section to update) -->
+    <!-- Application Header -->
     <header class="main-header" role="banner">
+      <!-- Logo and App Title -->
       <div class="flex items-center gap-4">
         <h1 class="app-title">
           <span role="img" aria-label="House">🏡</span>
@@ -77,37 +79,36 @@
         </h1>
       </div>
 
-      <!-- Nav Bar (Keep your existing nav links for rooms.html here, e.g., 'Inventory' active) -->
+      <!-- Main Navigation -->
       <nav class="main-nav" role="navigation" aria-label="Main navigation">
         <a href="dashboard.html">Dashboard</a>
-        <a href="rooms.html" aria-current="page">Inventory</a> <!-- Assuming Inventory is active on this page -->
+        <a href="rooms.html" aria-current="page">Inventory</a>
         <a href="reports.html">Reports</a>
         <a href="itemDetails.html">Item Details</a>
       </nav>
 
-      <!-- MODIFIED: Header Right Section with smaller, stacked buttons -->
-      <div class="header-right flex flex-col items-end"> <!-- Added flex-col and items-end -->
-        <span class="hidden sm:inline text-sm mb-1" aria-label="Current user"> <!-- Added mb-1 for spacing -->
-          Welcome, <strong id="current-user-name">John Doe</strong> <!-- User ID here -->
+      <!-- User Controls -->
+      <div class="header-right flex flex-col items-end">
+        <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
+          Welcome, <strong id="current-user-name">John Doe</strong>
         </span>
-        <div class="flex space-x-2"> <!-- New div to contain buttons and maintain spacing -->
-        <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
+        <div class="flex space-x-2">
+          <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
             Profile
-        </a>
+          </a>
           <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
             Logout
           </button>
         </div>
       </div>
-      <!-- END MODIFIED -->
     </header>
 
-    <!-- Message box now relies on custom-styles.css for most styling -->
+    <!-- Flash Message Container -->
     <div id="message-box" class="hidden"></div>
 
-    <!-- Main Layout -->
+    <!-- Main Layout: Sidebar + Content -->
     <div class="main-layout">
-      <!-- Sidebar -->
+      <!-- Sidebar: Home Info + Room Navigation -->
       <aside class="sidebar" role="complementary" aria-label="Home information and room navigation">
         <!-- Home Information Section -->
         <section class="sidebar-section">
@@ -134,10 +135,6 @@
               <span class="info-label">Roof Age:</span>
               <span class="info-value" id="home-roof-age">N/A</span>
             </div>
-
-
-
-
             
             <button class="edit-btn" id="edit-home-info-btn" type="button" aria-label="Edit home information">
               Edit Home Info
@@ -145,25 +142,22 @@
           </div>
         </section>
 
-        <!-- Room Navigation Section (will be dynamically populated) -->
+        <!-- Room Navigation Section -->
         <section class="sidebar-section">
           <h2 class="sidebar-title">Rooms</h2>
           <nav aria-label="Room navigation">
             <ul class="room-nav" id="room-list">
-              <!-- Room links will be inserted here by JavaScript -->
+              <!-- Room links populated by JavaScript -->
             </ul>
           </nav>
-          <button class="add-room-btn" id="add-custom-room-btn" type="button" aria-label="Add a new custom room">
-            + Add Custom Room
-          </button>
         </section>
       </aside>
 
-      <!-- Main Content -->
+      <!-- Main Content Area -->
       <main class="content-area" id="main-content" role="main">
-        <!-- Content Header -->
+        <!-- Page Header with Search and Add Button -->
         <div class="content-header">
-          <h1 class="page-title" id="current-room-title">All Items</h1> <!-- Default title -->
+          <h1 class="page-title" id="current-room-title">All Items</h1>
           <div class="action-buttons">
             <div class="search-container">
               <label for="item-search" class="sr-only">Search items</label>
@@ -181,7 +175,7 @@
           </div>
         </div>
 
-        <!-- Room Summary (moved to top of content-area) -->
+        <!-- Room Statistics Summary -->
         <div class="room-summary" id="room-summary" style="display: none;">
           <div class="summary-stats">
             <div class="stat-item">
@@ -199,14 +193,14 @@
           </div>
         </div>
 
-        <!-- Content Body -->
+        <!-- Items Display Area -->
         <div class="content-body">
-          <!-- Items Grid (will be dynamically populated) -->
+          <!-- Items Grid - populated by JavaScript -->
           <div class="inventory-grid" id="inventory-grid">
-            <!-- Item cards will be inserted here by JavaScript -->
+            <!-- Item cards inserted here dynamically -->
           </div>
 
-          <!-- Empty State (shown when no items exist for the current room) -->
+          <!-- Empty State Message -->
           <div class="empty-state" id="empty-state" style="display: none;">
             <div role="img" aria-label="Empty room illustration" class="empty-state-icon">
               📦
@@ -222,8 +216,7 @@
     </div>
   </div>
 
-  <!-- Add Item Modal (reused from dashboard concepts) -->
-  <!-- Removed most Tailwind utility classes, relying on custom-styles.css and new modal-specific classes -->
+  <!-- Add Item Modal -->
   <div id="addItemModal" class="modal-overlay hidden">
     <div class="modal-content animate-fade-in">
       <h3 class="modal-title" id="modal-title">Add New Item</h3>
@@ -241,7 +234,7 @@
             <option value="clothing">Clothing</option>
             <option value="appliances">Appliances</option>
             <option value="jewelry">Jewelry</option>
-            <option value="collectibles">Collect-ibles</option>
+            <option value="collectibles">Collectibles</option>
             <option value="art">Art</option>
             <option value="guns">Guns</option>
             <option value="coins">Coins</option>
@@ -290,12 +283,11 @@
   </div>
 
   <!-- Edit Home Info Modal -->
-  <!-- Removed most Tailwind utility classes, relying on custom-styles.css and new modal-specific classes -->
   <div id="editHomeInfoModal" class="modal-overlay hidden">
     <div class="modal-content animate-fade-in">
       <h3 class="modal-title">Edit Home Information</h3>
       <form id="editHomeInfoForm">
-        <input type="hidden" id="home-id-input"> <!-- Hidden input for home_id -->
+        <input type="hidden" id="home-id-input">
         <div class="form-group">
           <label for="edit-home-address-street">Street Address:</label>
           <input type="text" id="edit-home-address-street" placeholder="e.g., 123 Main St">
@@ -388,8 +380,8 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="js/utils.js"></script>
-  <script src="js/rooms.js"></script>
+  <!-- JavaScript Files -->
+  
+<script src="js/rooms.js" type="module" defer></script>
 </body>
 </html>

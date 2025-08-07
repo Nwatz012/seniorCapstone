@@ -48,10 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements for Login/Register Page
     const loginForm = document.getElementById('loginForm');
     const registrationForm = document.getElementById('registrationForm');
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
     const tabButtons = document.querySelectorAll('.tab-navigation .tab');
     const formTitle = document.getElementById('form-title');
     const formSubtitle = document.getElementById('form-subtitle');
-    const formFeedbackMessage = document.getElementById('form-feedback-message'); // For general form feedback
+    const formFeedbackMessage = document.getElementById('form-feedback-message');
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const backToLoginBtn = document.getElementById('backToLoginBtn');
 
     // Password toggle functionality
     document.querySelectorAll('.password-toggle').forEach(button => {
@@ -60,43 +63,51 @@ document.addEventListener('DOMContentLoaded', () => {
             const passwordInput = document.getElementById(targetId);
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                this.textContent = '🙈'; // Hide icon
+                this.textContent = '🙈';
             } else {
                 passwordInput.type = 'password';
-                this.textContent = '👁'; // Show icon
+                this.textContent = '👁';
             }
         });
     });
+
+    // Function to switch form views
+    function showForm(formId) {
+        const forms = [loginForm, registrationForm, forgotPasswordForm];
+        forms.forEach(form => {
+            if (form) {
+                if (form.id === formId) {
+                    form.classList.remove('hidden');
+                    form.classList.add('active');
+                } else {
+                    form.classList.add('hidden');
+                    form.classList.remove('active');
+                }
+            }
+        });
+    }
 
     // Tab navigation logic
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
             const formType = button.dataset.form;
-
-            // Update active tab styling
+            
             tabButtons.forEach(btn => btn.classList.remove('active', 'text-green-700', 'font-semibold', 'border-b-2', 'border-green-600'));
             tabButtons.forEach(btn => btn.classList.add('text-gray-600', 'hover:text-green-700'));
             button.classList.add('active', 'text-green-700', 'font-semibold', 'border-b-2', 'border-green-600');
             button.classList.remove('text-gray-600', 'hover:text-green-700');
 
-            // Show/hide forms
             if (formType === 'login') {
-                loginForm.classList.add('active');
-                loginForm.classList.remove('hidden');
-                registrationForm.classList.add('hidden');
-                registrationForm.classList.remove('active');
+                showForm('loginForm');
                 formTitle.textContent = 'Welcome Back!';
                 formSubtitle.innerHTML = `Don't have an account? <a href="#" data-toggle="register">Register here</a>`;
             } else {
-                registrationForm.classList.add('active');
-                registrationForm.classList.remove('hidden');
-                loginForm.classList.add('hidden');
-                loginForm.classList.remove('active');
+                showForm('registrationForm');
                 formTitle.textContent = 'Create Your Account';
                 formSubtitle.innerHTML = `Already have an account? <a href="#" data-toggle="login">Sign in here</a>`;
             }
-            clearInlineErrors(); // Clear errors when switching tabs
-            formFeedbackMessage.textContent = ''; // Clear general feedback
+            clearInlineErrors();
+            formFeedbackMessage.textContent = '';
         });
     });
 
@@ -107,11 +118,75 @@ document.addEventListener('DOMContentLoaded', () => {
             const toggleType = event.target.dataset.toggle;
             const targetButton = document.querySelector(`.tab-navigation button[data-form="${toggleType}"]`);
             if (targetButton) {
-                targetButton.click(); // Simulate click on the tab button
+                targetButton.click();
             }
         }
     });
 
+    // Handle forgot password link click
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            showForm('forgotPasswordForm');
+            formTitle.textContent = 'Forgot Password?';
+            formSubtitle.textContent = 'We\'ll send a reset link to your email.';
+            tabButtons.forEach(btn => btn.classList.remove('active', 'text-green-700', 'font-semibold', 'border-b-2', 'border-green-600'));
+            clearInlineErrors();
+            formFeedbackMessage.textContent = '';
+        });
+    }
+
+    // Handle "Back to Login" button click
+    if (backToLoginBtn) {
+        backToLoginBtn.addEventListener('click', () => {
+            showForm('loginForm');
+            formTitle.textContent = 'Welcome Back!';
+            formSubtitle.innerHTML = `Don't have an account? <a href="#" data-toggle="register">Register here</a>`;
+            const loginTabButton = document.querySelector(`.tab-navigation button[data-form="login"]`);
+            if (loginTabButton) {
+                loginTabButton.classList.add('active', 'text-green-700', 'font-semibold', 'border-b-2', 'border-green-600');
+            }
+            clearInlineErrors();
+            formFeedbackMessage.textContent = '';
+        });
+    }
+
+    // Handle forgot password form submission
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            clearInlineErrors();
+
+            const email = document.getElementById('forgotEmail').value.trim();
+
+            if (!email) {
+                showInlineError('forgotEmail', 'Email is required.');
+                return;
+            }
+
+            try {
+                const response = await fetch('php/auth/request_password_reset.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    forgotPasswordForm.classList.add('hidden');
+                    forgotPasswordForm.classList.remove('active');
+                    formFeedbackMessage.textContent = result.message;
+                } else {
+                    showMessage(result.message || 'Failed to send password reset link.', 'error');
+                }
+            } catch (error) {
+                console.error('Network error during password reset request:', error);
+                showMessage('Network error. Could not connect to server.', 'error');
+            }
+        });
+    }
+    
     // Login form submission handler
     loginForm.addEventListener('submit', async function(event) {
         event.preventDefault();
@@ -169,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInlineErrors();
         formFeedbackMessage.textContent = '';
 
-        // Get values for new name fields
         const firstName = document.getElementById('firstName').value.trim();
         const lastName = document.getElementById('lastName').value.trim();
         const email = document.getElementById('registerEmail').value.trim();
@@ -178,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let isValid = true;
 
-        // Client-side validation for new name fields
         if (!firstName) {
             showInlineError('firstName', 'First Name is required.');
             isValid = false;
@@ -195,13 +268,34 @@ document.addEventListener('DOMContentLoaded', () => {
             showInlineError('registerEmail', 'Please enter a valid email address.');
             isValid = false;
         }
+
         if (!password) {
             showInlineError('registerPassword', 'Password is required.');
             isValid = false;
-        } else if (password.length < 8 || !/[0-9]/.test(password) || !/[a-zA-Z]/.test(password)) {
-            showInlineError('registerPassword', 'Password must be at least 8 characters and contain numbers and letters.');
-            isValid = false;
+        } else {
+            const passwordErrors = [];
+            if (password.length < 8) {
+                passwordErrors.push("Password must be at least 8 characters long.");
+            }
+            if (!/[A-Z]/.test(password)) {
+                passwordErrors.push("Password must contain at least one uppercase letter.");
+            }
+            if (!/[a-z]/.test(password)) {
+                passwordErrors.push("Password must contain at least one lowercase letter.");
+            }
+            if (!/[0-9]/.test(password)) {
+                passwordErrors.push("Password must contain at least one number.");
+            }
+            if (!/[!@$%]/.test(password)) {
+                passwordErrors.push("Password must contain at least one special character (!@$%).");
+            }
+
+            if (passwordErrors.length > 0) {
+                showInlineError('registerPassword', passwordErrors.join(' '));
+                isValid = false;
+            }
         }
+        
         if (!confirmPassword) {
             showInlineError('confirmPassword', 'Confirm Password is required.');
             isValid = false;
@@ -209,13 +303,12 @@ document.addEventListener('DOMContentLoaded', () => {
             showInlineError('confirmPassword', 'Passwords do not match.');
             isValid = false;
         }
-
+        
         if (!isValid) {
             showMessage('Please correct the errors in the form.', 'error');
             return;
         }
 
-        // Prepare data to send to PHP, including new name fields
         const userData = {
             firstName: firstName,
             lastName: lastName,
@@ -233,13 +326,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok && result.success) {
                 showMessage(result.message, 'success');
-                // Optionally redirect to login page after successful registration
                 setTimeout(() => {
-                    // Switch to login tab after successful registration
                     const loginTabButton = document.querySelector('.tab-navigation button[data-form="login"]');
                     if (loginTabButton) {
                         loginTabButton.click();
-                        document.getElementById('loginEmail').value = email; // Pre-fill email
+                        document.getElementById('loginEmail').value = email;
                     }
                     formFeedbackMessage.textContent = 'Registration successful! Please log in.';
                     formFeedbackMessage.classList.add('success');
@@ -252,4 +343,50 @@ document.addEventListener('DOMContentLoaded', () => {
             showMessage('Network error. Could not connect to server.', 'error');
         }
     });
-}); // End DOMContentLoaded
+
+    // Dynamic Password Feedback Logic
+    const passwordInput = document.getElementById('registerPassword');
+    const requirementsList = document.getElementById('password-requirements');
+
+    const updateRequirement = (elementId, isValid) => {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        if (isValid) {
+            element.classList.add('text-green-500');
+            element.classList.remove('text-red-500');
+        } else {
+            element.classList.remove('text-green-500');
+            element.classList.add('text-red-500');
+        }
+    };
+
+    if (passwordInput && requirementsList) {
+        passwordInput.addEventListener('focus', () => {
+            requirementsList.classList.remove('hidden');
+        });
+
+        passwordInput.addEventListener('blur', () => {
+            const password = passwordInput.value;
+            const allRequirementsMet = 
+                password.length >= 8 &&
+                /[A-Z]/.test(password) &&
+                /[a-z]/.test(password) &&
+                /[0-9]/.test(password) &&
+                /[!@$%]/.test(password);
+
+            if (allRequirementsMet) {
+                requirementsList.classList.add('hidden');
+            }
+        });
+
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+
+            updateRequirement('req-length', password.length >= 8);
+            updateRequirement('req-uppercase', /[A-Z]/.test(password));
+            updateRequirement('req-lowercase', /[a-z]/.test(password));
+            updateRequirement('req-number', /[0-9]/.test(password));
+            updateRequirement('req-special', /[!@$%]/.test(password));
+        });
+    }
+});

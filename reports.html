@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding and viewport settings -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports - Home Inventory</title>
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="css/dashboard.css">
+    
+    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Select2 Plugin for Enhanced Dropdown -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             theme: {
@@ -51,9 +59,12 @@
 </head>
 <body class="bg-gray-50 font-inter min-h-screen">
 
+    <!-- Main Application Container -->
     <div class="app-container">
 
+        <!-- Application Header -->
         <header class="main-header" role="banner">
+            <!-- Logo and App Title -->
             <div class="flex items-center gap-4">
                 <h1 class="app-title">
                     <span role="img" aria-label="House">🏡</span>
@@ -61,20 +72,25 @@
                 </h1>
             </div>
 
+            <!-- Main Navigation Menu -->
             <nav class="main-nav" role="navigation" aria-label="Main navigation">
                 <a href="dashboard.html">Dashboard</a>
                 <a href="rooms.html">Inventory</a>
-                <a href="reports.html" aria-current="page">Reports</a> <a href="itemDetails.html">Item Details</a>
+                <a href="reports.html" aria-current="page">Reports</a> 
+                <a href="itemDetails.html">Item Details</a>
             </nav>
 
+            <!-- User Information and Controls -->
             <div class="header-right flex flex-col items-end">
+                <!-- Welcome Message -->
                 <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
                     Welcome, <strong id="current-user-name">John Doe</strong>
                 </span>
+                <!-- User Action Buttons -->
                 <div class="flex space-x-2">
-                <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
-                            Profile
-                        </a>
+                    <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
+                        Profile
+                    </a>
                     <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
                         Logout
                     </button>
@@ -82,18 +98,28 @@
             </div>
         </header>
 
+        <!-- Flash Message / Toast Notification -->
         <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
 
+        <!-- Main Content Layout -->
         <div class="main-layout flex-grow p-6 md:p-8 lg:p-10">
+            <!-- Main Content Area -->
             <main class="content-area" id="main-content" role="main">
+                <!-- Page Title -->
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Inventory Reports</h2>
 
+                <!-- PDF Report Generation Section -->
                 <section class="bg-white p-6 rounded-lg shadow-md mb-8 animate-fade-in">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Generate PDF Reports</h3>
+                    <!-- Report Description -->
                     <p class="text-gray-700 mb-6">Click the button below to generate a comprehensive PDF report of all your inventory items, organized by room.</p>
                     
+                    <!-- PDF Download Button -->
                     <button id="downloadPdfReportBtn" class="btn-primary w-full sm:w-auto px-6 py-3">
-                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <!-- Download Icon -->
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
                         Download Full Inventory Report (PDF)
                     </button>
                 </section>
@@ -102,12 +128,22 @@
         </div>
     </div>
 
-    <script src="js/utils.js"></script> <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- JavaScript Dependencies -->
+    <!-- Utility Functions -->
+    <script src="js/utils.js"></script> 
+    
+    <!-- jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- Select2 Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     
+    <!-- Dashboard JavaScript -->
     <script src="js/dashboard.js"></script> 
 
-    <script src="js/reports.js"></script> 
-
+    <!-- Page-Specific JavaScript -->
+    <!-- In reports.html, you only need to load the main script file -->
+    <script src="js/reports.js" type="module" defer></script>
+    <script src="js/auth.js" type="module" defer></script>
 </body>
 </html>

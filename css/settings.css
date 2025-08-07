@@ -1,33 +1,55 @@
 /* public/css/settings.css */
 
-/* Settings Page Layout */
+/* REMOVED: .main-layout styles that were causing the padding issue */
+/* The main-layout now uses the same standardized structure as dashboard */
+
+/* Settings-specific layout styles */
+
+/* --- Global Header Styles (shared across pages) --- */
+.main-header {
+    display: flex;
+    justify-content: space-between; /* Distribute space between title and nav/actions */
+    align-items: center;
+    background: linear-gradient(135deg, var(--green-secondary), var(--green-primary)); /* Custom gradient */
+    color: var(--white);
+    padding: var(--spacing-lg) var(--spacing-2xl); /* Custom padding */
+    flex-wrap: wrap; /* Allow items to wrap if space is constrained */
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; /* Only top corners rounded */
+    gap: var(--spacing-md); /* Gap between direct children of the header */
+    
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick to the top of the app-container's scrollable area */
+    z-index: 100; /* Ensure it stays above scrolling content */
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+
 .settings-grid {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg); /* Using variable for gap */
+    gap: var(--spacing-lg);
 }
 
-@media (min-width: 768px) { /* md breakpoint for Tailwind */
+@media (min-width: 768px) {
     .settings-grid {
         flex-direction: row;
     }
 
     .settings-grid .sidebar {
-        width: 25%; /* Equivalent to Tailwind's md:w-1/4 */
+        width: 25%;
     }
 
     .settings-grid .main-content {
-        flex: 1; /* Equivalent to Tailwind's flex-1 */
+        flex: 1;
     }
 }
 
-
 /* Sidebar Navigation */
 .sidebar {
-    background-color: var(--white); /* Using variable */
-    padding: var(--spacing-md); /* Using variable */
-    border-radius: var(--border-radius); /* Using variable */
-    box-shadow: var(--shadow-sm); /* Using variable */
+    background-color: var(--white);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
 }
 
 .sidebar-menu {
@@ -37,89 +59,66 @@
 }
 
 .sidebar-menu li {
-    margin-bottom: var(--spacing-xs); /* Using variable */
+    margin-bottom: var(--spacing-xs);
 }
 
 .sidebar-menu a {
     display: block;
-    padding: var(--spacing-xs) var(--spacing-sm); /* Using variables */
-    border-radius: var(--border-radius); /* Using variable */
-    color: var(--text-medium); /* Using variable */
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    color: var(--text-medium);
     text-decoration: none;
     transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
 }
 
 .sidebar-menu a:hover {
-    background-color: var(--gray-light); /* Using variable */
+    background-color: var(--gray-light);
 }
 
 .sidebar-menu a.active,
-.sidebar-menu a[aria-current="page"] { /* Added aria-current for consistency with dashboard */
-    background-color: var(--green-accent); /* Using variable */
-    color: var(--green-primary); /* Using variable */
-    font-weight: 600; /* semi-bold */
+.sidebar-menu a[aria-current="page"] {
+    background-color: var(--green-accent);
+    color: var(--green-primary);
+    font-weight: 600;
 }
 
-/* Main Content Sections */
-.main-content {
-    background-color: var(--white); /* Using variable */
-    padding: var(--spacing-lg); /* Using variable */
-    border-radius: var(--border-radius); /* Using variable */
-    box-shadow: var(--shadow-sm); /* Using variable */
-}
 
-.section h2 {
-    color: var(--text-dark); /* Using variable */
-    margin-bottom: var(--spacing-md); /* Using variable */
-    padding-bottom: var(--spacing-xs); /* Using variable */
-    border-bottom: 1px solid var(--gray-border); /* Using variable */
-}
-
-/* Profile Header */
-.profile-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: var(--spacing-lg); /* Using variable */
-}
 
 .profile-avatar {
-    background-color: var(--green-primary); /* Using variable */
-    color: var(--white); /* Using variable */
+    background-color: var(--green-primary);
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
     width: 4rem;
     height: 4rem;
-    border-radius: 9999px; /* rounded-full */
-    font-size: var(--font-size-xl); /* Using variable */
-    font-weight: 700; /* font-bold */
-    margin-right: var(--spacing-md); /* Using variable */
+    border-radius: 9999px;
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin-right: var(--spacing-md);
 }
 
 .profile-info h3 {
-    font-size: var(--font-size-lg); /* Using variable */
-    font-weight: 600; /* font-semibold */
+    font-size: var(--font-size-lg);
+    font-weight: 600;
 }
 
 .profile-info p {
-    color: var(--text-medium); /* Using variable */
-    font-size: var(--font-size-sm); /* Using variable */
+    color: var(--text-medium);
+    font-size: var(--font-size-sm);
 }
 
-/* Form Group & Validation Message styles are now in custom-styles.css */
-
-/* Toggle Switch Styles (Specific to settings, not general) */
+/* Toggle Switch Styles */
 .toggle-switch {
     position: relative;
-    display: inline-flex; /* Use inline-flex to better align items */
+    display: inline-flex;
     align-items: center;
     cursor: pointer;
-    width: 2.75rem; /* w-11 */
-    height: 1.5rem; /* h-6 */
+    width: 2.75rem;
+    height: 1.5rem;
 }
 
 .toggle-switch input {
-    /* sr-only is crucial for hiding the actual checkbox */
     position: absolute;
     width: 1px;
     height: 1px;
@@ -131,69 +130,69 @@
     border: 0;
 }
 
-.toggle-switch div { /* This is the visual 'slider' track */
-    width: 2.75rem; /* w-11 */
-    height: 1.5rem; /* h-6 */
-    background-color: var(--gray-border); /* using variable */
-    border-radius: 1.5rem; /* rounded-full */
+.toggle-switch div {
+    width: 2.75rem;
+    height: 1.5rem;
+    background-color: var(--gray-border);
+    border-radius: 1.5rem;
     transition: background-color 0.4s ease;
-    position: relative; /* For the 'after' pseudo-element */
+    position: relative;
 }
 
-.toggle-switch div::after { /* This is the visual 'thumb' */
+.toggle-switch div::after {
     content: '';
     position: absolute;
-    top: 0.125rem; /* 2px */
-    left: 0.125rem; /* 2px */
-    width: 1.25rem; /* h-5 */
-    height: 1.25rem; /* w-5 */
-    background-color: var(--white); /* using variable */
+    top: 0.125rem;
+    left: 0.125rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: var(--white);
     border-radius: 50%;
     transition: transform 0.4s ease;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* subtle shadow for thumb */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .toggle-switch input:checked + div {
-    background-color: var(--green-primary); /* Using variable for checked state */
+    background-color: var(--green-primary);
 }
 
 .toggle-switch input:checked + div::after {
-    transform: translateX(1.25rem); /* Move thumb to the right (20px for w-11, h-5) */
+    transform: translateX(1.25rem);
 }
 
 .toggle-switch input:focus + div {
-    outline: 2px solid var(--green-accent); /* Focus ring from custom-styles */
+    outline: 2px solid var(--green-accent);
     outline-offset: 2px;
 }
 
-/* Specific Section Banners/Groups (using variables) */
+/* Specific Section Banners/Groups */
 .danger-zone {
-    background-color: #fef2f2; /* red-50 */
-    border: 1px solid #fee2e2; /* border-red-200 */
-    color: #b91c1c; /* text-red-800 */
-    padding: var(--spacing-md); /* Using variable */
-    border-radius: var(--border-radius); /* Using variable */
-    margin-bottom: var(--spacing-lg); /* Using variable */
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #b91c1c;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-lg);
 }
 
 .danger-zone h3 {
-    font-size: var(--font-size-lg); /* Using variable */
-    font-weight: 600; /* font-semibold */
-    margin-bottom: var(--spacing-sm); /* Using variable */
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
 }
 
 .danger-zone p {
-    font-size: var(--font-size-sm); /* Using variable */
+    font-size: var(--font-size-sm);
 }
 
 .logout-section {
-    background-color: var(--gray-light); /* Using variable */
-    padding: var(--spacing-md); /* Using variable */
-    border-radius: var(--border-radius); /* Using variable */
+    background-color: var(--gray-light);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
 }
 
 .logout-section h3 {
-    font-size: var(--font-size-lg); /* Using variable */
-    font-weight: 600; /* font-semibold */
-    margin-bottom: var(--spacing-sm); /* Using variable */
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
 }

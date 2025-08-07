@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login / Register - Home Inventory</title>
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tailwind config remains here as it's part of the Tailwind setup -->
   <script>
     tailwind.config = {
       theme: {
@@ -24,71 +25,71 @@
       }
     }
   </script>
-  <!-- Load dashboard.css first, as it imports Tailwind and custom-styles.css -->
+
+  <!-- External Styles -->
   <link rel="stylesheet" href="css/dashboard.css" /> 
-  <!-- Then load login.css for page-specific styles that might override -->
   <link rel="stylesheet" href="css/login.css" /> 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
+
 <body class="bg-gray-50 font-inter min-h-screen">
   <div class="app-container">
+
+    <!-- Global Toast Message Box -->
     <div id="message-box" class="hidden"></div>
 
+    <!-- Site Header -->
     <header class="main-header" role="banner">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center">
         <h1 class="app-title">
           <span role="img" aria-label="House">🏡</span>
           Home Inventory
         </h1>
       </div>
 
+      <!-- Guest Header Message -->
       <div class="header-right">
         <span class="text-sm sm:inline hidden" aria-label="Current user">
           Welcome, <strong>Guest</strong>
         </span>
-        <button class="header-profile-btn" type="button" aria-label="View profile">
-          Profile
-        </button>
-        <button class="header-logout-btn" type="button" aria-label="Sign out">
-          Logout
-        </button>
       </div>
     </header>
 
-    <div id="message-box" class="hidden"></div> <!-- Message box for feedback -->
-
+    <!-- Main Layout Container -->
     <div class="main-layout">
-      <!-- Left Panel - Marketing Content -->
+
+      <!-- Left Panel: App Description & Features -->
       <div class="left-panel">
         <div class="hero-content">
           <h2>Protect What Matters</h2>
-          <p>Organize your personal property inventory with professional-grade tools designed for insurance documentation and peace of mind.</p>
-          
+          <p>Organize your personal property inventory with tools designed for home inventory documentation and peace of mind.</p>
           <ul class="feature-list">
             <li>Photo documentation</li>
-            <li>Professional PDF reports</li>
-            <li>Insurance claim integration</li>
+            <li>PDF Reports</li>
             <li>Room-by-room organization</li>
           </ul>
         </div>
       </div>
-      
-      <!-- Center Panel - Login/Registration Forms -->
+
+      <!-- Right Panel: Forms Section -->
       <div class="form-section">
+
+        <!-- Tab Switcher and Header Message -->
         <div class="form-header">
-          <!-- Toggle buttons for Login/Register -->
           <div class="tab-navigation">
             <button class="tab active" data-form="login">Login</button>
             <button class="tab" data-form="register">Register</button>
           </div>
           <h1 id="form-title" class="form-title">Welcome Back!</h1>
-          <p id="form-subtitle" class="form-subtitle">Don't have an account? <a href="#" data-toggle="register">Register here</a></p>
+          <p id="form-subtitle" class="form-subtitle">
+            Don't have an account? 
+            <a href="#" data-toggle="register">Register here</a>
+          </p>
         </div>
-        
-        <div id="form-feedback-message" class="form-message">
-          <!-- Success/Error messages appear here -->
-        </div>
-        
+
+        <!-- Dynamic Feedback Message Box -->
+        <div id="form-feedback-message" class="form-message"></div>
+
         <!-- Login Form -->
         <form id="loginForm" class="form-content active">
           <div class="form-group">
@@ -96,6 +97,7 @@
             <input type="email" id="loginEmail" class="form-input" placeholder="your.email@example.com" required>
             <div id="loginEmailError" class="error-message"></div>
           </div>
+
           <div class="form-group">
             <label for="loginPassword" class="form-label">Password</label>
             <div class="password-container">
@@ -103,21 +105,20 @@
               <button type="button" class="password-toggle" data-target="loginPassword">👁</button>
             </div>
             <div id="loginPasswordError" class="error-message"></div>
-            <p class="link-text"><a href="#">Forgot Password?</a></p>
+            <p class="link-text"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
           </div>
+
           <button type="submit" class="submit-btn">Login</button>
         </form>
 
         <!-- Registration Form -->
         <form id="registrationForm" class="form-content hidden">
-          <!-- NEW: First Name Field -->
           <div class="form-group">
             <label for="firstName" class="form-label">First Name <span class="required">*</span></label>
             <input type="text" id="firstName" class="form-input" placeholder="Enter your first name" required>
             <div id="firstNameError" class="error-message"></div>
           </div>
-          
-          <!-- NEW: Last Name Field -->
+
           <div class="form-group">
             <label for="lastName" class="form-label">Last Name <span class="required">*</span></label>
             <input type="text" id="lastName" class="form-input" placeholder="Enter your last name" required>
@@ -129,17 +130,30 @@
             <input type="email" id="registerEmail" class="form-input" placeholder="Enter your email address" required>
             <div id="registerEmailError" class="error-message"></div>
           </div>
-          
+
+          <!-- Password Creation with Requirements -->
           <div class="form-group">
             <label for="registerPassword" class="form-label">Password <span class="required">*</span></label>
             <div class="password-container">
               <input type="password" id="registerPassword" class="form-input" placeholder="Create a secure password" required>
               <button type="button" class="password-toggle" data-target="registerPassword">👁</button>
             </div>
-            <div class="help-text">Must be at least 8 characters with numbers and letters</div>
             <div id="registerPasswordError" class="error-message"></div>
+
+            <!-- Live password strength feedback -->
+            <div id="password-requirements" class="text-xs mt-2 p-2 rounded hidden">
+              <p class="font-semibold mb-1">Password must contain:</p>
+              <ul class="list-disc list-inside space-y-1">
+                <li id="req-length">At least 8 characters</li>
+                <li id="req-uppercase">At least one uppercase letter</li>
+                <li id="req-lowercase">At least one lowercase letter</li>
+                <li id="req-number">At least one number</li>
+                <li id="req-special">At least one special character (!@$%)</li>
+              </ul>
+            </div>
           </div>
-          
+
+          <!-- Confirm Password -->
           <div class="form-group">
             <label for="confirmPassword" class="form-label">Confirm Password <span class="required">*</span></label>
             <div class="password-container">
@@ -148,27 +162,42 @@
             </div>
             <div id="confirmPasswordError" class="error-message"></div>
           </div>
-          
+
           <button type="submit" class="submit-btn">CREATE ACCOUNT</button>
         </form>
+
+        <!-- Forgot Password Form -->
+        <form id="forgotPasswordForm" class="form-content hidden">
+          <p class="mb-4 text-center">Enter your email address to receive a password reset link.</p>
+          <div class="form-group">
+            <label for="forgotEmail" class="form-label">Email Address</label>
+            <input type="email" id="forgotEmail" class="form-input" placeholder="your.email@example.com" required>
+            <div id="forgotEmailError" class="error-message"></div>
+          </div>
+          <button type="submit" class="submit-btn">Send Reset Link</button>
+          <button type="button" id="backToLoginBtn" class="mt-2 text-sm text-gray-500 hover:text-green-700">Back to Login</button>
+        </form>
       </div>
-      
-      <!-- Right Panel - Trust Signals -->
+
+      <!-- Right Panel: Security & Legal Info -->
       <div class="right-panel">
         <div class="security-badge">
           <h4>🔒 Your Privacy is Important</h4>
-          <p>We protect your personal information and follow industry best practices for data security.</p>
+          <p>We protect your personal information and follow best practices for data security.</p>
         </div>
-        
+
         <div class="security-badge">
           <h4>📋 Terms & Conditions</h4>
           <p>By creating an account, you agree to our Terms of Service and Privacy Policy.</p>
         </div>
       </div>
+
     </div>
-    
-  </div> <!-- Close app-container -->
-<script src="js/utils.js"></script>
-  <script src="js/login_register.js"></script> <!-- Link to new external JavaScript file -->
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/login_register.js"></script>
+  <script src="js/auth.js" type="module" defer></script>
 </body>
 </html>
