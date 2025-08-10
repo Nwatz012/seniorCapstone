@@ -61,24 +61,25 @@
 
     <!-- App Header -->
     <header class="main-header" role="banner">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
         <h1 class="app-title">
           <span role="img" aria-label="House">🏡</span> Home Inventory
         </h1>
       </div>
 
       <!-- Top Navigation -->
-      <nav class="main-nav" role="navigation" aria-label="Main navigation">
-        <a href="dashboard.html" aria-current="page">Dashboard</a>
-        <a href="rooms.html">Inventory</a>
-        <a href="reports.html">Reports</a>
-        <a href="itemDetails.html">Item Details</a>
-      </nav>
+           <nav class="main-nav" role="navigation" aria-label="Main navigation">
+            <a href="dashboard.html" aria-current="page">Dashboard</a>
+            <a href="rooms.html">Inventory</a>
+            <a href="reports.html">Reports</a>
+            <a href="itemDetails.html">Item Details</a>
+            <a href="help.html">Help</a>
+          </nav>
 
       <!-- User Account & Logout -->
       <div class="header-right flex flex-col items-end">
         <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
-          Welcome, <strong id="current-user-name">Guest</strong>
+          Welcome, <strong id="current-user-name"></strong>
         </span>
         <div class="flex space-x-2">
           <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">Profile</a>
@@ -169,7 +170,7 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/utils.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="js/utils.js" type="module"></script>
+  <script src="js/dashboard.js" type="module"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 session_start();
 header('Content-Type: application/json');
 
-require_once '../config/property_inventory.php';
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
 // Ensure only DELETE method is accepted
 if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' && $_SERVER['REQUEST_METHOD'] !== 'POST') {

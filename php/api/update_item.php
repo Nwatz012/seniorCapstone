@@ -4,7 +4,7 @@
 session_start(); // Start session to access user ID
 header('Content-Type: application/json'); // Send JSON response
 
-require_once '../config/property_inventory.php'; // DB connection
+require_once __DIR__ . '/../config/property_inventory.php';// DB connection
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {

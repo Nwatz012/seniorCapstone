@@ -4,14 +4,14 @@
 session_start();
 header('Content-Type: application/json');
 
-require_once '../config/property_inventory.php';
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
 //-------------------------------------------
 // Configuration 
 //-------------------------------------------
 
-$uploadDir = 'C:/xampp/htdocs/property_inventory/uploads/item_photos/';
-$projectWebRootPrefix = '/property_inventory/';
+$uploadDir = '/home/u203657356/domains/propertyinventory.blog/public_html/uploads/item_photos/';
+$projectWebRootPrefix = '/';
 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
 $maxFileSize = 5 * 1024 * 1024; // 5MB

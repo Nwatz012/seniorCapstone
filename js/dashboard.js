@@ -1,35 +1,13 @@
+// public/js/dashboard.js
+
+// Import necessary functions from utils.js
+import { showMessage, showConfirmationModal } from './utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const messageBox = document.getElementById('message-box');
     const logoutButton = document.querySelector('.header-logout-btn'); 
     const currentUserDisplayName = document.getElementById('current-user-name'); // User name display element
-
-    // Utility Functions (kept general for messages)
-    function showMessage(message, type = 'success') {
-        if (!messageBox) {
-            console.error('Message box element not found!');
-            return;
-        }
-        messageBox.textContent = message;
-        messageBox.className = 'hidden'; // Start clean
-
-        if (type === 'success') {
-            messageBox.classList.add('success');
-            messageBox.classList.remove('error');
-        } else if (type === 'error') {
-            messageBox.classList.add('error');
-            messageBox.classList.remove('success');
-        } else {
-            messageBox.classList.remove('success', 'error');
-        }
-        
-        messageBox.classList.remove('hidden'); // Show the message box
-
-        setTimeout(() => {
-            messageBox.classList.add('hidden'); // Hide after 3 seconds
-            messageBox.classList.remove('success', 'error'); 
-        }, 3000);
-    }
 
     // Function to fetch and display the logged-in user's name
     async function fetchAndDisplayUserName() {

@@ -1,6 +1,6 @@
 <?php
 // php/api/generate_inventory_pdf.php
-// Generates PDF inventory report for authenticated users
+// Generates a PDF inventory report and streams it directly to the browser
 
 session_start();
 
@@ -9,7 +9,7 @@ ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 require_once '../../vendor/autoload.php';
-require_once '../config/property_inventory.php';
+require_once __DIR__ . '/../config/property_inventory.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -17,14 +17,11 @@ use Dompdf\Options;
 // Authentication check
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
-    die(json_encode(['success' => false, 'message' => 'Unauthorized access. Please log in.']));
+    die('Unauthorized access. Please log in.');
 }
 
 $userId = (int) $_SESSION['user_id'];
 $userFullName = $_SESSION['user_fullName'] ?? 'N/A';
-
-// Set response header to JSON
-header('Content-Type: application/json');
 
 /**
  * Format room names for display (e.g., "living_room" to "Living Room")
@@ -82,7 +79,7 @@ function generatePdfHeader($userFullName, $homeInfo) {
         <p style="font-size: 11px; text-align: center; color: #777;">No home details found. Please add them in your profile settings.</p>
 <?php
     }
-    return ob_get_clean(); // Return the captured output
+    return ob_get_clean();
 }
 
 /**
@@ -146,13 +143,21 @@ try {
     $stmt->execute([':user_id' => $userId]);
     $homeInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // MODIFIED SQL QUERY to prevent duplicates by using GROUP BY on the item_id.
+    // It also joins the categories table to get the category name.
     $stmt = $pdo->prepare("
-        SELECT i.item_name, i.quantity, i.replacement_cost, r.room_name, c.name AS category_name
+        SELECT 
+            i.item_id, 
+            i.item_name, 
+            i.quantity, 
+            i.replacement_cost, 
+            i.room AS room_name,
+            c.name AS category_name
         FROM items i
-        JOIN rooms r ON i.room = r.room_name
         JOIN categories c ON i.category_id = c.category_id
         WHERE i.user_id = :user_id
-        ORDER BY r.room_name, i.item_name
+        GROUP BY i.item_id
+        ORDER BY i.room, i.item_name
     ");
     $stmt->execute([':user_id' => $userId]);
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -175,32 +180,17 @@ try {
     $dompdf->setPaper('A4', 'portrait');
     $dompdf->render();
 
-    $pdfOutput = $dompdf->output();
-
-    $tempDir = __DIR__ . '/temp_reports/';
-    if (!is_dir($tempDir)) {
-        if (!mkdir($tempDir, 0777, true)) {
-            echo json_encode(['success' => false, 'message' => 'Error: Could not create temporary directory for reports.']);
-            exit;
-        }
-    }
-    
-    $filename = 'inventory_report_' . date('Y-m-d_H-i-s') . '_' . uniqid() . '.pdf';
-    $filePath = $tempDir . $filename;
-    
-    if (file_put_contents($filePath, $pdfOutput) === false) {
-        echo json_encode(['success' => false, 'message' => 'Error: Could not save the PDF file to the server.']);
-        exit;
-    }
-
-    $fileUrl = 'php/api/temp_reports/' . $filename;
-    echo json_encode(['success' => true, 'filePath' => $fileUrl]);
+    // The key change: Send the PDF directly to the browser
+    ob_clean(); // Clears any output buffer before streaming the file
+    $dompdf->stream('inventory_report_' . date('Y-m-d_H-i-s') . '.pdf');
 
 } catch (PDOException $e) {
     error_log("PDF Generation Database Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Error generating report. Please try again later.']);
+    http_response_code(500);
+    die('Error generating report. Database error occurred.');
 } catch (Exception $e) {
     error_log("PDF Generation Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Error generating report. Please try again later.']);
+    http_response_code(500);
+    die('An unexpected error occurred while generating the report.');
 }
 ?>

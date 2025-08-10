@@ -4,17 +4,18 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
-header('Content-Type: application/json');
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Include Composer's autoloader for PHPMailer
-require __DIR__ . '/../../vendor/autoload.php';
+// Corrected paths for manual PHPMailer installation
+// Assumes this file is in php/auth and PHPMailer is in php/api
+require_once __DIR__ . '/../api/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/../api/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/../api/PHPMailer/src/SMTP.php';
 
 
 // Include the database connection file
-require_once '../config/property_inventory.php'; 
+require_once '../config/property_inventory.php';
 
 // Get the raw POST data
 $input = file_get_contents('php://input');
@@ -60,19 +61,19 @@ try {
 
     // Server settings
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com'; 
+    $mail->Host       = 'smtp.hostinger.com'; 
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'homeinventoryapp.nw@gmail.com'; // Your SMTP username (your full email address) ** COME BACK ONCE YOU CREATE THE ONLINE WEB HOST AND MAILER**
-    $mail->Password   = 'Z3r0w@tz'; // Your Gmail App Password
+    $mail->Username   = 'support@propertyinventory.blog'; // Your SMTP username (your full email address) ** COME BACK ONCE YOU CREATE THE ONLINE WEB HOST AND MAILER**
+    $mail->Password   = getenv('MAIL_PASSWORD'); // Your Gmail App Password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 
     // Recipients
-    $mail->setFrom('no-reply@yourdomain.com', 'Home Inventory App');
+    $mail->setFrom('support@propertyinventory.blog', 'Home Inventory App');
     $mail->addAddress($email);
 
     // Content
-    $resetLink = "http://localhost/property_inventory/reset_password.html?token=" . $token; 
+    $resetLink = "https://propertyinventory.blog/reset_password.html?token=" . $token; 
     $mail->isHTML(true);
     $mail->Subject = "Password Reset Request";
     $mail->Body    = "Hello,<br><br>A password reset was requested for your account. Please click the following link to reset your password:<br><br><a href='{$resetLink}'>Reset Password</a><br><br>This link will expire in one hour. If you did not request this, please ignore this email.<br><br>Thank you,<br>Home Inventory Team";

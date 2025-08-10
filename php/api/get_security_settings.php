@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 session_start();
 
 // Include database configuration
-require_once '../config/property_inventory.php'; 
+require_once __DIR__ . '/../config/property_inventory.php';  
 
 // Authentication Check - Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {

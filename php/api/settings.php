@@ -4,21 +4,8 @@
 header('Content-Type: application/json');
 session_start();
 
-// Database configuration
-$dbHost = 'localhost';
-$dbUser = 'root';
-$dbPass = '';
-$dbName = 'property_inventory';
-
-try {
-    $conn = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
-    error_log("DB Connect Error: " . $e->getMessage());
-    exit;
-}
+// Database connection
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
 // Check session user ID
 $userId = $_SESSION['user_id'] ?? null;
@@ -31,7 +18,7 @@ $userId = (int) $userId;
 // Handle GET: Fetch user profile
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'fetchUserData') {
     try {
-        $stmt = $conn->prepare("
+        $stmt = $pdo->prepare("
             SELECT first_name, last_name, email, phone_number, timezone, member_since, last_login
             FROM users
             WHERE user_id = :userId
@@ -77,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $timezone  = $data['timezone'] ?? 'America/New_York';
 
     try {
-        $stmt = $conn->prepare("
+        $stmt = $pdo->prepare("
             UPDATE users
             SET first_name = :first_name,
                 last_name = :last_name,
@@ -111,5 +98,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 //  Invalid request method
 echo json_encode(['success' => false, 'message' => 'Unsupported request method.']);
-$conn = null;
+$pdo = null;
 ?>

@@ -5,11 +5,11 @@
 session_start();
 header('Content-Type: application/json');
 
-require_once '../config/property_inventory.php';
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
 // Configuration - move to config file in production
-define('UPLOAD_BASE_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'uploads');
-define('WEB_PATH_PREFIX', '/property_inventory/');
+define('UPLOAD_BASE_PATH', '/home/u203657356/domains/propertyinventory.blog/public_html/uploads');
+define('WEB_PATH_PREFIX', '/');
 
 // Ensure only DELETE/POST method is accepted
 if (!in_array($_SERVER['REQUEST_METHOD'], ['DELETE', 'POST'])) {

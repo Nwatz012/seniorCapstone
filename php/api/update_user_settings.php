@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../config/property_inventory.php';
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
 $response = [
     'success' => false,

@@ -5,7 +5,7 @@ header('Content-Type: application/json');  // Tell client to expect JSON respons
 session_start();                           // Start session to access logged-in user info
 
 // Include database connection file (defines $pdo)
-require_once '../config/property_inventory.php'; 
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
 // Check if user is logged in, otherwise deny access
 if (!isset($_SESSION['user_id'])) {

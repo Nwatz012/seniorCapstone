@@ -10,20 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-// Database Configuration
-$host = 'localhost';
-$dbname = 'inventory_db';
-$username = 'root';
-$password = '';
-
 // Database Connection
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage()]);
-    exit;
-}
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
 // Parse JSON Input from Request Body
 $input = json_decode(file_get_contents('php://input'), true);

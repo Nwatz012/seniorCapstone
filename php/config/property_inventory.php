@@ -8,9 +8,9 @@
 // Database Configuration
 // -------------------------
 $dbHost = 'localhost';               // Hostname (localhost for XAMPP)
-$dbUser = 'root';                    // Default user in XAMPP
-$dbPass = '';                        // Default password (blank in XAMPP)
-$dbName = 'property_inventory';      // Your database name
+$dbUser = 'u203657356_rporepe';                    // Default user in XAMPP
+$dbPass = 'Z3r0w@tz';                        // Default password (blank in XAMPP)
+$dbName = 'u203657356_rporepe';      // Your database name
 
 // -------------------------
 // Establish PDO Connection

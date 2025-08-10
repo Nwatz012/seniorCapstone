@@ -4,9 +4,9 @@
 session_start();
 header('Content-Type: application/json');
 
-require_once '../config/property_inventory.php'; // Database connection
+require_once __DIR__ . '/../config/property_inventory.php';  // Database connection
 
-// ✅ Ensure the user is logged in
+// Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in.']);
     exit();
@@ -14,25 +14,25 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = (int) $_SESSION['user_id'];
 
-// ✅ Ensure it's a POST request
+// Ensure it's a POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     exit();
 }
 
 try {
-    // ✅ Begin transaction (safe deletion)
+    // Begin transaction (safe deletion)
     $pdo->beginTransaction();
 
-    // ✅ Delete user (with ON DELETE CASCADE, related records are removed automatically)
+    // Delete user (with ON DELETE CASCADE, related records are removed automatically)
     $stmt = $pdo->prepare("DELETE FROM users WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
 
-    // ✅ Commit changes
+    // Commit changes
     $pdo->commit();
 
-    // ✅ Log user out and clear session
+    // Log user out and clear session
     session_unset();
     session_destroy();
 

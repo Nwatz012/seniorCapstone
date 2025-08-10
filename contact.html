@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Contact Us - Home Inventory</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#689f38',
+                        'primary-hover': '#558b2f',
+                        secondary: '#f1f5f9',
+                        'secondary-hover': '#e2e8f0',
+                        accent: '#fef3c7',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- External Styles -->
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+
+<body class="bg-gray-50 font-inter min-h-screen">
+    <div id="message-box" class="hidden"></div>
+
+    <!-- Replicating the main layout container for consistent spacing -->
+    <div class="app-container">
+        
+        <!-- The main layout with the form section in the middle -->
+        <div class="main-layout flex items-center justify-center p-8 bg-primary">
+            <div class="form-section bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+                <div class="form-header text-center">
+                    <h1 class="form-title flex items-center justify-center gap-2">
+                        <span role="img" aria-label="Email icon">📧</span>
+                        Contact Support
+                    </h1>
+                    <p class="form-subtitle">We're here to help! Send us a message below.</p>
+                </div>
+
+                <!-- Dynamic Feedback Message Box -->
+                <div id="form-feedback-message" class="form-message"></div>
+
+                <form id="contactForm" class="form-content active" method="post" action="php/api/send_contact.php">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" id="name" name="name" required class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Your Email:</label>
+                        <input type="email" id="email" name="email" required class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject:</label>
+                        <input type="text" id="subject" name="subject" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message:</label>
+                        <textarea id="message" name="message" rows="6" required class="form-input"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn bg-primary hover:bg-primary-hover focus:ring-primary focus:ring-offset-2">Send Message</button>
+                </form>
+                
+                <div class="form-content text-center mt-6">
+                    <a href="login_register.html" class="link-text text-sm text-primary hover:text-primary-hover">
+                        <-- Back to Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to the external JavaScript file -->
+    <script type="module" src="js/contact.js"></script>
+</body>
+</html>

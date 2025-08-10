@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferences Settings - Home Inventory App</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#689f38',
+                        'primary-hover': '#558b2f',
+                        secondary: '#f1f5f9',
+                        'secondary-hover': '#e2e8f0',
+                        accent: '#fef3c7',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in-left': 'slideInLeft 0.3s ease-in-out',
+                        'slide-in-right': 'slideInRight 0.3s ease-in-out'
+                    },
+                    keyframes: {
+                        fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
+                        slideInLeft: { from: { transform: 'translateX(-20px)', opacity: '0' }, to: { transform: 'translateX(0)', opacity: '1' } },
+                        slideInRight: { from: { transform: 'translateX(20px)', opacity: '0' }, to: { transform: 'translateX(0)', opacity: '1' } }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/custom-styles.css">
+    <link rel="stylesheet" href="css/settings.css">
+</head>
+<body class="bg-gray-50 font-inter min-h-screen flex flex-col">
+
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white p-2 rounded shadow-lg z-50">
+        Skip to main content
+    </a>
+
+    <div class="app-container flex flex-col min-h-screen pt-6">
+
+        <header class="main-header" role="banner">
+            <div class="flex items-center gap-4">
+                <h1 class="app-title">
+                    <span role="img" aria-label="House">🏡</span>
+                    Home Inventory
+                </h1>
+            </div>
+
+            <!--Nav Bar-->
+           <nav class="main-nav" role="navigation" aria-label="Main navigation">
+            <a href="dashboard.html" aria-current="page">Dashboard</a>
+            <a href="rooms.html">Inventory</a>
+            <a href="reports.html">Reports</a>
+            <a href="itemDetails.html">Item Details</a>
+            <a href="help.html">Help</a>
+          </nav>
+
+            <div class="header-right flex flex-col items-end">
+                <span class="hidden sm:inline text-sm mb-1" aria-label="Current user">
+                    Welcome, <strong id="current-user-name"></strong>
+                </span>
+                <div class="flex space-x-2">
+                    <a href="settings.html" class="header-profile-btn px-3 py-1 text-sm" aria-label="View profile">
+                        Profile
+                    </a>
+                    <button class="header-logout-btn px-3 py-1 text-sm" type="button" aria-label="Sign out">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div id="message-box" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg transition-all duration-300"></div>
+
+        <div class="main-layout flex-grow p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-6">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar bg-white p-4 rounded-lg shadow-md md:w-1/4" role="navigation" aria-label="Settings navigation">
+                <ul class="sidebar-menu space-y-2">
+                    <li><a href="settings.html" class="block p-2 rounded-md hover:bg-gray-100">Profile Information</a></li>
+                    <li><a href="security_settings.html" class="block p-2 rounded-md hover:bg-gray-100">Security & Privacy</a></li>
+                    <li><a href="preferences_settings.html" class="block p-2 rounded-md hover:bg-gray-100 active:bg-blue-100 active:text-blue-700 active">Preferences</a></li>
+                    <li><a href="account_management.html" class="block p-2 rounded-md hover:bg-gray-100">Account Management</a></li>
+                </ul>
+            </nav>
+
+            <main class="content-area flex-1" id="main-content" role="main">
+                <!-- NEW INNER WRAPPER DIV -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Preferences</h1>
+
+                    <form id="preferencesSettingsForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="form-group">
+                                <label for="currency" class="block text-gray-700 text-sm font-bold mb-2">Preferred Currency</label>
+                                <select id="currency" name="currency">
+                                    <option value="USD">USD ($) - United States Dollar</option>
+                                    <option value="EUR">EUR (€) - Euro</option>
+                                    <option value="GBP">GBP (£) - British Pound</option>
+                                    <option value="CAD">CAD ($) - Canadian Dollar</option>
+                                    <!-- Add more currencies as needed -->
+                                </select>
+                                <div class="validation-message text-gray-600 text-xs italic mt-1"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="date-format" class="block text-gray-700 text-sm font-bold mb-2">Date Format</label>
+                                <select id="date-format" name="date_format">
+                                    <option value="MM/DD/YYYY">MM/DD/YYYY (e.g., 07/25/2025)</option>
+                                    <option value="DD/MM/YYYY">DD/MM/YYYY (e.g., 25/07/2025)</option>
+                                    <option value="YYYY-MM-DD">YYYY-MM-DD (e.g., 2025-07-25)</option>
+                                    <!-- Add more date formats as needed -->
+                                </select>
+                                <div class="validation-message text-gray-600 text-xs italic mt-1"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-md mb-4">
+                            <div class="preference-item flex justify-between items-center py-2 border-b last:border-b-0">
+                                <div class="preference-info">
+                                    <h4 class="text-lg font-medium text-gray-800">Email Notifications</h4>
+                                    <p class="text-gray-600 text-sm">Receive email updates and alerts</p>
+                                </div>
+                                <label class="toggle-switch relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="email-notifications" name="email_notifications" value="1" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div class="preference-item flex justify-between items-center py-2">
+                                <div class="preference-info">
+                                    <h4 class="text-lg font-medium text-gray-800">Auto-Save Items</h4>
+                                    <p class="text-gray-600 text-sm">Automatically save changes to items as you edit them</p>
+                                </div>
+                                <label class="toggle-switch relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="auto-save-items" name="auto_save_items" value="1" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end space-x-2 mt-6">
+                            <button type="button" class="btn-secondary cancel-button">Cancel</button>
+                            <button type="submit" class="btn-primary">⚙️ Save Preferences</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+
+    <script src="js/utils.js" defer></script>
+    <script src="js/preferences_settings.js" defer></script> 
+</body>
+</html>

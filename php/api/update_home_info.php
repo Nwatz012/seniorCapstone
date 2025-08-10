@@ -4,9 +4,9 @@
 session_start();
 header('Content-Type: application/json');
 
-require_once '../config/property_inventory.php';
+require_once __DIR__ . '/../config/property_inventory.php'; 
 
-// ✅ Check login
+// Check login
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in.']);
     exit();
@@ -14,17 +14,17 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// ✅ Get and decode JSON payload
+// Get and decode JSON payload
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
-// ✅ Validate JSON structure
+// Validate JSON structure
 if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
     echo json_encode(['success' => false, 'message' => 'Invalid JSON input.']);
     exit();
 }
 
-// ✅ Extract values
+// Extract values
 $homeId         = $data['home_id'] ?? null;
 $street_address = trim($data['street_address'] ?? '');
 $city           = trim($data['city'] ?? '');
@@ -35,13 +35,13 @@ $yearBuilt      = $data['year_built'] ?? null;
 $roofType       = trim($data['roof_type'] ?? '');
 $roofAge        = $data['roof_age'] ?? null;
 
-// ✅ Required fields validation
+// Required fields validation
 if (!$street_address || !$city || !$state || !$zip_code) {
     echo json_encode(['success' => false, 'message' => 'Street address, city, state, and zip code are required.']);
     exit();
 }
 
-// ✅ ZIP code validation
+// ZIP code validation
 if (!preg_match('/^\d{5}$/', $zip_code)) {
     echo json_encode(['success' => false, 'message' => 'ZIP code must be a valid 5-digit number.']);
     exit();
@@ -49,7 +49,7 @@ if (!preg_match('/^\d{5}$/', $zip_code)) {
 
 try {
     if ($homeId) {
-        // 🔁 UPDATE existing home_info
+        // UPDATE existing home_info
         $stmt = $pdo->prepare("
             UPDATE home_info 
             SET street_address = :street_address,
@@ -64,7 +64,7 @@ try {
         ");
         $stmt->bindParam(':home_id', $homeId, PDO::PARAM_INT);
     } else {
-        // ➕ INSERT new home_info
+        // INSERT new home_info
         $stmt = $pdo->prepare("
             INSERT INTO home_info (
                 user_id, street_address, city, state, zip_code,
@@ -76,7 +76,7 @@ try {
         ");
     }
 
-    // 🔒 Bind parameters
+    // Bind parameters
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->bindParam(':street_address', $street_address, PDO::PARAM_STR);
     $stmt->bindParam(':city', $city, PDO::PARAM_STR);
@@ -89,7 +89,7 @@ try {
 
     $stmt->execute();
 
-    // ✅ Confirm success
+    // Confirm success
     if ($homeId || $pdo->lastInsertId()) {
         echo json_encode(['success' => true, 'message' => 'Home information saved successfully!']);
     } else {
