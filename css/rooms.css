@@ -29,8 +29,6 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    /* Removed max-height here, relying on .sidebar's overflow-y: auto */
-    /* If specific scrolling for just the list is needed, re-add max-height */
     padding-right: 0.5rem; /* Add some padding for scrollbar visibility */
 }
 

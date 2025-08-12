@@ -715,12 +715,6 @@ textarea:focus {
     transition: all 0.3s ease;
 }
 
-
-
-
-
-
-
 /* High contrast mode support */
 @media (prefers-contrast: high) {
     :root {

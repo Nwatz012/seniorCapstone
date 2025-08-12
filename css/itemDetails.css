@@ -1,4 +1,4 @@
-/* 🌿 CSS Variables */
+/* CSS Variables */
 :root {
   --green-primary: #689f38;
   --green-secondary: #7cb342;
@@ -40,7 +40,7 @@
   --font-size-3xl: 1.875rem;
 }
 
-/* 🌐 Base Styles */
+/* Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -54,7 +54,7 @@ body {
   line-height: 1.6;
 }
 
-/* 📦 Layout Containers */
+/*Layout Containers */
 .app-container {
   max-width: 87.5rem;
   width: 100%;
@@ -82,7 +82,7 @@ body {
   overflow: hidden;
 }
 
-/* 🌿 Header */
+/* Header */
 .main-header,
 .header {
   background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
@@ -128,7 +128,7 @@ body {
   outline-offset: 2px;
 }
 
-/* 👤 Buttons */
+/* Buttons */
 .header-profile-btn,
 .header-logout-btn,
 .profile-btn,
@@ -173,7 +173,7 @@ body {
   color: #475569;
 }
 
-/* 🧾 Form Section */
+/* Form Section */
 .form-container {
   padding: 40px;
 }
@@ -276,7 +276,7 @@ body {
   font-family: inherit;
 }
 
-/* 📸 Photo Upload */
+/* Photo Upload */
 .photo-section {
   text-align: center;
 }
@@ -314,7 +314,7 @@ body {
   font-weight: 500;
 }
 
-/* 🛋️ Room Selection */
+/* Room Selection */
 .room-selection {
   background: var(--green-light);
   border-radius: 12px;
@@ -360,7 +360,7 @@ body {
   cursor: pointer;
 }
 
-/* ➕ Add Room Button */
+/* Add Room Button */
 .add-room-btn {
   background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
   color: var(--white);
@@ -369,11 +369,9 @@ body {
   border-radius: 0;
 } 
 
-
-        #message-box {
-        background-color: #e6f4ea; /* light minty green */
-        border: 2px solid #4ade80; /* mint green border */
-        color: #166534; /* dark green text */
-        /* ...other styles */
-        }
+ #message-box {
+  background-color: #e6f4ea; /* light minty green */
+  border: 2px solid #4ade80; /* mint green border */
+  color: #166534; /* dark green text */
+       }
 
