@@ -1,17 +1,18 @@
-/* css/login.css */
+/*
+ * File: css/login.css
+ * Description: Styles for the Login/Register page. This file defines the layout,
+ * component styles, and responsive design rules for the authentication page.
+ */
 
-/* --- Main layout for Login/Register page --- */
+/* --- Main Layout for the Desktop View --- */
 .main-layout {
+    /* Uses a three-column grid to position the side panels and form section. */
     display: grid;
-    grid-template-columns: 1fr 600px 1fr; /* Custom 3-column layout */
-    /* REMOVE THIS LINE, min-height is likely fighting with flex:1 and grid-template-rows:1fr */
-    /* min-height: calc(100vh - 100px); */
-    flex: 1; /* Allows it to grow and fill available space */
-    /* IMPORTANT: Change align-items back to stretch (or remove it, as it's default for grid) */
-    /* This makes the grid items (the panels) stretch vertically to fill the entire row height. */
+    grid-template-columns: 1fr 600px 1fr;
+    flex: 1;
+    /* Stretches grid items to fill the full height of the container. */
     align-items: stretch;
-    /* Also ensure grid-template-rows: 1fr; if it's not already, to make the row itself take full height */
-    grid-template-rows: 1fr; /* Make sure this is present if it's not already */
+    grid-template-rows: 1fr;
 }
 
 /* --- Left Panel - Marketing Content --- */
@@ -21,11 +22,7 @@
     color: var(--white);
     display: flex;
     flex-direction: column;
-    /* IMPORTANT: Change justify-content to flex-start here. */
-    /* This ensures the *content inside* the left panel aligns to the top of its now stretched container. */
     justify-content: flex-start;
-    /* Remove height: 100%; here. The parent grid's align-items: stretch will handle the height. */
-    /* height: 100%; */
 }
 
 .hero-content h2 {
@@ -62,11 +59,9 @@
 
 /* --- Form Section (Center Panel) --- */
 .form-section {
-    padding: 35px 60px; /* Keep this padding for internal spacing as desired */
+    padding: 35px 60px;
     display: flex;
     flex-direction: column;
-    /* IMPORTANT: Keep justify-content to flex-start here. */
-    /* This ensures the *content inside* the center panel aligns to the top. */
     justify-content: flex-start;
     background: var(--white);
 }
@@ -225,11 +220,7 @@
     padding: var(--spacing-2xl) var(--spacing-xl);
     display: flex;
     flex-direction: column;
-    /* IMPORTANT: Change justify-content to flex-start here. */
-    /* This ensures the *content inside* the right panel aligns to the top of its now stretched container. */
     justify-content: flex-start;
-    /* Remove height: 100%; here. The parent grid's align-items: stretch will handle the height. */
-    /* height: 100%; */
 }
 
 .security-badge {
@@ -258,39 +249,24 @@
     line-height: 1.5;
 }
 
-/* --- Responsive design for Login/Register page --- */
+/* --- Responsive design for smaller screens --- */
 @media (max-width: 1200px) {
+    /* Changes the three-column grid to a single-column stack on smaller screens. */
     .main-layout {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
-        /* Ensure align-items is still stretch here for panels to fill height */
         align-items: stretch;
-    }
-
-    .left-panel,
-    .right-panel {
-        justify-content: flex-start; /* Keep content at top when stacked */
-        height: auto; /* Remove explicit height 100% when stacked, content auto-sizes */
-    }
-
-    .form-section {
-        padding: var(--spacing-2xl);
-        justify-content: flex-start;
     }
 }
 
 @media (max-width: 768px) {
+    /* Further adjusts padding and font sizes for mobile devices. */
     .left-panel,
     .right-panel,
     .form-section {
         padding: var(--spacing-xl) var(--spacing-lg);
-        height: auto; /* Ensure no explicit height 100% when stacked and smaller */
     }
-
-    .hero-content h2 {
-        font-size: var(--font-size-2xl);
-    }
-
+    .hero-content h2,
     .form-title {
         font-size: var(--font-size-2xl);
     }

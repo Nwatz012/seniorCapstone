@@ -1,3 +1,6 @@
+<!-- default from Hostinger, keeping just in case -->
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

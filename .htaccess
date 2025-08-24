@@ -1,2 +1,2 @@
-SetEnv MAIL_PASSWORD "Z3r0w@tz1@"
+SetEnv MAIL_PASSWORD "REDACTED"
 DirectoryIndex login_register.html

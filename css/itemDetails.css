@@ -1,4 +1,6 @@
-/* 🌿 CSS Variables */
+/* CSS Variables
+   Defines a consistent color palette, spacing, and font sizes for the entire application.
+*/
 :root {
   --green-primary: #689f38;
   --green-secondary: #7cb342;
@@ -40,7 +42,9 @@
   --font-size-3xl: 1.875rem;
 }
 
-/* 🌐 Base Styles */
+/* Base Styles
+   Resets default browser styles for a consistent starting point.
+*/
 * {
   margin: 0;
   padding: 0;
@@ -54,7 +58,9 @@ body {
   line-height: 1.6;
 }
 
-/* 📦 Layout Containers */
+/* Layout Containers
+   Defines the main structural layout for the application.
+*/
 .app-container {
   max-width: 87.5rem;
   width: 100%;
@@ -82,7 +88,9 @@ body {
   overflow: hidden;
 }
 
-/* 🌿 Header */
+/* Header
+   Styles for the top navigation bar with a gradient background.
+*/
 .main-header,
 .header {
   background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
@@ -128,7 +136,9 @@ body {
   outline-offset: 2px;
 }
 
-/* 👤 Buttons */
+/* Buttons
+   Defines common button styles used throughout the application.
+*/
 .header-profile-btn,
 .header-logout-btn,
 .profile-btn,
@@ -173,7 +183,9 @@ body {
   color: #475569;
 }
 
-/* 🧾 Form Section */
+/* Form Section
+   Styles for form layouts, inputs, and tab navigation.
+*/
 .form-container {
   padding: 40px;
 }
@@ -276,7 +288,9 @@ body {
   font-family: inherit;
 }
 
-/* 📸 Photo Upload */
+/* Photo Upload
+   Styles for the image upload area, including hover effects.
+*/
 .photo-section {
   text-align: center;
 }
@@ -314,7 +328,9 @@ body {
   font-weight: 500;
 }
 
-/* 🛋️ Room Selection */
+/* Room Selection
+   Styles for the room selection checkboxes and layout.
+*/
 .room-selection {
   background: var(--green-light);
   border-radius: 12px;
@@ -360,20 +376,21 @@ body {
   cursor: pointer;
 }
 
-/* ➕ Add Room Button */
+/* Button to add a new room */
 .add-room-btn {
   background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
   color: var(--white);
   border: none;
   padding: 12px 24px;
   border-radius: 0;
-} 
+}
 
 
-        #message-box {
-        background-color: #e6f4ea; /* light minty green */
-        border: 2px solid #4ade80; /* mint green border */
-        color: #166534; /* dark green text */
-        /* ...other styles */
-        }
-
+/* Message Box
+   Styles for the floating message box that provides user feedback.
+*/
+#message-box {
+  background-color: #e6f4ea; /* light minty green */
+  border: 2px solid #4ade80; /* mint green border */
+  color: #166534; /* dark green text */
+}

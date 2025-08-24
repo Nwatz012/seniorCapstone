@@ -63,8 +63,8 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.hostinger.com'; 
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'support@propertyinventory.blog'; // Your SMTP username (your full email address) ** COME BACK ONCE YOU CREATE THE ONLINE WEB HOST AND MAILER**
-    $mail->Password   = getenv('MAIL_PASSWORD'); // Your Gmail App Password
+    $mail->Username   = 'support@propertyinventory.blog'; 
+    $mail->Password   = getenv('MAIL_PASSWORD'); // htaccess
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 

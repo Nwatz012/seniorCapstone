@@ -1,4 +1,5 @@
 /* css/custom-styles.css */
+/* note there are several extra comment lines for my own personal debugging, they need to stay for ease of fixing for future iterations*/
 
 /* --- Custom CSS Variables (Design Tokens) --- */
 :root {
@@ -62,7 +63,7 @@ body {
     overflow-x: hidden; /* Prevent horizontal scroll on app-container */
     display: flex; /* Flex container for header and main content */
     flex-direction: column; /* Stack children vertically */
-    /* flex-grow: 1; removed as height: 100% makes it fill the space */
+    
 }
 
 /* --- Global Header Styles (shared across pages) --- */
@@ -647,7 +648,6 @@ textarea:focus {
 
 /* In custom-styles.css */
 
-/* In custom-styles.css */
 
 /* Keep the existing .info-row rules as they are for standard rows */
 .info-row {
@@ -714,12 +714,6 @@ textarea:focus {
     margin-top: var(--spacing-xl); /* Adjusted margin for separation */
     transition: all 0.3s ease;
 }
-
-
-
-
-
-
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {

@@ -1,18 +1,11 @@
-/* css/dashboard.css */
-
 /*
-   IMPORTANT: The @tailwind directives are for a PostCSS build process.
-   Since you are using the Tailwind CDN script in your HTML,
-   these directives are not needed here and can cause errors if present.
-   The CDN handles generating Tailwind's base, components, and utilities automatically.
-*/
+ * File: css/dashboard.css
+ * Description: Main stylesheet for the application dashboard.
+ * This file imports custom project-wide variables and styles.
+ * It is used in conjunction with the Tailwind CSS CDN for styling.
+ */
 
-/* Import your custom styles. This file will contain your :root variables
-   and any global/shared custom CSS rules. */
+/* Imports custom CSS variables and global rules. */
 @import './custom-styles.css';
 
-/* Any other global CSS that doesn't fit into custom-styles or Tailwind can go here.
-   For example, if you had very specific reset rules or third-party library imports
-   that are not handled by custom-styles.css. */
-
-   
+/* Additional custom styles for the dashboard can be added here if needed later. */

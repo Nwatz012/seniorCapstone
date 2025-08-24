@@ -11,8 +11,6 @@ $response = [
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // IMPORTANT: Get user_id securely from session in a real application.
-    // For now, we're relying on it being passed from JavaScript for testing purposes.
     $userId = $_POST['user_id'] ?? null;
 
     if ($userId === null) {

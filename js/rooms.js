@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addItemToRoomBtn = document.getElementById('add-item-to-room-btn');
     const addFirstItemBtn = document.getElementById('add-first-item-btn'); // Button in empty state
     const logoutButton = document.querySelector('.header-logout-btn');
-    const currentUserDisplayName = document.getElementById('current-user-name'); // User name display element (assuming it's in rooms.html header)
+    const currentUserDisplayName = document.getElementById('current-user-name'); // User name display element 
 
     // Home Info Display Elements
     const homeAddressDisplay = document.getElementById('home-address'); // This will now display concatenated address

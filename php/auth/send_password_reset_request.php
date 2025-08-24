@@ -50,7 +50,7 @@ try {
     $mail->Host       = 'smtp.hostinger.com';  // Your SMTP server
     $mail->SMTPAuth   = true;
     $mail->Username   = 'support@propertyinventory.blog';  // Your SMTP email
-     $mail->Password   = getenv('MAIL_PASSWORD'); // Your Gmail App Password
+     $mail->Password   = getenv('MAIL_PASSWORD'); // htaccess
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 

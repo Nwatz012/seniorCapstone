@@ -7,7 +7,7 @@ ini_set('display_errors', 1); // Display errors for this test
 
 $dbHost = 'localhost';
 $dbUser = 'u203657356_rporepe';
-$dbPass = 'H6DVyb$h'; // Or your password
+$dbPass = 'REDACTED'; // Or your password
 $dbName = 'u203657356_rporepe';
 
 try {

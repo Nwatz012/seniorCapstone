@@ -1,19 +1,30 @@
 // settings.js
 
 /**
- * Display a status message to the user.
- * @param {string} message - The message to show.
- * @param {'success' | 'error' | 'info'} type - Type of message.
+ * This script manages the user settings page, including fetching user data,
+ * handling form validation, submitting updates, and providing real-time feedback.
+ */
+
+// -------------------------------------------------------------------------
+// 1. UI Utility Functions
+// -------------------------------------------------------------------------
+
+/**
+ * Displays a status message to the user in a designated message box.
+ * The message is automatically hidden after a short duration.
+ * @param {string} message - The message text to display.
+ * @param {'success' | 'error' | 'info'} type - The type of message, which determines the color scheme.
  */
 function showMessage(message, type = 'success') {
     const messageBox = document.getElementById('message-box');
     if (!messageBox) return;
 
+    // Reset classes and set message text.
     messageBox.textContent = message;
-    messageBox.className = ''; // Reset all classes
+    messageBox.className = '';
     messageBox.classList.add('animate-fade-in', 'px-4', 'py-2', 'rounded', 'text-sm');
 
-    // Apply color classes based on message type
+    // Apply specific color classes based on the message type.
     const classes = {
         success: ['bg-green-100', 'text-green-800'],
         error: ['bg-red-100', 'text-red-800'],
@@ -22,7 +33,7 @@ function showMessage(message, type = 'success') {
 
     messageBox.classList.add(...(classes[type] || classes.info));
 
-    // Show and auto-hide message
+    // Make the message box visible and set a timer to hide it.
     messageBox.classList.remove('hidden');
     setTimeout(() => {
         messageBox.classList.add('hidden');
@@ -30,9 +41,15 @@ function showMessage(message, type = 'success') {
     }, 5000);
 }
 
+// -------------------------------------------------------------------------
+// 2. Form Validation Logic
+// -------------------------------------------------------------------------
+
 /**
- * Validates profile form fields and shows inline messages.
- * @returns {boolean} - True if form is valid, otherwise false.
+ * Validates the profile settings form fields.
+ * It checks for required fields, email format, and phone number length.
+ * Displays inline error messages next to invalid fields.
+ * @returns {boolean} - True if the form is valid, otherwise false.
  */
 function validateForm() {
     let isValid = true;
@@ -42,6 +59,11 @@ function validateForm() {
     const email = form.querySelector('#email');
     const phone = form.querySelector('#phone');
 
+    /**
+     * Helper function to show a validation error message for a specific input.
+     * @param {HTMLElement} input - The form input element.
+     * @param {string} msg - The error message to display.
+     */
     const showError = (input, msg) => {
         const errorElem = input.nextElementSibling;
         if (errorElem && errorElem.classList.contains('validation-message')) {
@@ -51,6 +73,10 @@ function validateForm() {
         input.classList.add('border-red-500');
     };
 
+    /**
+     * Helper function to clear a validation error message for a specific input.
+     * @param {HTMLElement} input - The form input element.
+     */
     const clearError = (input) => {
         const errorElem = input.nextElementSibling;
         if (errorElem && errorElem.classList.contains('validation-message')) {
@@ -60,17 +86,20 @@ function validateForm() {
         input.classList.remove('border-red-500');
     };
 
-    // Validation rules
+    // --- Apply validation rules for each field ---
+    // First Name validation
     if (!firstName.value.trim()) {
         showError(firstName, 'First Name is required.');
         isValid = false;
     } else clearError(firstName);
 
+    // Last Name validation
     if (!lastName.value.trim()) {
         showError(lastName, 'Last Name is required.');
         isValid = false;
     } else clearError(lastName);
 
+    // Email validation
     if (!email.value.trim()) {
         showError(email, 'Email Address is required.');
         isValid = false;
@@ -79,6 +108,7 @@ function validateForm() {
         isValid = false;
     } else clearError(email);
 
+    // Phone number validation (optional but checks length if provided)
     const digitsOnly = phone.value.replace(/\D/g, '');
     if (digitsOnly.length > 0 && digitsOnly.length !== 10) {
         showError(phone, 'Please enter a valid 10-digit phone number.');
@@ -88,8 +118,13 @@ function validateForm() {
     return isValid;
 }
 
+// -------------------------------------------------------------------------
+// 3. Data Fetching and Submission Functions
+// -------------------------------------------------------------------------
+
 /**
- * Fetch the current user data from the backend and populate the form.
+ * Fetches the current user's profile data from the backend.
+ * Populates the form fields and various UI elements with the retrieved data.
  */
 async function fetchUserData() {
     try {
@@ -102,17 +137,20 @@ async function fetchUserData() {
 
         const { first_name, last_name, email, phone_number, timezone, member_since, last_login } = result.data;
 
+        // Populate form inputs
         document.getElementById('first-name').value = first_name || '';
         document.getElementById('last-name').value = last_name || '';
         document.getElementById('email').value = email || '';
         document.getElementById('phone').value = phone_number || '';
         document.getElementById('timezone').value = timezone || 'America/New_York';
 
+        // Update display elements
         document.getElementById('profileFullName').textContent = `${first_name} ${last_name}`;
         document.getElementById('memberSince').textContent = member_since;
         document.getElementById('lastLogin').textContent = last_login;
         document.getElementById('current-user-name').textContent = `${first_name} ${last_name}`;
 
+        // Generate and display initials for the avatar.
         const initials = `${first_name?.[0] ?? ''}${last_name?.[0] ?? ''}`.toUpperCase();
         document.querySelector('.profile-avatar').textContent = initials;
 
@@ -123,29 +161,34 @@ async function fetchUserData() {
 }
 
 /**
- * Handles the form submit event to update profile.
+ * Handles the profile form submission.
+ * Validates the form, sends the updated data to the backend via POST request,
+ * and handles the server's response.
+ * @param {Event} event - The form submit event.
  */
 async function handleFormSubmit(event) {
     event.preventDefault();
 
+    // Run validation before attempting to submit.
     if (!validateForm()) {
         return showMessage('Please correct the errors in the form.', 'error');
     }
 
     const form = event.target;
+    // Collect form data into a plain JavaScript object.
     const data = Object.fromEntries(new FormData(form).entries());
 
     try {
         const res = await fetch('php/api/settings.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data) // Send data as JSON.
         });
 
         const result = await res.json();
         if (result.success) {
             showMessage(result.message, 'success');
-            fetchUserData(); // Refresh view
+            fetchUserData(); // Refresh the page with the newly saved data.
         } else {
             showMessage(result.message || 'Profile update failed.', 'error');
         }
@@ -155,17 +198,24 @@ async function handleFormSubmit(event) {
     }
 }
 
+// -------------------------------------------------------------------------
+// 4. Event Listener Attachments
+// -------------------------------------------------------------------------
+
 /**
- * Formats the phone number input dynamically as the user types.
+ * Attaches an event listener to the phone input to format the number
+ * dynamically as the user types (e.g., (123) 456 7890).
  */
 function attachPhoneInputMask() {
     const phone = document.getElementById('phone');
     if (!phone) return;
 
     phone.addEventListener('input', (e) => {
+        // Remove all non-digit characters.
         const digits = e.target.value.replace(/\D/g, '');
         let formatted = '';
 
+        // Apply the formatting logic based on the number of digits.
         if (digits.length > 0) formatted += '(' + digits.substring(0, 3);
         if (digits.length >= 4) formatted += ') ' + digits.substring(3, 6);
         if (digits.length >= 7) formatted += ' ' + digits.substring(6, 10);
@@ -175,35 +225,45 @@ function attachPhoneInputMask() {
 }
 
 /**
- * Cancels edits and reverts form to original data.
+ * Attaches a click listener to the 'Cancel' button.
+ * When clicked, it reverts the form fields to their original fetched state.
  */
 function attachCancelButtonListener() {
     const cancelButton = document.querySelector('.cancel-button');
     if (!cancelButton) return;
 
     cancelButton.addEventListener('click', () => {
-        fetchUserData();
+        fetchUserData(); // Re-fetch the data to reset the form.
         showMessage('Changes cancelled.', 'info');
     });
 }
 
 /**
- * Adds live validation feedback as user types.
+ * Attaches 'input' event listeners to all form inputs to provide
+ * real-time validation feedback as the user types.
  */
 function attachLiveValidationListeners() {
     const inputs = document.querySelectorAll('#profileSettingsForm input, #profileSettingsForm select');
     inputs.forEach(input => {
+        // The event listener calls the main validation function on every keystroke.
         input.addEventListener('input', validateForm);
     });
 }
 
-// Initialize settings logic on DOM load
+// -------------------------------------------------------------------------
+// 5. Initialization
+// -------------------------------------------------------------------------
+
+// Entry point of the script. This ensures the DOM is ready before we
+// try to access any elements or attach listeners.
 document.addEventListener('DOMContentLoaded', () => {
+    // Call the initial functions to set up the page.
     fetchUserData();
     attachPhoneInputMask();
     attachCancelButtonListener();
     attachLiveValidationListeners();
 
+    // Attach the main form submit handler to the form.
     const form = document.getElementById('profileSettingsForm');
     if (form) {
         form.addEventListener('submit', handleFormSubmit);
